@@ -5,7 +5,7 @@ import java.util.Observable;
 public class PlayerModel extends Observable {
     private int playerX = 250; // 初期位置
     private int playerY = 200;
-    private final int SPEED = 5;
+    private final int SPEED = 1;
     private final int PLAYER_SIZE = 30; // プレイヤーのサイズ
 
     // キーの状態管理フラグ

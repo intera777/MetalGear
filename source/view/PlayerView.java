@@ -22,9 +22,9 @@ public class PlayerView extends JPanel implements Observer {
         this.addKeyListener(c); 
         this.setFocusable(true);
 
-        // タイマーの設定（約60FPS = 16ミリ秒ごとに更新）
+        // タイマーの設定（約30FPS = 33ミリ秒ごとに更新）
         // Timerのイベントで model.updatePosition() を呼び出す
-        timer = new Timer(16, new ActionListener() {
+        timer = new Timer(33, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.updatePosition();
