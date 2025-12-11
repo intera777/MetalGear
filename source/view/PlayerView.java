@@ -1,3 +1,8 @@
+package view;
+
+import model.PlayerModel;
+import control.PlayerControl;
+
 import javax.swing.JPanel;
 import javax.swing.Timer; // タイマー用
 import java.awt.Graphics;

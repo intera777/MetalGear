@@ -1,3 +1,7 @@
+import control.PlayerControl;
+import model.PlayerModel;
+import view.PlayerView;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
