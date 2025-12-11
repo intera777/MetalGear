@@ -5,7 +5,7 @@ import java.util.Observable;
 public class PlayerModel extends Observable {
     private int playerX = 250; // 初期位置
     private int playerY = 200;
-    private final int SPEED = 1;
+    private final int SPEED = 3;
     private final int PLAYER_SIZE = 30; // プレイヤーのサイズ
 
     // キーの状態管理フラグ
@@ -30,8 +30,8 @@ public class PlayerModel extends Observable {
         // ※正確な境界値はウインドウ枠のサイズにもよりますが、ここでは安全策をとっています
         if (playerX < 0) playerX = 0;
         if (playerY < 0) playerY = 0;
-        if (playerX > 560) playerX = 560; // 600 - 幅
-        if (playerY > 740) playerY = 740; // 800 - 高さ
+        if (playerX > 770) playerX = 770; // 800 - 幅
+        if (playerY > 570) playerY = 570; // 600 - 高さ
 
         // 変更を通知
         setChanged();

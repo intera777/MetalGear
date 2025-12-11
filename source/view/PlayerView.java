@@ -43,5 +43,6 @@ public class PlayerView extends JPanel implements Observer {
         super.paintComponent(g);
         // Modelからデータを取得して描画
         g.fillRect(model.getPlayerX(), model.getPlayerY(), 30, 30);
+        //g.fillRect(100,530,30,30); //描画範囲テスト用
     }
 }
