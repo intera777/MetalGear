@@ -47,3 +47,5 @@ public class PlayerModel extends Observable {
     public int getPlayerX() { return playerX; }
     public int getPlayerY() { return playerY; }
 }
+
+//通知テスト用

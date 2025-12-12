@@ -28,9 +28,10 @@ public class Metalgear extends JFrame{
             playermodel.updatePosition();
             playerview.repaint();
             try {
+                //約0.033秒停止.
                 Thread.sleep(1000/30);
             } catch (InterruptedException e) {
-                // 無理やり起こされた時の処理（通常はエラー表示など）
+                //停止中に割り込まれた時の処理.
                 e.printStackTrace();
             }
         }
