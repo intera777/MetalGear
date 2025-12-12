@@ -7,3 +7,4 @@ public class BulletView{
       
 }
 // 初コメント
+//コメントいいね
