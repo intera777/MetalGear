@@ -6,3 +6,4 @@ import control.BulletControl;
 public class BulletView{
       
 }
+// 初コメント
