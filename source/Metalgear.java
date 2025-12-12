@@ -3,12 +3,6 @@ import model.PlayerModel;
 import view.PlayerView;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import javax.swing.JFrame;
 
 public class Metalgear extends JFrame{
     public static void main(String[] args) {
@@ -18,16 +12,28 @@ public class Metalgear extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
          // 1. まずModelを作る
-        PlayerModel model = new PlayerModel();
+        PlayerModel playermodel = new PlayerModel();
         
         // 2. 次にControllerを作る（Modelを操作するため渡す
-        PlayerControl control = new PlayerControl(model);
+        PlayerControl playercontrol = new PlayerControl(playermodel);
         // 3. 最後にViewを作る（Modelを表示し、Controllerに入力を流すため渡す)
-        PlayerView view = new PlayerView(model, control);
+        PlayerView playerview = new PlayerView(playermodel, playercontrol);
         
-        frame.add(view);
-
-
+        frame.add(playerview);
         frame.setVisible(true);
+
+        final int FPS = 30; //フレームレート.
+
+        while(true){
+            playermodel.updatePosition();
+            playerview.repaint();
+            try {
+                Thread.sleep(1000/30);
+            } catch (InterruptedException e) {
+                // 無理やり起こされた時の処理（通常はエラー表示など）
+                e.printStackTrace();
+            }
+        }
+
     }
 }

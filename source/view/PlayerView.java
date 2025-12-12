@@ -13,29 +13,16 @@ import java.util.Observable;
 
 public class PlayerView extends JPanel implements Observer {
     private PlayerModel model;
-    private Timer timer;
 
     public PlayerView(PlayerModel m, PlayerControl c) {
         this.model = m;
-        model.addObserver(this);
         
         this.addKeyListener(c); 
         this.setFocusable(true);
-
-        // タイマーの設定（約30FPS = 33ミリ秒ごとに更新）
-        // Timerのイベントで model.updatePosition() を呼び出す
-        timer = new Timer(33, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                model.updatePosition();
-            }
-        });
-        timer.start();
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        repaint(); // 再描画
     }
 
     @Override
