@@ -4,7 +4,6 @@ import model.PlayerModel;
 import control.PlayerControl;
 
 import javax.swing.JPanel;
-import javax.swing.Timer; // タイマー用
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
