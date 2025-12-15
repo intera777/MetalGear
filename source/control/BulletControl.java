@@ -1,19 +1,15 @@
 package control;
 
-import model.BulletModel;
-import model.PlayerModel;
-
+import model.GunModel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class BulletControl implements KeyListener {
-    private BulletModel[] bulletModels;
-    private PlayerModel playerModel;
-    private boolean isJPressed = false;
+    private GunModel model;
+    private boolean isJPressed = false; // 押しっぱなし防止フラグ
 
-    public BulletControl(BulletModel[] bulletModels, PlayerModel playerModel) {
-        this.bulletModels = bulletModels;
-        this.playerModel = playerModel;
+    public BulletControl(GunModel model) {
+        this.model = model;
     }
 
     @Override
@@ -21,29 +17,20 @@ public class BulletControl implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        // Jキーが押され、かつ「まだ押された状態として処理されていない」場合
         if (e.getKeyCode() == KeyEvent.VK_J) {
             if (!isJPressed) {
-                fire(); 
-                isJPressed = true;
+                model.keyTappedNewly();                 
+                isJPressed = true; // フラグを立てる
             }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        // キーを離したらフラグを戻す
         if (e.getKeyCode() == KeyEvent.VK_J) {
             isJPressed = false;
-        }
-    }
-
-    private void fire() {
-        for (BulletModel bullet : bulletModels) {
-            // 「今、この弾は画面上に存在していない（=使っていない）か？」を確認
-            if (!bullet.bulletExist()) {
-                // プレイヤーの場所（X, Y）に弾をセットして「発射状態」にする
-                bullet.shoot(playerModel.getPlayerX(), playerModel.getPlayerY());
-                break;
-            }
         }
     }
 }
