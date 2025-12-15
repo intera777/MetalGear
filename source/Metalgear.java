@@ -25,7 +25,7 @@ public class Metalgear extends JFrame{
         final int FPS = 30; //フレームレート.
 
         while(true){
-            playermodel.updatePosition();
+            playermodel.updatePlayerPosition();
             playerview.repaint();
             try {
                 //約0.033秒停止.

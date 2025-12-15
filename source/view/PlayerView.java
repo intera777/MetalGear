@@ -15,20 +15,19 @@ public class PlayerView extends JPanel implements Observer {
 
     public PlayerView(PlayerModel m, PlayerControl c) {
         this.model = m;
-        
-        this.addKeyListener(c); 
+
+        this.addKeyListener(c);
         this.setFocusable(true);
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-    }
+    public void update(Observable o, Object arg) {}
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Modelからデータを取得して描画
         g.fillRect(model.getPlayerX(), model.getPlayerY(), 30, 30);
-        //g.fillRect(100,530,30,30); //描画範囲テスト用
+        // g.fillRect(100,530,30,30); //描画範囲テスト用
     }
 }
