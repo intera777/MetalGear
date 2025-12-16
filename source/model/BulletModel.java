@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Observable;
+import GameConfig.*;
 
 public class BulletModel extends Observable {
       private final int SPEED = 32;
@@ -43,15 +44,11 @@ public class BulletModel extends Observable {
             }
       }
 
-      public void keyTappedNewly() {
-            shootBullet();
-      }
-
-      public int getPlayerX() {
+      public int getBulletX() {
             return x;
       }
 
-      public int getPlayerY() {
+      public int getBulletY() {
             return y;
       }
 
@@ -60,8 +57,14 @@ public class BulletModel extends Observable {
       }
 
       public void updateBulletPosition() {
-            x+=speed_x;
-            y+=speed_y;
-            if(x<0||)
+            x += speed_x;
+            y += speed_y;
+            if (x < 0 || ConstSet.WINDOW_WIDTH <= x || y < 0 || ConstSet.WINDOW_HEIGHT <= y) {
+                  exist = false;
+                  x = -100;
+                  y = -100;
+                  speed_x = 0;
+                  speed_y = 0;
+            }
       }
 }

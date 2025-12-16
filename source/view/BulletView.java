@@ -1,27 +1,18 @@
 package view;
 
-import model.BulletModel;
-import control.BulletControl;
+import model.*;
+import control.*;
 
 import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Observable;
-import java.util.Observer;
 
-public class BulletView extends JPanel implements Observer {
+public class BulletView extends JPanel {
     private BulletModel[] models; // BUlletModel の配列
 
     public BulletView(BulletModel[] ms, BulletControl c) {
         this.models = ms;
-
-        for (BulletModel m : ms) {
-            m.addObserver(this); // BulletViewが各BulletModelを監視するように登録
-        }
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        this.repaint(); // 再描画
+        this.addKeyListener(c);
     }
 
     @Override
@@ -32,6 +23,7 @@ public class BulletView extends JPanel implements Observer {
 
         for (BulletModel bullet : arr_bullet) {
             if (bullet.bulletExist()) { // 弾が存在する場合のみ描画
+                g.setColor(Color.RED);
                 g.fillRect(bullet.getBulletX(), bullet.getBulletY(), 5, 5);
             }
         }

@@ -1,24 +1,22 @@
 package control;
 
-import model.PlayerModel;
+import model.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class BulletControl implements KeyListener {
-    // ★ PlayerModel を操作対象にする
-    private PlayerModel model; 
+    private BulletsModel model;
     private boolean isJPressed = false;
 
-    public BulletControl(PlayerModel model) {
-        this.model = model;
+    public BulletControl(BulletsModel bulletsmodel) {
+        this.model = bulletsmodel;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_J) {
             if (!isJPressed) {
-                // ★ PlayerModel のメソッドを呼ぶ
-                model.keyTappedNewly(); 
+                model.keyTappedNewly();
                 isJPressed = true;
             }
         }
@@ -30,7 +28,7 @@ public class BulletControl implements KeyListener {
             isJPressed = false;
         }
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e) {}
 }
