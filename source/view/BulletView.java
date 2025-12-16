@@ -5,34 +5,27 @@ import control.BulletControl;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
-import java.util.Observable;
-import java.util.Observer;
 
-public class BulletView extends JPanel implements Observer {
+public class BulletView extends JPanel {
     private BulletModel[] models; // BUlletModel の配列
 
-    public BulletView(BulletModel[] ms, BulletControl c) {
+    public BulletView(BulletModel[] ms, BulletControl c) { // 与えられた BulletModel 配列を受け取る
         this.models = ms;
+    }
 
-        for (BulletModel m : ms) {
-            m.addObserver(this); // BulletViewが各BulletModelを監視するように登録
+    // updateメソッドとpaintComponentメソッドを消去した
+
+    // 弾を描画するメソッド
+    public void drawBullets(Graphics g) {
+        if (g == null) { // nullチェック
+            return;
         }
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        this.repaint(); // 再描画
-    }
-
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g); // 背景の初期化
-
-        BulletModel[] arr_bullet = models; // 弾の配列を取得
-
-        for (BulletModel bullet : arr_bullet) {
-            if (bullet.bulletExist()) { // 弾が存在する場合のみ描画
-                g.fillRect(bullet.getBulletX(), bullet.getBulletY(), 5, 5);
+        
+        // 弾の描画
+        for (BulletModel m : this.models) {
+            if (m.bulletExist()) { // 弾が存在する場合のみ描画
+                // getPlayerX() と getPlayerY() で弾の位置を取得できるっぽい
+                g.fillOval(m.getPlayerX(), m.getPlayerY(), 5, 5); // 弾を半径5の円で描画
             }
         }
     }
