@@ -79,6 +79,10 @@ public class PlayerModel extends Observable {
     public int getPlayerY() {
         return playerY;
     }
+
+    public int getPlayerDirection() {
+        return playerDirection;
+    }
 }
 
 // 通知テスト用
