@@ -5,12 +5,8 @@ import control.PlayerControl;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Observer;
-import java.util.Observable;
 
-public class PlayerView extends JPanel implements Observer {
+public class PlayerView extends JPanel {
     private PlayerModel model;
 
     public PlayerView(PlayerModel m, PlayerControl c) {
@@ -19,9 +15,6 @@ public class PlayerView extends JPanel implements Observer {
         this.addKeyListener(c);
         this.setFocusable(true);
     }
-
-    @Override
-    public void update(Observable o, Object arg) {}
 
     @Override
     protected void paintComponent(Graphics g) {
