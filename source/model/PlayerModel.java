@@ -1,8 +1,6 @@
 package model;
 
-import java.util.Observable;
-
-public class PlayerModel extends Observable {
+public class PlayerModel {
     private int playerX = 250; // 初期位置
     private int playerY = 200;
     private final int SPEED = 3;
@@ -50,9 +48,6 @@ public class PlayerModel extends Observable {
         if (playerY > 570)
             playerY = 570; // 600 - 高さ
 
-        // 変更を通知
-        setChanged();
-        notifyObservers();
     }
 
     // フラグをセットするメソッド
