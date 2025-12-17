@@ -1,7 +1,7 @@
 import control.*;
 import model.*;
 import view.*;
-import GameConfig.ConstSet;
+import GameConfig.*;
 
 import javax.swing.*;
 
@@ -13,34 +13,21 @@ public class Metalgear extends JFrame {
         frame.setSize(ConstSet.WINDOW_WIDTH, ConstSet.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // レイアウトマネージャの無効化.
-        JLayeredPane layeredPane = new JLayeredPane();
-        frame.setContentPane(layeredPane);
-
         // Playerクラス関連のオブジェクトの生成.
         PlayerModel playermodel = new PlayerModel();
         PlayerControl playercontrol = new PlayerControl(playermodel);
-        PlayerView playerview = new PlayerView(playermodel, playercontrol);
+        PlayerView playerview = new PlayerView(playermodel);
 
         // Bulletクラス関連のオブジェクトの生成.
         BulletsModel bulletsmodel = new BulletsModel(playermodel);
         BulletControl bulletcontrol = new BulletControl(bulletsmodel);
-        BulletView bulletview = new BulletView(bulletsmodel.getBullets(), bulletcontrol);
+        BulletView bulletview = new BulletView(bulletsmodel);
 
-        playerview.setBounds(0, 0, ConstSet.WINDOW_WIDTH, ConstSet.WINDOW_HEIGHT);
-        bulletview.setBounds(0, 0, ConstSet.WINDOW_WIDTH, ConstSet.WINDOW_HEIGHT);
-
-        playerview.setOpaque(true);
-        bulletview.setOpaque(false);// playerviewの上に重ねるので透明にする.
-
-        layeredPane.add(playerview, JLayeredPane.DEFAULT_LAYER);
-        layeredPane.add(bulletview, JLayeredPane.PALETTE_LAYER);
-
-        frame.addKeyListener(bulletcontrol);
-        frame.addKeyListener(playercontrol);
+        GameView gameview =
+                new GameView(playermodel, playerview, bulletview, playercontrol, bulletcontrol);
+        frame.add(gameview);
 
         frame.setVisible(true);
-        frame.requestFocusInWindow();
 
         final int FPS = 30; // フレームレート.
 
@@ -48,9 +35,7 @@ public class Metalgear extends JFrame {
         while (true) {
             playermodel.updatePlayerPosition();
             bulletsmodel.updateBulletsPosition();
-            frame.repaint();
-            playerview.repaint();
-            bulletview.repaint();
+            gameview.repaint();
             try {
                 // 約0.033秒停止.
                 Thread.sleep(1000 / FPS);
