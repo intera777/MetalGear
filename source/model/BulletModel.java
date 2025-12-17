@@ -1,9 +1,8 @@
 package model;
 
-import java.util.Observable;
 import GameConfig.*;
 
-public class BulletModel extends Observable {
+public class BulletModel {
       private final int SPEED = 32;
 
       private int x = -100;
