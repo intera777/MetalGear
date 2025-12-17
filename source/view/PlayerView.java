@@ -1,25 +1,18 @@
 package view;
 
-import model.PlayerModel;
-import control.PlayerControl;
+import model.*;
 
-import javax.swing.JPanel;
 import java.awt.Graphics;
 
-public class PlayerView extends JPanel {
+public class PlayerView { // extends JPanel は消去した. どうやらパネルが重なっちゃうのは不適切らしいため.
     private PlayerModel model;
 
-    public PlayerView(PlayerModel m, PlayerControl c) {
+    public PlayerView(PlayerModel m) {
         this.model = m;
-
-        this.addKeyListener(c);
-        this.setFocusable(true);
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        // Modelからデータを取得して描画
+    // プレイヤーを描画するメソッド
+    protected void drawPlayer(Graphics g) {
         g.fillRect(model.getPlayerX(), model.getPlayerY(), 30, 30);
         // g.fillRect(100,530,30,30); //描画範囲テスト用
     }
