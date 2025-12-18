@@ -8,11 +8,13 @@ import java.awt.Graphics;
 
 public class GameView extends JPanel {
     private PlayerModel playerModel; // 使ってないけど一応保持しておく
+    private MapView mapView;
     private PlayerView playerView;
     private BulletView bulletView;
 
-    public GameView(PlayerModel pm, PlayerView pv, BulletView bv, PlayerControl pc, BulletControl bc) {
+    public GameView(PlayerModel pm, MapView mv, PlayerView pv, BulletView bv, PlayerControl pc, BulletControl bc) {
         this.playerModel = pm;
+        this.mapView = mv;
         this.playerView = pv;
         this.bulletView = bv;
 
@@ -26,6 +28,7 @@ public class GameView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // 背景の初期化
+        mapView.drawMap(g); // マップの描画
         playerView.drawPlayer(g); // プレイヤーの描画
         bulletView.drawBullet(g); // 弾の描画
     }
