@@ -1,5 +1,7 @@
 package model;
 
+import GameConfig.*;
+
 public class PlayerModel {
     private int playerX = 250; // 初期位置
     private int playerY = 200;
@@ -13,7 +15,7 @@ public class PlayerModel {
     private boolean isRightPressed = false;
 
     // Viewのタイマーから定期的に呼ばれるメソッド
-    public void updatePlayerPosition() {
+    public void updatePlayerPosition(MapModel mm) {
         // フラグを見て座標を更新
         if (isUpPressed || isDownPressed) {
             if (isUpPressed) {
@@ -36,16 +38,14 @@ public class PlayerModel {
         }
 
 
-        // 画面外に出ないように制限 (600x800のウインドウを想定)
-        // ※正確な境界値はウインドウ枠のサイズにもよりますが、ここでは安全策をとっています
-        if (playerX < 0)
-            playerX = 0;
-        if (playerY < 0)
-            playerY = 0;
-        if (playerX > 770)
-            playerX = 770; // 800 - 幅
-        if (playerY > 570)
-            playerY = 570; // 600 - 高さ
+        if (playerX < ConstSet.TILE_SIZE / 2)
+            playerX = ConstSet.TILE_SIZE / 2;
+        if (playerY < ConstSet.TILE_SIZE / 2)
+            playerY = ConstSet.TILE_SIZE / 2;
+        if (playerX > mm.getMap()[0].length * ConstSet.TILE_SIZE - ConstSet.TILE_SIZE / 2)
+            playerX = mm.getMap()[0].length * ConstSet.TILE_SIZE - ConstSet.TILE_SIZE / 2;
+        if (playerY > mm.getMap().length * ConstSet.TILE_SIZE - ConstSet.TILE_SIZE / 2)
+            playerY = mm.getMap().length * ConstSet.TILE_SIZE - ConstSet.TILE_SIZE / 2;
 
     }
 

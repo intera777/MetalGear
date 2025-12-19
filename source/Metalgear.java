@@ -39,7 +39,7 @@ public class Metalgear extends JFrame {
         mapmodel.setCurrentMap(MapData.MAPA0);
         // ゲームループ本体.
         while (true) {
-            playermodel.updatePlayerPosition();
+            playermodel.updatePlayerPosition(mapmodel);
             bulletsmodel.updateBulletsPosition();
             mapmodel.updateMap(playermodel);
             gameview.repaint();

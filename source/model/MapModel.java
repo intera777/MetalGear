@@ -30,7 +30,10 @@ public class MapModel {
     public void changeMap(PlayerModel pm) {
         if (getMapTile() == MapData.TO_A1_FROM_A0) {
             currentMap = MapData.MAPA1;
-            pm.playerPositionSet(ConstSet.TILE_SIZE * 54, ConstSet.TILE_SIZE);
+            pm.playerPositionSet(ConstSet.TILE_SIZE * 54, ConstSet.TILE_SIZE * 2);
+        } else if (getMapTile() == MapData.TO_A0_FROM_A1) {
+            currentMap = MapData.MAPA0;
+            pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 6);
         }
     }
 
