@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Arrays;
 import GameConfig.*;
 
 public class BulletModel {
@@ -16,9 +17,11 @@ public class BulletModel {
             playermodel = pm;
       }
 
+      // 弾を発射する(弾を新しくフィールド内に投入する)メソッド.
       public void shootBullet() {
             if (!exist) {
                   exist = true;
+                  // プレイヤーの向きに応じて弾の初期位置と速度を設定.
                   if (playermodel.getPlayerDirection() == 0) {
                         x = playermodel.getPlayerX() + 32;
                         y = playermodel.getPlayerY();
@@ -51,14 +54,34 @@ public class BulletModel {
             return y;
       }
 
+      // 弾が現在フィールド上に存在するかどうかを返すメソッド.
       public boolean bulletExist() {
             return exist;
       }
 
-      public void updateBulletPosition() {
+      // 銃弾と障害物が当たっているか判定するメソッド.
+      public boolean isObstacleHit(MapModel mm) {
+            if (Arrays.stream(MapData.OBSTACLES)
+                        .anyMatch(temp -> temp == mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1, y))
+                        || Arrays.stream(MapData.OBSTACLES).anyMatch(
+                                    temp -> temp == mm.getTile(x - ConstSet.BULLET_SIZE / 2 + 1, y))
+                        || Arrays.stream(MapData.OBSTACLES).anyMatch(
+                                    temp -> temp == mm.getTile(x, y + ConstSet.BULLET_SIZE / 2 - 1))
+                        || Arrays.stream(MapData.OBSTACLES).anyMatch(temp -> temp == mm.getTile(x,
+                                    y - ConstSet.BULLET_SIZE / 2 + 1))) {
+                  return true;
+            } else {
+                  return false;
+            }
+      }
+
+      // 銃弾の位置を更新するメソッド.
+      public void updateBulletPosition(MapModel mm) {
             x += speed_x;
             y += speed_y;
-            if (x < 0 || ConstSet.WINDOW_WIDTH <= x || y < 0 || ConstSet.WINDOW_HEIGHT <= y) {
+            // 画面外または障害物に当たったら消滅.
+            if (x < 0 || mm.getMap()[0].length * ConstSet.TILE_SIZE <= x || y < 0
+                        || mm.getMap().length * ConstSet.TILE_SIZE <= y || isObstacleHit(mm)) {
                   exist = false;
                   x = -100;
                   y = -100;

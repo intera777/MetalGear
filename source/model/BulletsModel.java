@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Map;
 import GameConfig.*;
 
 public class BulletsModel {
@@ -25,10 +26,10 @@ public class BulletsModel {
         }
     }
 
-    public void updateBulletsPosition() {
+    public void updateBulletsPosition(MapModel mm) {
         for (int i = 0; i < ConstSet.MAX_BULLETS; i++) {
             if (bullets[i].bulletExist()) {
-                bullets[i].updateBulletPosition();
+                bullets[i].updateBulletPosition(mm);
             }
         }
     }

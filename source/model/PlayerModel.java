@@ -81,10 +81,12 @@ public class PlayerModel {
         this.isRightPressed = pressed;
     }
 
+    // プレイヤーのX座標を取得する.
     public int getPlayerX() {
         return playerX;
     }
 
+    // プレイヤーのY座標を取得する.
     public int getPlayerY() {
         return playerY;
     }
@@ -102,14 +104,14 @@ public class PlayerModel {
 
     // プレイヤーと障害物が重なっていないか判定するメソッド.
     public boolean isObstacleExist(MapModel mm) {
-        if (Arrays.stream(MapData.OBSTACLES)
-                .anyMatch(temp -> temp == mm.getTile(playerX + ConstSet.TILE_SIZE / 2 - 1, playerY))
+        if (Arrays.stream(MapData.OBSTACLES).anyMatch(
+                temp -> temp == mm.getTile(playerX + ConstSet.PLAYER_SIZE / 2 - 1, playerY))
                 || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                        temp -> temp == mm.getTile(playerX - ConstSet.TILE_SIZE / 2 + 1, playerY))
+                        temp -> temp == mm.getTile(playerX - ConstSet.PLAYER_SIZE / 2 + 1, playerY))
                 || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                        temp -> temp == mm.getTile(playerX, playerY + ConstSet.TILE_SIZE / 2 - 1))
+                        temp -> temp == mm.getTile(playerX, playerY + ConstSet.PLAYER_SIZE / 2 - 1))
                 || Arrays.stream(MapData.OBSTACLES).anyMatch(temp -> temp == mm.getTile(playerX,
-                        playerY - ConstSet.TILE_SIZE / 2 + 1))) {
+                        playerY - ConstSet.PLAYER_SIZE / 2 + 1))) {
             return true;
         } else {
             return false;

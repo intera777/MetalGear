@@ -14,6 +14,7 @@ public final class ConstSet {
     public static final int WINDOW_HEIGHT = 608; // ウインドウの高さ.
     public static final int TILE_SIZE = 32;// タイルの一辺の長さ.
     public static final int PLAYER_SIZE = 32; // プレイヤーの一辺の長さ.
+    public static final int BULLET_SIZE = 8; // 弾の一辺の長さ.
 
     // 敵の定数.
     public static final int ENEMY_DEAD = 0; // 敵が死んでいるとき.

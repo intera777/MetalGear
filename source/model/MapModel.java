@@ -22,16 +22,19 @@ public class MapModel {
         return currentMap[y / ConstSet.TILE_SIZE][x / ConstSet.TILE_SIZE];
     }
 
+    // 現在プレイヤーがいるマップを取得するメソッド.
     public int[][] getMap() {
         return currentMap;
     }
 
+    // プレイヤーが繊維ポイントに達したかを確認し、達していたらマップを変更するメソッド.
     public void updateMap(PlayerModel pm) {
         if (getPlayerTile() > 100) {
             changeMap(pm);
         }
     }
 
+    // 繊維ポイントに達したときにマップを変更するメソッド.
     public void changeMap(PlayerModel pm) {
         if (getPlayerTile() == MapData.TO_A1_FROM_A0) {
             currentMap = MapData.MAPA1;
@@ -42,6 +45,7 @@ public class MapModel {
         }
     }
 
+    // 現在のマップを直接指定するメソッド.
     public void setCurrentMap(int map[][]) {
         currentMap = map;
     }
