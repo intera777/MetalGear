@@ -4,7 +4,6 @@ public class PlayerModel {
     private int playerX = 250; // 初期位置
     private int playerY = 200;
     private final int SPEED = 3;
-    private final int PLAYER_SIZE = 30; // プレイヤーのサイズ
     private int playerDirection = 0; // プレイヤーが向いている方向.0123の順で右上左下.
 
     // キーの状態管理フラグ
@@ -77,6 +76,11 @@ public class PlayerModel {
 
     public int getPlayerDirection() {
         return playerDirection;
+    }
+
+    public void playerPositionSet(int tx, int ty) {
+        playerX = tx;
+        playerY = ty;
     }
 }
 

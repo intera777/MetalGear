@@ -23,18 +23,25 @@ public class Metalgear extends JFrame {
         BulletControl bulletcontrol = new BulletControl(bulletsmodel);
         BulletView bulletview = new BulletView(bulletsmodel);
 
-        GameView gameview =
-                new GameView(playermodel, playerview, bulletview, playercontrol, bulletcontrol);
+        // Mapクラス関連のオブジェクトを生成.
+        MapModel mapmodel = new MapModel(playermodel);
+        MapView mapview = new MapView(mapmodel, playermodel);
+
+        GameView gameview = new GameView(playermodel, mapview, playerview, bulletview,
+                playercontrol, bulletcontrol);
         frame.add(gameview);
 
         frame.setVisible(true);
 
         final int FPS = 30; // フレームレート.
 
+        playermodel.playerPositionSet(4 * ConstSet.TILE_SIZE, 4 * ConstSet.TILE_SIZE);
+        mapmodel.setCurrentMap(MapData.MAPA0);
         // ゲームループ本体.
         while (true) {
             playermodel.updatePlayerPosition();
             bulletsmodel.updateBulletsPosition();
+            mapmodel.updateMap(playermodel);
             gameview.repaint();
             try {
                 // 約0.033秒停止.
