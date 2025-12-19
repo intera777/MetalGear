@@ -20,8 +20,8 @@ public class MapView {
         int[][] map = mapModel.getMap();
 
         // プレイヤーのピクセルにおける座標
-        int playerPixX = playerModel.getPlayerX() * ConstSet.TILE_SIZE;
-        int playerPixY = playerModel.getPlayerY() * ConstSet.TILE_SIZE;
+        int playerPixX = playerModel.getPlayerX();
+        int playerPixY = playerModel.getPlayerY();
 
         // 画面中央からプレイヤーの位置を引いて、マップの描画開始点を決める
         // プレイヤー位置をウインドウの真ん中に固定するため、「背景をどれだけずらすか」という値が offset
@@ -33,16 +33,16 @@ public class MapView {
             for (int x = 0; x < map[y].length; x++) {
                 // タイルの種類を取得
                 int tileType = map[y][x];
-                
+
                 // 描画位置の計算 (絶対座標にoffsetを加算することで, プレイヤー中心の画面が描画できる)
                 int drawX = x * ConstSet.TILE_SIZE + offsetX;
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
                 // 画面外のタイルは描画しない
-                if (drawX + ConstSet.TILE_SIZE < 0 || drawX > ConstSet.WINDOW_WIDTH ||
-                    drawY + ConstSet.TILE_SIZE < 0 || drawY > ConstSet.WINDOW_HEIGHT) {
-                        continue;
-                    }
+                if (drawX + ConstSet.TILE_SIZE < 0 || drawX > ConstSet.WINDOW_WIDTH
+                        || drawY + ConstSet.TILE_SIZE < 0 || drawY > ConstSet.WINDOW_HEIGHT) {
+                    continue;
+                }
 
                 // タイルの描画
                 if (tileType == MapData.STONEFLOOR) {
