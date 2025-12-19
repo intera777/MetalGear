@@ -8,6 +8,9 @@ public class MapData {
     public static final int TO_A0_FROM_A1 = 102;
     public static final int TO_A2_FROM_A1 = 103;
 
+    // プレイヤーが通過できない障害物のリスト.
+    public static final int[] OBSTACLES = {STONEWALL};
+
     public static final int[][] MAPA0 = { // 収容所.
             {1, 1, 1, 1, 1, 1, 1, 1}, //
             {1, 0, 0, 0, 0, 0, 0, 1}, //

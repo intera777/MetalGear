@@ -4,7 +4,7 @@ import GameConfig.*;
 import model.*;
 
 import java.awt.Graphics;
-import java.awt.color.*;;
+import java.awt.color.*;
 
 public class MapView {
     private MapModel mapModel;

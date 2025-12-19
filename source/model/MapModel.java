@@ -11,10 +11,15 @@ public class MapModel {
     }
 
     // プレイヤーが現在いる位置のマップタイルを取得するメソッド.
-    public int getMapTile() {
+    public int getPlayerTile() {
         int tileX = playermodel.getPlayerX() / ConstSet.TILE_SIZE;
         int tileY = playermodel.getPlayerY() / ConstSet.TILE_SIZE;
         return currentMap[tileY][tileX];
+    }
+
+    // 指定された座標のタイルを取得するメソッド.
+    public int getTile(int x, int y) {
+        return currentMap[y / ConstSet.TILE_SIZE][x / ConstSet.TILE_SIZE];
     }
 
     public int[][] getMap() {
@@ -22,16 +27,16 @@ public class MapModel {
     }
 
     public void updateMap(PlayerModel pm) {
-        if (getMapTile() > 100) {
+        if (getPlayerTile() > 100) {
             changeMap(pm);
         }
     }
 
     public void changeMap(PlayerModel pm) {
-        if (getMapTile() == MapData.TO_A1_FROM_A0) {
+        if (getPlayerTile() == MapData.TO_A1_FROM_A0) {
             currentMap = MapData.MAPA1;
             pm.playerPositionSet(ConstSet.TILE_SIZE * 54, ConstSet.TILE_SIZE * 2);
-        } else if (getMapTile() == MapData.TO_A0_FROM_A1) {
+        } else if (getPlayerTile() == MapData.TO_A0_FROM_A1) {
             currentMap = MapData.MAPA0;
             pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 6);
         }

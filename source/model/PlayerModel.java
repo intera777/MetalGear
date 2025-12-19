@@ -2,9 +2,12 @@ package model;
 
 import GameConfig.*;
 
+import java.util.Arrays;
+
 public class PlayerModel {
-    private int playerX = 250; // 初期位置
-    private int playerY = 200;
+    // PlayerXとPlayerYはどちらもプレイヤーの画像の中心の座標.
+    private int playerX = -100; // 初期位置
+    private int playerY = -100;
     private final int SPEED = 3;
     private int playerDirection = 0; // プレイヤーが向いている方向.0123の順で右上左下.
 
@@ -21,19 +24,31 @@ public class PlayerModel {
             if (isUpPressed) {
                 playerY -= SPEED;
                 playerDirection = 1;
+                if (isObstacleExist(mm)) {
+                    playerY += SPEED;
+                }
             }
             if (isDownPressed) {
                 playerY += SPEED;
                 playerDirection = 3;
+                if (isObstacleExist(mm)) {
+                    playerY -= SPEED;
+                }
             }
         } else if (isLeftPressed || isRightPressed) {
             if (isLeftPressed) {
                 playerX -= SPEED;
                 playerDirection = 2;
+                if (isObstacleExist(mm)) {
+                    playerX += SPEED;
+                }
             }
             if (isRightPressed) {
                 playerX += SPEED;
                 playerDirection = 0;
+                if (isObstacleExist(mm)) {
+                    playerX -= SPEED;
+                }
             }
         }
 
@@ -74,13 +89,31 @@ public class PlayerModel {
         return playerY;
     }
 
+    // プレイヤーの向いている方向を取得する.
     public int getPlayerDirection() {
         return playerDirection;
     }
 
+    // プレイヤーの座標を直接セットする.
     public void playerPositionSet(int tx, int ty) {
         playerX = tx;
         playerY = ty;
+    }
+
+    // プレイヤーと障害物が重なっていないか判定するメソッド.
+    public boolean isObstacleExist(MapModel mm) {
+        if (Arrays.stream(MapData.OBSTACLES)
+                .anyMatch(temp -> temp == mm.getTile(playerX + ConstSet.TILE_SIZE / 2 - 1, playerY))
+                || Arrays.stream(MapData.OBSTACLES).anyMatch(
+                        temp -> temp == mm.getTile(playerX - ConstSet.TILE_SIZE / 2 + 1, playerY))
+                || Arrays.stream(MapData.OBSTACLES).anyMatch(
+                        temp -> temp == mm.getTile(playerX, playerY + ConstSet.TILE_SIZE / 2 - 1))
+                || Arrays.stream(MapData.OBSTACLES).anyMatch(temp -> temp == mm.getTile(playerX,
+                        playerY - ConstSet.TILE_SIZE / 2 + 1))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
