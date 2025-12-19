@@ -3,8 +3,8 @@ package view;
 import GameConfig.*;
 import model.*;
 
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.color.*;
 
 public class MapView {
     private MapModel mapModel;
@@ -15,18 +15,9 @@ public class MapView {
         this.playerModel = pm;
     }
 
-    public void drawMap(Graphics g) {
+    public void drawMap(Graphics g, int offsetX, int offsetY) {
         // 現在のマップデータを取得
         int[][] map = mapModel.getMap();
-
-        // プレイヤーのピクセルにおける座標
-        int playerPixX = playerModel.getPlayerX();
-        int playerPixY = playerModel.getPlayerY();
-
-        // 画面中央からプレイヤーの位置を引いて、マップの描画開始点を決める
-        // プレイヤー位置をウインドウの真ん中に固定するため、「背景をどれだけずらすか」という値が offset
-        int offsetX = (ConstSet.WINDOW_WIDTH / 2) - playerPixX;
-        int offsetY = (ConstSet.WINDOW_HEIGHT / 2) - playerPixY;
 
         // 二次元配列をループで回して描画. 二次元配列の座標を(x, y)とする.
         for (int y = 0; y < map.length; y++) {
@@ -47,15 +38,15 @@ public class MapView {
                 // タイルの描画
                 if (tileType == MapData.STONEFLOOR) {
                     // 床の画像を描画
-                    g.setColor(java.awt.Color.DARK_GRAY);
+                    g.setColor(Color.DARK_GRAY);
                     g.fillRect(drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE);
                 } else if (tileType == MapData.STONEWALL) {
                     // 壁の画像を描画
-                    g.setColor(java.awt.Color.LIGHT_GRAY);
+                    g.setColor(Color.LIGHT_GRAY);
                     g.fillRect(drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE);
                 } else if (tileType > 100) {
                     // 遷移ポイント（101以上）の描画
-                    g.setColor(java.awt.Color.CYAN);
+                    g.setColor(Color.CYAN);
                     g.fillRect(drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE);
                 }
             }

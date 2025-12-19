@@ -3,6 +3,7 @@ package view;
 import GameConfig.*;
 import model.*;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 public class PlayerView { // extends JPanel は消去した. どうやらパネルが重なっちゃうのは不適切らしいため.
@@ -13,11 +14,9 @@ public class PlayerView { // extends JPanel は消去した. どうやらパネ�
     }
 
     // プレイヤーを画面中央に描画するメソッド
-    protected void drawPlayer(Graphics g) {
-        int drawX = ConstSet.WINDOW_WIDTH / 2 - (30 / 2);
-        int drawY = ConstSet.WINDOW_HEIGHT / 2 - (30 / 2);
-
-        g.fillRect(drawX, drawY, 30, 30);
+    protected void drawPlayer(Graphics g, int drawX, int drawY) {
+        g.setColor(Color.GREEN); // プレーヤーの色を緑色にした
+        g.fillRect(drawX, drawY, ConstSet.PLAYER_SIZE, ConstSet.PLAYER_SIZE);
         // g.fillRect(100,530,30,30); //描画範囲テスト用
     }
 }

@@ -1,5 +1,6 @@
 package view;
 
+import GameConfig.*;
 import model.*;
 import control.*;
 
@@ -28,8 +29,22 @@ public class GameView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // 背景の初期化
-        mapView.drawMap(g); // マップの描画
-        playerView.drawPlayer(g); // プレイヤーの描画
-        bulletView.drawBullet(g); // 弾の描画
+
+        // プレーヤーが中央に固定されるような座標
+        int playerDrawX = (ConstSet.WINDOW_WIDTH - ConstSet.PLAYER_SIZE) / 2;
+        int playerDrawY = (ConstSet.WINDOW_HEIGHT  - ConstSet.PLAYER_SIZE) / 2;
+
+        // プレイヤーのモデル上の「左上」座標を出す
+        int modelLeft = playerModel.getPlayerX() - (ConstSet.PLAYER_SIZE / 2);
+        int modelTop  = playerModel.getPlayerY() - (ConstSet.PLAYER_SIZE / 2);
+
+        // カメラのずれ(px) offset を計算. -1 は補正値
+        int offsetX = playerDrawX - modelLeft - 1;
+        int offsetY = playerDrawY - modelTop - 1;
+
+        // カメラのずれを一括して反映させる
+        mapView.drawMap(g, offsetX, offsetY); // マップの描画
+        playerView.drawPlayer(g, playerDrawX, playerDrawY); // プレイヤーの描画
+        bulletView.drawBullet(g, offsetX, offsetY); // 弾の描画
     }
 }
