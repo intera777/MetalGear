@@ -22,9 +22,9 @@ public class BulletView { // extends JPanel は消去した. どうやらパネ�
             if (bullet.bulletExist()) { // 弾が存在する場合のみ描画
                 g.setColor(Color.RED);
 
-                // 弾の相対座標
-                int drawX = bullet.getBulletX() + offsetX;
-                int drawY = bullet.getBulletY() + offsetY;
+                // 弾の相対座標 (弾の中心の座標)
+                int drawX = bullet.getBulletX() + offsetX - ConstSet.BULLET_SIZE / 2;
+                int drawY = bullet.getBulletY() + offsetY - ConstSet.BULLET_SIZE / 2;
 
                 g.fillRect(drawX, drawY, ConstSet.BULLET_SIZE, ConstSet.BULLET_SIZE);
             }
