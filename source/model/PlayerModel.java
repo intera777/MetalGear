@@ -8,7 +8,7 @@ public class PlayerModel {
     // PlayerXとPlayerYはどちらもプレイヤーの画像の中心の座標.
     private int playerX = -100; // 初期位置
     private int playerY = -100;
-    private final int SPEED = 3;
+    private final int SPEED = 4;
     private int playerDirection = 0; // プレイヤーが向いている方向.0123の順で右上左下.
 
     // キーの状態管理フラグ

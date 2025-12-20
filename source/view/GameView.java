@@ -38,9 +38,9 @@ public class GameView extends JPanel {
         int modelLeft = playerModel.getPlayerX() - (ConstSet.PLAYER_SIZE / 2);
         int modelTop  = playerModel.getPlayerY() - (ConstSet.PLAYER_SIZE / 2);
 
-        // カメラのずれ(px) offset を計算. -1 は補正値
-        int offsetX = playerDrawX - modelLeft - 1;
-        int offsetY = playerDrawY - modelTop - 1;
+        // カメラのずれ(px) offset を計算.
+        int offsetX = playerDrawX - modelLeft;
+        int offsetY = playerDrawY - modelTop;
 
         // カメラのずれを一括して反映させる
         mapView.drawMap(g, offsetX, offsetY); // マップの描画
