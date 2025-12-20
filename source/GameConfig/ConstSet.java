@@ -1,7 +1,5 @@
 package GameConfig;
 
-import java.util.Arrays;
-
 public final class ConstSet {
 
     private ConstSet() {
