@@ -42,6 +42,12 @@ public class MapModel {
         } else if (getPlayerTile() == MapData.TO_A0_FROM_A1) {
             currentMap = MapData.MAPA0;
             pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 6);
+        } else if (getPlayerTile() == MapData.TO_A2_FROM_A1) {
+            currentMap = MapData.MAPA2;
+            pm.playerPositionSet(ConstSet.TILE_SIZE * 8, ConstSet.TILE_SIZE * 4);
+        } else if (getPlayerTile() == MapData.TO_A1_FROM_A2) {
+            currentMap = MapData.MAPA1;
+            pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 15);
         }
     }
 

@@ -17,7 +17,7 @@ public class BulletView { // extends JPanel は消去した. どうやらパネ�
     // 弾を描画するメソッド
     public void drawBullet(Graphics g, int offsetX, int offsetY) {
         BulletsModel arr_bullet = models; // 弾の配列を取得
-        
+
         for (BulletModel bullet : arr_bullet.getBullets()) {
             if (bullet.bulletExist()) { // 弾が存在する場合のみ描画
                 g.setColor(Color.RED);

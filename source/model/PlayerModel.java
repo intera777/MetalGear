@@ -7,8 +7,7 @@ import java.util.Arrays;
 public class PlayerModel {
     // PlayerXとPlayerYはどちらもプレイヤーの画像の中心の座標.
     private int playerX = -100; // 初期位置
-    private int playerY = -100;
-    private final int SPEED = 4;
+    private int playerY = -100; // 初期位置
     private int playerDirection = 0; // プレイヤーが向いている方向.0123の順で右上左下.
 
     // キーの状態管理フラグ
@@ -22,32 +21,32 @@ public class PlayerModel {
         // フラグを見て座標を更新
         if (isUpPressed || isDownPressed) {
             if (isUpPressed) {
-                playerY -= SPEED;
+                playerY -= ConstSet.PLAYER_SPEED;
                 playerDirection = 1;
-                if (isObstacleExist(mm)) {
-                    playerY += SPEED;
+                while (isObstacleExist(mm)) {
+                    playerY += 1;
                 }
             }
             if (isDownPressed) {
-                playerY += SPEED;
+                playerY += ConstSet.PLAYER_SPEED;
                 playerDirection = 3;
-                if (isObstacleExist(mm)) {
-                    playerY -= SPEED;
+                while (isObstacleExist(mm)) {
+                    playerY -= 1;
                 }
             }
         } else if (isLeftPressed || isRightPressed) {
             if (isLeftPressed) {
-                playerX -= SPEED;
+                playerX -= ConstSet.PLAYER_SPEED;
                 playerDirection = 2;
-                if (isObstacleExist(mm)) {
-                    playerX += SPEED;
+                while (isObstacleExist(mm)) {
+                    playerX += 1;
                 }
             }
             if (isRightPressed) {
-                playerX += SPEED;
+                playerX += ConstSet.PLAYER_SPEED;
                 playerDirection = 0;
-                if (isObstacleExist(mm)) {
-                    playerX -= SPEED;
+                while (isObstacleExist(mm)) {
+                    playerX -= 1;
                 }
             }
         }
@@ -104,14 +103,18 @@ public class PlayerModel {
 
     // プレイヤーと障害物が重なっていないか判定するメソッド.
     public boolean isObstacleExist(MapModel mm) {
-        if (Arrays.stream(MapData.OBSTACLES).anyMatch(
-                temp -> temp == mm.getTile(playerX + ConstSet.PLAYER_SIZE / 2 - 1, playerY))
-                || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                        temp -> temp == mm.getTile(playerX - ConstSet.PLAYER_SIZE / 2 + 1, playerY))
-                || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                        temp -> temp == mm.getTile(playerX, playerY + ConstSet.PLAYER_SIZE / 2 - 1))
-                || Arrays.stream(MapData.OBSTACLES).anyMatch(temp -> temp == mm.getTile(playerX,
-                        playerY - ConstSet.PLAYER_SIZE / 2 + 1))) {
+        if (Arrays.stream(MapData.OBSTACLES)
+                .anyMatch(temp -> temp == mm.getTile(playerX + ConstSet.PLAYER_SIZE / 2 - 1,
+                        playerY + ConstSet.PLAYER_SIZE / 2 - 1))
+                || Arrays.stream(MapData.OBSTACLES)
+                        .anyMatch(temp -> temp == mm.getTile(playerX - ConstSet.PLAYER_SIZE / 2,
+                                playerY - ConstSet.PLAYER_SIZE / 2))
+                || Arrays.stream(MapData.OBSTACLES)
+                        .anyMatch(temp -> temp == mm.getTile(playerX - ConstSet.PLAYER_SIZE / 2,
+                                playerY + ConstSet.PLAYER_SIZE / 2 - 1))
+                || Arrays.stream(MapData.OBSTACLES)
+                        .anyMatch(temp -> temp == mm.getTile(playerX + ConstSet.PLAYER_SIZE / 2 - 1,
+                                playerY - ConstSet.PLAYER_SIZE / 2))) {
             return true;
         } else {
             return false;

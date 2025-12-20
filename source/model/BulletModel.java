@@ -23,23 +23,27 @@ public class BulletModel {
                   exist = true;
                   // プレイヤーの向きに応じて弾の初期位置と速度を設定.
                   if (playermodel.getPlayerDirection() == 0) {
-                        x = playermodel.getPlayerX() + 32;
+                        x = playermodel.getPlayerX() + ConstSet.PLAYER_SIZE / 2
+                                    + ConstSet.BULLET_SIZE / 2;
                         y = playermodel.getPlayerY();
                         speed_x = SPEED;
                         speed_y = 0;
                   } else if (playermodel.getPlayerDirection() == 1) {
                         x = playermodel.getPlayerX();
-                        y = playermodel.getPlayerY() - 32;
+                        y = playermodel.getPlayerY()
+                                    - (ConstSet.PLAYER_SIZE / 2 + ConstSet.BULLET_SIZE / 2) - 1;
                         speed_x = 0;
                         speed_y = -SPEED;
                   } else if (playermodel.getPlayerDirection() == 2) {
-                        x = playermodel.getPlayerX() - 32;
+                        x = playermodel.getPlayerX()
+                                    - (ConstSet.PLAYER_SIZE / 2 + ConstSet.BULLET_SIZE / 2) - 1;
                         y = playermodel.getPlayerY();
                         speed_x = -SPEED;
                         speed_y = 0;
                   } else if (playermodel.getPlayerDirection() == 3) {
                         x = playermodel.getPlayerX();
-                        y = playermodel.getPlayerY() + 32;
+                        y = playermodel.getPlayerY() + ConstSet.PLAYER_SIZE / 2
+                                    + ConstSet.BULLET_SIZE / 2;
                         speed_x = 0;
                         speed_y = SPEED;
                   }
@@ -59,16 +63,28 @@ public class BulletModel {
             return exist;
       }
 
-      // 銃弾と障害物が当たっているか判定するメソッド.
+      // 銃弾と障害物が当たっているか判定するメソッド.遷移ポイントも障害物に含む.
       public boolean isObstacleHit(MapModel mm) {
             if (Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1, y))
+                        .anyMatch(temp -> temp == mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
+                                    y + ConstSet.BULLET_SIZE / 2 - 1))
                         || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                                    temp -> temp == mm.getTile(x - ConstSet.BULLET_SIZE / 2 + 1, y))
+                                    temp -> temp == mm.getTile(x - ConstSet.BULLET_SIZE / 2,
+                                                y - ConstSet.BULLET_SIZE / 2))
                         || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                                    temp -> temp == mm.getTile(x, y + ConstSet.BULLET_SIZE / 2 - 1))
-                        || Arrays.stream(MapData.OBSTACLES).anyMatch(temp -> temp == mm.getTile(x,
-                                    y - ConstSet.BULLET_SIZE / 2 + 1))) {
+                                    temp -> temp == mm.getTile(x - ConstSet.BULLET_SIZE / 2,
+                                                y + ConstSet.BULLET_SIZE / 2 - 1))
+                        || Arrays.stream(MapData.OBSTACLES).anyMatch(
+                                    temp -> temp == mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
+                                                y - ConstSet.BULLET_SIZE / 2))
+                        || mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
+                                    y + ConstSet.BULLET_SIZE / 2 - 1) >= 100
+                        || mm.getTile(x - ConstSet.BULLET_SIZE / 2,
+                                    y - ConstSet.BULLET_SIZE / 2) >= 100
+                        || mm.getTile(x - ConstSet.BULLET_SIZE / 2,
+                                    y + ConstSet.BULLET_SIZE / 2 - 1) >= 100
+                        || mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
+                                    y - ConstSet.BULLET_SIZE / 2) >= 100) {
                   return true;
             } else {
                   return false;
@@ -80,8 +96,8 @@ public class BulletModel {
             x += speed_x;
             y += speed_y;
             // 画面外または障害物に当たったら消滅.
-            if (x < 0 || mm.getMap()[0].length * ConstSet.TILE_SIZE <= x || y < 0
-                        || mm.getMap().length * ConstSet.TILE_SIZE <= y || isObstacleHit(mm)) {
+            if (x < 0 || mm.getMap()[0].length * ConstSet.TILE_SIZE < x || y < 0
+                        || mm.getMap().length * ConstSet.TILE_SIZE < y || isObstacleHit(mm)) {
                   exist = false;
                   x = -100;
                   y = -100;
