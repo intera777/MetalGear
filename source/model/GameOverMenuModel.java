@@ -1,46 +1,54 @@
 package model;
 
+import GameConfig.*;
+
 public class GameOverMenuModel {
-      /**
-       * メニューの選択項目を定義するenum
-       */
-      public enum MenuItem {
-            RETRY("リトライ"), TO_TITLE("タイトルへ");
 
-            private final String label;
+      // 項目を格納する配列.
+      private final int[] gamestate = {ConstSet.FINISH_GAME, ConstSet.RESTART_GAME};
 
-            MenuItem(String label) {
-                  this.label = label;
-            }
-
-            @Override
-            public String toString() {
-                  return this.label;
-            }
-      }
-
-      private final MenuItem[] menuItems = MenuItem.values();
+      // 今上から何番目の項目を選択しているか.
       private int selectedIndex = 0;
 
       public GameOverMenuModel() {}
 
+      // 上の項目へ移動(一番上から移動した場合は一番下へ).
       public void moveSelectionUp() {
-            selectedIndex = (selectedIndex - 1 + menuItems.length) % menuItems.length;
+            selectedIndex = (selectedIndex - 1 + gamestate.length) % gamestate.length;
       }
 
+      // 下の項目へ移動(一番下から移動した場合は一番上へ).
       public void moveSelectionDown() {
-            selectedIndex = (selectedIndex + 1) % menuItems.length;
+            selectedIndex = (selectedIndex + 1) % gamestate.length;
       }
 
-      public MenuItem getSelectedItem() {
-            return menuItems[selectedIndex];
+      // 選択したゲームの状態を取得するメソッド.
+      public int getSelectedItem() {
+            return gamestate[selectedIndex];
       }
 
-      public MenuItem[] getMenuItems() {
-            return menuItems;
+      // 項目のリスト自体を取得.
+      public int[] getMenuItems() {
+            return gamestate;
       }
 
+      // 今何番目の項目を選択しているかを取得.
       public int getSelectedIndex() {
             return selectedIndex;
+      }
+
+      // ↓キーが押された時呼び出される.
+      public boolean downArrowPressed() {
+            return true;
+      }
+
+      // ↑キーが押された時呼び出される.
+      public boolean upArrowPressed() {
+            return true;
+      }
+
+      // エンターキーが押された時呼び出される.
+      public boolean enterPressed() {
+            return true;
       }
 }
