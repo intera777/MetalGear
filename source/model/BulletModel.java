@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Arrays;
 import GameConfig.*;
 
 public class BulletModel {
@@ -65,30 +64,25 @@ public class BulletModel {
 
       // 銃弾と障害物が当たっているか判定するメソッド.遷移ポイントも障害物に含む.
       public boolean isObstacleHit(MapModel mm) {
-            if (Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
-                                    y + ConstSet.BULLET_SIZE / 2 - 1))
-                        || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                                    temp -> temp == mm.getTile(x - ConstSet.BULLET_SIZE / 2,
-                                                y - ConstSet.BULLET_SIZE / 2))
-                        || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                                    temp -> temp == mm.getTile(x - ConstSet.BULLET_SIZE / 2,
-                                                y + ConstSet.BULLET_SIZE / 2 - 1))
-                        || Arrays.stream(MapData.OBSTACLES).anyMatch(
-                                    temp -> temp == mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
-                                                y - ConstSet.BULLET_SIZE / 2))
-                        || mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
-                                    y + ConstSet.BULLET_SIZE / 2 - 1) >= 100
-                        || mm.getTile(x - ConstSet.BULLET_SIZE / 2,
-                                    y - ConstSet.BULLET_SIZE / 2) >= 100
-                        || mm.getTile(x - ConstSet.BULLET_SIZE / 2,
-                                    y + ConstSet.BULLET_SIZE / 2 - 1) >= 100
-                        || mm.getTile(x + ConstSet.BULLET_SIZE / 2 - 1,
-                                    y - ConstSet.BULLET_SIZE / 2) >= 100) {
-                  return true;
-            } else {
-                  return false;
+            int halfSize = ConstSet.BULLET_SIZE / 2;
+            int[] cornerTiles = {mm.getTile(x + halfSize - 1, y + halfSize - 1),
+                        mm.getTile(x - halfSize, y - halfSize),
+                        mm.getTile(x - halfSize, y + halfSize - 1),
+                        mm.getTile(x + halfSize - 1, y - halfSize)};
+
+            // 弾の四隅のいずれかが障害物または遷移ポイント上にあるか判定します。
+            // getTileやストリームの不要な繰り返しをなくし、効率化しています。
+            for (int tile : cornerTiles) {
+                  if (tile >= 100) { // 遷移ポイント
+                        return true;
+                  }
+                  for (int obstacle : MapData.OBSTACLES) {
+                        if (tile == obstacle) {
+                              return true;
+                        }
+                  }
             }
+            return false;
       }
 
       // 銃弾の位置を更新するメソッド.

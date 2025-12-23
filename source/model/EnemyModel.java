@@ -8,6 +8,8 @@ public class EnemyModel {
     private int enemyY;
     private int enemycondition;
     private int enemydirection; // 敵が向いている方向.0123の順で右上左下.
+    private int shoot_timer; // 弾を撃っている状態の管理用.
+    private int moving_timer; // 敵の移動の管理用.
 
 
     public EnemyModel(int startX, int startY) {
@@ -44,35 +46,45 @@ public class EnemyModel {
         this.enemydirection = direction;
     }
 
+    public boolean isShooting() { // 弾を撃っている状態ならtrue, そうでなければfalse.
+        return shoot_timer > 0;
+    }
+
+
+
     public boolean isObstacleExist(MapModel mm) {// 敵と障害物が重なっていないか判定するメソッド.
-        if (Arrays.stream(MapData.OBSTACLES)
-                .anyMatch(temp -> temp == mm.getTile(enemyX + ConstSet.ENEMY_SIZE / 2 - 1,
-                        enemyY + ConstSet.ENEMY_SIZE / 2 - 1))
-                || Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(enemyX - ConstSet.ENEMY_SIZE / 2,
-                                enemyY - ConstSet.ENEMY_SIZE / 2))
-                || Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(enemyX - ConstSet.ENEMY_SIZE / 2,
-                                enemyY + ConstSet.ENEMY_SIZE / 2 - 1))
-                || Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(enemyX + ConstSet.ENEMY_SIZE / 2 - 1,
-                                enemyY - ConstSet.ENEMY_SIZE / 2))) {
-            return true;
-        } else {
-            return false;
+        int halfSize = ConstSet.ENEMY_SIZE / 2;
+        int[] cornerTiles = {mm.getTile(enemyX + halfSize - 1, enemyY + halfSize - 1),
+                mm.getTile(enemyX - halfSize, enemyY - halfSize),
+                mm.getTile(enemyX - halfSize, enemyY + halfSize - 1),
+                mm.getTile(enemyX + halfSize - 1, enemyY - halfSize)};
+
+        // いずれかの隅が障害物タイルに一致するかどうかを判定します。
+        // ストリームを何度も生成するのを避け、効率化しています。
+        for (int tile : cornerTiles) {
+            for (int obstacle : MapData.OBSTACLES) {
+                if (tile == obstacle) {
+                    return true;
+                }
+            }
         }
+        return false;
     }
 
     // プレイヤーが前方にいるときに銃を撃つメソッド.
     public void shootBullet(PlayerModel pm) {
-        if (getEnemyDirection() == 0) {
-        } else if (getEnemyDirection() == 1) {
+        if (getEnemyDirection() == ConstSet.RIGHT) {
+        } else if (getEnemyDirection() == ConstSet.UP) {
 
-        } else if (getEnemyDirection() == 2) {
+        } else if (getEnemyDirection() == ConstSet.LEFT) {
 
-        } else if (getEnemyDirection() == 3) {
+        } else if (getEnemyDirection() == ConstSet.DOWN) {
 
         }
+
+    }
+
+    public void updateEnemyPosition(MapModel mm) {
 
     }
 

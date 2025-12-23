@@ -8,7 +8,7 @@ public class PlayerModel {
     // PlayerXとPlayerYはどちらもプレイヤーの画像の中心の座標.
     private int playerX = -100; // 初期位置
     private int playerY = -100; // 初期位置
-    private int playerDirection = 0; // プレイヤーが向いている方向.0123の順で右上左下.
+    private int playerDirection = ConstSet.RIGHT; // プレイヤーが向いている方向.0123の順で右上左下.
 
     // キーの状態管理フラグ
     private boolean isUpPressed = false;
@@ -22,14 +22,14 @@ public class PlayerModel {
         if (isUpPressed || isDownPressed) {
             if (isUpPressed) {
                 playerY -= ConstSet.PLAYER_SPEED;
-                playerDirection = 1;
+                playerDirection = ConstSet.UP;
                 while (isObstacleExist(mm)) {
                     playerY += 1;
                 }
             }
             if (isDownPressed) {
                 playerY += ConstSet.PLAYER_SPEED;
-                playerDirection = 3;
+                playerDirection = ConstSet.DOWN;
                 while (isObstacleExist(mm)) {
                     playerY -= 1;
                 }
@@ -37,14 +37,14 @@ public class PlayerModel {
         } else if (isLeftPressed || isRightPressed) {
             if (isLeftPressed) {
                 playerX -= ConstSet.PLAYER_SPEED;
-                playerDirection = 2;
+                playerDirection = ConstSet.LEFT;
                 while (isObstacleExist(mm)) {
                     playerX += 1;
                 }
             }
             if (isRightPressed) {
                 playerX += ConstSet.PLAYER_SPEED;
-                playerDirection = 0;
+                playerDirection = ConstSet.RIGHT;
                 while (isObstacleExist(mm)) {
                     playerX -= 1;
                 }
@@ -103,23 +103,22 @@ public class PlayerModel {
 
     // プレイヤーと障害物が重なっていないか判定するメソッド.
     public boolean isObstacleExist(MapModel mm) {
-        if (Arrays.stream(MapData.OBSTACLES)
-                .anyMatch(temp -> temp == mm.getTile(playerX + ConstSet.PLAYER_SIZE / 2 - 1,
-                        playerY + ConstSet.PLAYER_SIZE / 2 - 1))
-                || Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(playerX - ConstSet.PLAYER_SIZE / 2,
-                                playerY - ConstSet.PLAYER_SIZE / 2))
-                || Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(playerX - ConstSet.PLAYER_SIZE / 2,
-                                playerY + ConstSet.PLAYER_SIZE / 2 - 1))
-                || Arrays.stream(MapData.OBSTACLES)
-                        .anyMatch(temp -> temp == mm.getTile(playerX + ConstSet.PLAYER_SIZE / 2 - 1,
-                                playerY - ConstSet.PLAYER_SIZE / 2))) {
-            return true;
-        } else {
-            return false;
+        int halfSize = ConstSet.PLAYER_SIZE / 2;
+        int[] cornerTiles = {mm.getTile(playerX + halfSize - 1, playerY + halfSize - 1), // 右下
+                mm.getTile(playerX - halfSize, playerY - halfSize), // 左上
+                mm.getTile(playerX - halfSize, playerY + halfSize - 1), // 左下
+                mm.getTile(playerX + halfSize - 1, playerY - halfSize) // 右上
+        };
+
+        // いずれかの隅が障害物タイルに一致するかどうかを判定します。
+        // ストリームを何度も生成するのを避け、効率化しています。
+        for (int tile : cornerTiles) {
+            for (int obstacle : MapData.OBSTACLES) {
+                if (tile == obstacle) {
+                    return true;
+                }
+            }
         }
+        return false;
     }
 }
-
-// 通知テスト用

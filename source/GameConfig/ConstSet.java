@@ -11,6 +11,11 @@ public final class ConstSet {
     public static final int WINDOW_WIDTH = 800; // ウインドウの幅.
     public static final int WINDOW_HEIGHT = 608; // ウインドウの高さ.
     public static final int TILE_SIZE = 32;// タイルの一辺の長さ.
+    public static final int RIGHT = 0;
+    public static final int UP = 1;
+    public static final int LEFT = 2;
+    public static final int DOWN = 3;
+
     // プレイヤーの定数.
     public static final int PLAYER_SIZE = 32; // プレイヤーの一辺の長さ.
     public static final int PLAYER_SPEED = 3; // プレイヤーの移動速度.
@@ -21,6 +26,11 @@ public final class ConstSet {
     public static final int ENEMY_SIZE = 32; // 敵の一辺の長さ.
     public static final int ENEMY_DEAD = 0; // 敵が死んでいるとき.
     public static final int ENEMY_ALIVE = 1; // 敵が生きているとき.
+    public static final int ENEMY_SHOOTING = 2; // 敵が弾を撃っているとき.
+
+    // ゲームオーバー画面の定数.
+    public static final int FINISH_GAME = 0; // ゲームとプログラムを終了.
+    public static final int RESTART_GAME = 1; // ゲームを再スタート.
 
     public static final int MAX_BULLETS = 5;// フィールド上に存在できる弾の最大数.
 }

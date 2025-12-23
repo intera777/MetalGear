@@ -27,14 +27,14 @@ public class MapModel {
         return currentMap;
     }
 
-    // プレイヤーが繊維ポイントに達したかを確認し、達していたらマップを変更するメソッド.
+    // プレイヤーが遷移ポイントに達したかを確認し、達していたらマップを変更するメソッド.
     public void updateMap(PlayerModel pm) {
         if (getPlayerTile() > 100) {
             changeMap(pm);
         }
     }
 
-    // 繊維ポイントに達したときにマップを変更するメソッド.
+    // 遷移ポイントに達したときにマップを変更するメソッド.
     public void changeMap(PlayerModel pm) {
         if (getPlayerTile() == MapData.TO_A1_FROM_A0) {
             currentMap = MapData.MAPA1;

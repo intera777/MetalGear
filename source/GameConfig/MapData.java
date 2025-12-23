@@ -1,8 +1,12 @@
 package GameConfig;
 
 public class MapData {
+    public static final int CLEAR_OBSTACLE = -1;// 何も描画されないが通れない.
     public static final int STONEFLOOR = 0; // 石の床.
     public static final int STONEWALL = 1; // 石の壁.
+    public static final int BED = 2; // ベッド(1*2マス)
+    public static final int VERTIVAL_STAIR = 3; // 階段(縦向き).
+
 
     public static final int TO_A1_FROM_A0 = 101; // マップA0からA1への遷移ポイント.以下同様.a
     public static final int TO_A0_FROM_A1 = 102;
@@ -12,14 +16,14 @@ public class MapData {
     public static final int CLEAR = 1000; // ゲームクリア地点.
 
     // プレイヤーが通過できない障害物のリスト.
-    public static final int[] OBSTACLES = {STONEWALL};
+    public static final int[] OBSTACLES = {CLEAR_OBSTACLE, STONEWALL, BED};
 
     public static final int[][] MAPA0 = { // 収容所.
             {1, 1, 1, 1, 1, 1, 1, 1}, //
             {1, 0, 0, 0, 0, 0, 0, 1}, //
             {1, 0, 0, 0, 0, 0, 0, 1}, //
-            {1, 0, 0, 0, 0, 0, 0, 1}, //
-            {1, 0, 0, 0, 0, 0, 0, 1}, //
+            {1, 0, 0, 0, 2, 0, 0, 1}, //
+            {1, 0, 0, 0, -1, 0, 0, 1}, //
             {1, 0, 0, 0, 0, 0, 0, 1}, //
             {1, 0, 0, 0, 0, 0, 0, 1}, //
             {1, 1, 101, 101, 1, 1, 1, 1} //
@@ -63,12 +67,12 @@ public class MapData {
 
     public static final int[][] MAPA2 = {
         {1,1000,1000,1000,1,1,1,1,1,1},
-        {1,2,2,2,1,0,0,0,0,1},
-        {1,2,2,2,1,0,0,0,0,1},
-        {1,2,2,2,1,0,0,0,0,1},
-        {1,2,2,2,1,0,0,0,0,104},
-        {1,2,2,2,1,0,0,0,0,104},
-        {1,2,2,2,1,0,0,0,0,1},
+        {1,3,3,3,1,0,0,0,0,1},
+        {1,3,3,3,1,0,0,0,0,1},
+        {1,3,3,3,1,0,0,0,0,1},
+        {1,3,3,3,1,0,0,0,0,104},
+        {1,3,3,3,1,0,0,0,0,104},
+        {1,3,3,3,1,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,1},
         {1,1,1,1,1,1,1,1,1,1},
