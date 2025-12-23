@@ -14,29 +14,28 @@ public class Metalgear extends JFrame {
         frame.setSize(ConstSet.WINDOW_WIDTH, ConstSet.WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // MVCモデルの生成
+        GameModel gamemodel = new GameModel();
+
         // Playerクラス関連のオブジェクトの生成.
-        PlayerModel playermodel = new PlayerModel();
-        PlayerControl playercontrol = new PlayerControl(playermodel);
-        PlayerView playerview = new PlayerView(playermodel);
+        PlayerControl playercontrol = new PlayerControl(gamemodel.getPlayerModel());
+        PlayerView playerview = new PlayerView(gamemodel.getPlayerModel());
 
         // Bulletクラス関連のオブジェクトの生成.
-        BulletsModel bulletsmodel = new BulletsModel(playermodel);
-        BulletControl bulletcontrol = new BulletControl(bulletsmodel);
-        BulletView bulletview = new BulletView(bulletsmodel);
-
-        // Mapクラス関連のオブジェクトを生成.
-        MapModel mapmodel = new MapModel(playermodel);
-        MapView mapview = new MapView(mapmodel, playermodel);
+        BulletControl bulletcontrol = new BulletControl(gamemodel.getBulletsModel());
+        BulletView bulletview = new BulletView(gamemodel.getBulletsModel());
 
         // Enemyクラス関連のオブジェクト生成
-        EnemiesModel enemiesmodel = new EnemiesModel();
-        EnemyView enemyview = new EnemyView(enemiesmodel);
+        EnemyView enemyview = new EnemyView(gamemodel.getEnemiesModel());
+
+        // Mapクラス関連のオブジェクトを生成.
+        MapView mapview = new MapView(gamemodel.getMapModel(), gamemodel.getPlayerModel());
 
 
 
         // 画面を描画するクラスの生成.
-        GameView gameview = new GameView(playermodel, mapview, enemyview, playerview, bulletview,
-                playercontrol, bulletcontrol);
+        GameView gameview = new GameView(gamemodel.getPlayerModel(), mapview, enemyview, playerview,
+                bulletview, playercontrol, bulletcontrol);
         frame.add(gameview);
 
         frame.setVisible(true);
@@ -44,9 +43,9 @@ public class Metalgear extends JFrame {
         final int FPS = 30; // フレームレート.
         GameState gamestate = new GameState(GameState.PLAYING); // ゲームモードの設定.
 
-        playermodel.playerPositionSet(4 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
-                4 * ConstSet.TILE_SIZE);
-        mapmodel.setCurrentMap(MapData.MAPA0);
+        gamemodel.getPlayerModel().playerPositionSet(
+                4 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2, 4 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
+        gamemodel.getMapModel().setCurrentMap(MapData.MAPA0);
 
         // ゲームループ本体.
         while (true) {
@@ -58,10 +57,10 @@ public class Metalgear extends JFrame {
                     break;
                 case GameState.PLAYING:
                     // プレイ中の更新処理
-                    playermodel.updatePlayerPosition(mapmodel);
-                    enemiesmodel.updateEnemiesPosition(mapmodel);
-                    bulletsmodel.updateBulletsPosition(mapmodel);
-                    mapmodel.updateMap(playermodel);
+                    gamemodel.getPlayerModel().updatePlayerPosition(gamemodel.getMapModel());
+                    gamemodel.getEnemiesModel().updateEnemiesPosition(gamemodel.getMapModel());
+                    gamemodel.getBulletsModel().updateBulletsPosition(gamemodel.getMapModel());
+                    gamemodel.getMapModel().updateMap(gamemodel.getPlayerModel());
                     break;
                 case GameState.GAME_OVER:
                     // ゲームオーバー画面の更新処理

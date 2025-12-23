@@ -48,7 +48,7 @@ public class GameView extends JPanel {
 
         // カメラのずれを一括して反映させる
         mapView.drawMap(g, offsetX, offsetY); // マップの描画
-        enemyView.drawEnemy(g, offsetX, offsetY); // 敵の描画
+        enemyView.drawEnemies(g, offsetX, offsetY); // 敵の描画
         playerView.drawPlayer(g, playerDrawX, playerDrawY); // プレイヤーの描画
         bulletView.drawBullet(g, offsetX, offsetY); // 弾の描画
     }

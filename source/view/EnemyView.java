@@ -14,7 +14,7 @@ public class EnemyView {
         this.enemiesModel = esm;
     }
 
-    public void drawEnemy(Graphics g, int offsetX, int offsetY) {
+    public void drawEnemies(Graphics g, int offsetX, int offsetY) {
         for (EnemyModel enemy : enemiesModel.getEnemies()) {
             // nullチェック
             if (enemy == null)

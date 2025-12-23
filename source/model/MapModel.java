@@ -4,10 +4,12 @@ import GameConfig.*;
 
 public class MapModel {
     PlayerModel playermodel;
+    EnemiesModel enemiesModel;
     private static int currentMap[][];
 
-    public MapModel(PlayerModel pm) {
+    public MapModel(PlayerModel pm, EnemiesModel em) {
         playermodel = pm;
+        enemiesModel = em;
     }
 
     // プレイヤーが現在いる位置のマップタイルを取得するメソッド.
@@ -37,16 +39,16 @@ public class MapModel {
     // 遷移ポイントに達したときにマップを変更するメソッド.
     public void changeMap(PlayerModel pm) {
         if (getPlayerTile() == MapData.TO_A1_FROM_A0) {
-            currentMap = MapData.MAPA1;
+            setCurrentMap(MapData.MAPA1);
             pm.playerPositionSet(ConstSet.TILE_SIZE * 54, ConstSet.TILE_SIZE * 2);
         } else if (getPlayerTile() == MapData.TO_A0_FROM_A1) {
-            currentMap = MapData.MAPA0;
+            setCurrentMap(MapData.MAPA0);
             pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 6);
         } else if (getPlayerTile() == MapData.TO_A2_FROM_A1) {
-            currentMap = MapData.MAPA2;
+            setCurrentMap(MapData.MAPA2);
             pm.playerPositionSet(ConstSet.TILE_SIZE * 8, ConstSet.TILE_SIZE * 4);
         } else if (getPlayerTile() == MapData.TO_A1_FROM_A2) {
-            currentMap = MapData.MAPA1;
+            setCurrentMap(MapData.MAPA1);
             pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 15);
         }
     }
@@ -54,6 +56,9 @@ public class MapModel {
     // 現在のマップを直接指定するメソッド.
     public void setCurrentMap(int map[][]) {
         currentMap = map;
+        if (enemiesModel != null) {
+            enemiesModel.setEnemiesForMap(map);
+        }
     }
 
 }
