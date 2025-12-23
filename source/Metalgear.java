@@ -29,12 +29,13 @@ public class Metalgear extends JFrame {
         MapView mapview = new MapView(mapmodel, playermodel);
 
         // Enemyクラス関連のオブジェクト生成
-        EnemiesModel ememiesmodel = new EnemiesModel();
+        EnemiesModel enemiesmodel = new EnemiesModel();
+        EnemyView enemyview = new EnemyView(enemiesmodel);
 
 
 
         // 画面を描画するクラスの生成.
-        GameView gameview = new GameView(playermodel, mapview, playerview, bulletview,
+        GameView gameview = new GameView(playermodel, mapview, enemyview, playerview, bulletview,
                 playercontrol, bulletcontrol);
         frame.add(gameview);
 
@@ -43,7 +44,8 @@ public class Metalgear extends JFrame {
         final int FPS = 30; // フレームレート.
         GameState gamestate = new GameState(GameState.PLAYING); // ゲームモードの設定.
 
-        playermodel.playerPositionSet(4 * ConstSet.TILE_SIZE, 4 * ConstSet.TILE_SIZE);
+        playermodel.playerPositionSet(4 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
+                4 * ConstSet.TILE_SIZE);
         mapmodel.setCurrentMap(MapData.MAPA0);
 
         // ゲームループ本体.
@@ -57,6 +59,7 @@ public class Metalgear extends JFrame {
                 case GameState.PLAYING:
                     // プレイ中の更新処理
                     playermodel.updatePlayerPosition(mapmodel);
+                    enemiesmodel.updateEnemiesPosition(mapmodel);
                     bulletsmodel.updateBulletsPosition(mapmodel);
                     mapmodel.updateMap(playermodel);
                     break;

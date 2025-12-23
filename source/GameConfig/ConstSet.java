@@ -27,7 +27,8 @@ public final class ConstSet {
     public static final int ENEMY_SIZE = 32; // 敵の一辺の長さ.
     public static final int ENEMY_DEAD = 0; // 敵が死んでいるとき.
     public static final int ENEMY_ALIVE = 1; // 敵が生きているとき.
-    public static final int ENEMY_SHOOTING = 2; // 敵が弾を撃っているとき.
+    public static final int ENEMY_DAMAGED = 100; // 敵がダメージを受けたとき.
+
 
     // ゲームオーバー画面の定数.
     public static final int FINISH_GAME = 0; // ゲームとプログラムを終了.

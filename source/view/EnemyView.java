@@ -17,7 +17,8 @@ public class EnemyView {
     public void drawEnemy(Graphics g, int offsetX, int offsetY) {
         for (EnemyModel enemy : enemiesModel.getEnemies()) {
             // nullチェック
-            if (enemy == null) continue;
+            if (enemy == null)
+                continue;
             renderEnemy(g, enemy, offsetX, offsetY);
         }
     }
@@ -29,13 +30,13 @@ public class EnemyView {
         int direction = enemy.getEnemyDirection();
         int condition = enemy.getEnemyCondition();
 
-        // 敵の状態に応じた色 
+        // 敵の状態に応じた色
         // 後々状態によって画像が変わるような仕様？
         if (condition == ConstSet.ENEMY_ALIVE) {
             g.setColor(Color.ORANGE);
         } else if (condition == ConstSet.ENEMY_DEAD) { // 倒れた時
             g.setColor(Color.RED);
-        } else if (condition == 100) { // 敵がダメージを受けた時(100は仮)
+        } else if (condition == ConstSet.ENEMY_DAMAGED) { // 敵がダメージを受けた時.
             g.setColor(Color.PINK);
         }
 
@@ -52,10 +53,18 @@ public class EnemyView {
     private void drawDirectionLine(Graphics g, int x, int y, int dir) {
         int half = ConstSet.ENEMY_SIZE / 2;
         switch (dir) {
-            case ConstSet.RIGHT : g.drawLine(x, y, x + half, y); break; // 右
-            case ConstSet.UP : g.drawLine(x, y, x, y - half); break; // 上
-            case ConstSet.LEFT : g.drawLine(x, y, x - half, y); break; // 左
-            case ConstSet.DOWN : g.drawLine(x, y, x, y + half); break; // 下
+            case ConstSet.RIGHT:
+                g.drawLine(x, y, x + half, y);
+                break; // 右
+            case ConstSet.UP:
+                g.drawLine(x, y, x, y - half);
+                break; // 上
+            case ConstSet.LEFT:
+                g.drawLine(x, y, x - half, y);
+                break; // 左
+            case ConstSet.DOWN:
+                g.drawLine(x, y, x, y + half);
+                break; // 下
         }
     }
 }
