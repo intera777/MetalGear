@@ -12,12 +12,14 @@ public class GameView extends JPanel {
     private PlayerModel playerModel; // 使ってないけど一応保持しておく
     private MapView mapView;
     private PlayerView playerView;
+    private EnemyView enemyView;
     private BulletView bulletView;
 
-    public GameView(PlayerModel pm, MapView mv, PlayerView pv, BulletView bv, PlayerControl pc,
-            BulletControl bc) {
+    public GameView(PlayerModel pm, MapView mv, EnemyView ev, PlayerView pv, BulletView bv,
+            PlayerControl pc, BulletControl bc) {
         this.playerModel = pm;
         this.mapView = mv;
+        this.enemyView = ev;
         this.playerView = pv;
         this.bulletView = bv;
 
@@ -46,6 +48,7 @@ public class GameView extends JPanel {
 
         // カメラのずれを一括して反映させる
         mapView.drawMap(g, offsetX, offsetY); // マップの描画
+        enemyView.drawEnemy(g, offsetX, offsetY); // 敵の描画
         playerView.drawPlayer(g, playerDrawX, playerDrawY); // プレイヤーの描画
         bulletView.drawBullet(g, offsetX, offsetY); // 弾の描画
     }
