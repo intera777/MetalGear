@@ -23,6 +23,7 @@ public final class ConstSet {
     public static final int BULLET_SIZE = 8; // 弾の一辺の長さ.
 
     // 敵の定数.
+    public static final int MAX_ENEMIES = 10; // フィールド上に存在できる敵の最大数.
     public static final int ENEMY_SIZE = 32; // 敵の一辺の長さ.
     public static final int ENEMY_DEAD = 0; // 敵が死んでいるとき.
     public static final int ENEMY_ALIVE = 1; // 敵が生きているとき.

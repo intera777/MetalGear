@@ -1,10 +1,12 @@
 package model;
 
+import GameConfig.ConstSet;
+
 public class EnemiesModel {
     private EnemyModel[] enemies;
 
-    public EnemiesModel(EnemyModel[] em) {
-        this.enemies = em;
+    public EnemiesModel() {
+        this.enemies = new EnemyModel[ConstSet.MAX_ENEMIES];
     }
 
     public void updateEnemiesPosition(MapModel mm) {

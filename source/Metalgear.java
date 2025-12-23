@@ -28,6 +28,11 @@ public class Metalgear extends JFrame {
         MapModel mapmodel = new MapModel(playermodel);
         MapView mapview = new MapView(mapmodel, playermodel);
 
+        // Enemyクラス関連のオブジェクト生成
+        EnemiesModel ememiesmodel = new EnemiesModel();
+
+
+
         // 画面を描画するクラスの生成.
         GameView gameview = new GameView(playermodel, mapview, playerview, bulletview,
                 playercontrol, bulletcontrol);
