@@ -31,17 +31,23 @@ public class Metalgear extends JFrame {
         // Mapクラス関連のオブジェクトを生成.
         MapView mapview = new MapView(gamemodel.getMapModel(), gamemodel.getPlayerModel());
 
+        // GameOverMenuクラス関連のオブジェクトを生成.
+        GameOverMenuView gameovermenuview = new GameOverMenuView(gamemodel.getGameOverMenuModel());
+        GameOverMenuControl gameovermenucontrol =
+                new GameOverMenuControl(gamemodel.getGameOverMenuModel());
 
 
         // 画面を描画するクラスの生成.
-        GameView gameview = new GameView(gamemodel.getPlayerModel(), mapview, enemyview, playerview,
-                bulletview, playercontrol, bulletcontrol);
+        GameView gameview = new GameView(gamemodel.getPlayerModel(),
+                gamemodel.getGameOverMenuModel(), mapview, enemyview, playerview, bulletview,
+                gameovermenuview, playercontrol, bulletcontrol, gameovermenucontrol);
         frame.add(gameview);
+
 
         frame.setVisible(true);
 
         final int FPS = 30; // フレームレート.
-        GameState gamestate = new GameState(GameState.PLAYING); // ゲームモードの設定.
+        GameState gamestate = new GameState(GameState.GAME_OVER); // ゲームモードの設定.
 
         gamemodel.getPlayerModel().playerPositionSet(
                 4 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2, 4 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
@@ -58,13 +64,26 @@ public class Metalgear extends JFrame {
                 case GameState.PLAYING:
                     // プレイ中の更新処理
                     gamemodel.getPlayerModel().updatePlayerPosition(gamemodel.getMapModel());
-                    gamemodel.getEnemiesModel().updateEnemiesPosition(gamemodel.getMapModel());
-                    gamemodel.getBulletsModel().updateBulletsPosition(gamemodel.getMapModel());
+                    gamemodel.getEnemiesModel().updateEnemiesPosition(gamemodel.getMapModel(),
+                            gamemodel.getPlayerModel(), gamemodel.getBulletsModel());
+                    gamemodel.getBulletsModel().updateBulletsPosition(gamemodel.getMapModel(),
+                            gamemodel.getPlayerModel(), gamemodel.getEnemiesModel());
                     gamemodel.getMapModel().updateMap(gamemodel.getPlayerModel());
+
+                    // プレイヤーが死亡したかチェック
+                    if (gamemodel.getPlayerModel().isDead()) {
+                        gamestate.setGameState(GameState.GAME_OVER);
+                    }
                     break;
                 case GameState.GAME_OVER:
-                    // ゲームオーバー画面の更新処理
-                    // 今は特に何もしない
+                    // リスタートする場合のため初期位置をリセット.
+                    gamemodel.getPlayerModel().playerPositionSet(
+                            4 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
+                            4 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
+                    // プレイヤーのステータス(HPなど)をリセット
+                    gamemodel.getPlayerModel().resetStatus();
+                    gamemodel.getMapModel().setCurrentMap(MapData.MAPA0);
+
                     break;
             }
             gameview.repaint();

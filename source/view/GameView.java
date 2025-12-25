@@ -17,9 +17,9 @@ public class GameView extends JPanel {
     private BulletView bulletView;
     private GameOverMenuView gameOverMenuView;
 
-    public GameView(PlayerModel pm, GameOverMenuModel gm, MapView mv, EnemyView ev, 
-            PlayerView pv, BulletView bv, GameOverMenuView gv, PlayerControl pc,
-            BulletControl bc, GameOverMenuControl gc) {
+    public GameView(PlayerModel pm, GameOverMenuModel gm, MapView mv, EnemyView ev, PlayerView pv,
+            BulletView bv, GameOverMenuView gv, PlayerControl pc, BulletControl bc,
+            GameOverMenuControl gc) {
         this.playerModel = pm;
         this.gameOverMenuModel = gm;
         this.mapView = mv;
@@ -40,23 +40,26 @@ public class GameView extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // 背景の初期化
 
-        // プレーヤーが中央に固定されるような座標
-        int playerDrawX = (ConstSet.WINDOW_WIDTH - ConstSet.PLAYER_SIZE) / 2;
-        int playerDrawY = (ConstSet.WINDOW_HEIGHT - ConstSet.PLAYER_SIZE) / 2;
+        if (GameState.getCurrentState() == GameState.PLAYING) {
+            // プレーヤーが中央に固定されるような座標
+            int playerDrawX = (ConstSet.WINDOW_WIDTH - ConstSet.PLAYER_SIZE) / 2;
+            int playerDrawY = (ConstSet.WINDOW_HEIGHT - ConstSet.PLAYER_SIZE) / 2;
 
-        // プレイヤーのモデル上の「左上」座標を出す
-        int modelLeft = playerModel.getPlayerX() - (ConstSet.PLAYER_SIZE / 2);
-        int modelTop = playerModel.getPlayerY() - (ConstSet.PLAYER_SIZE / 2);
+            // プレイヤーのモデル上の「左上」座標を出す
+            int modelLeft = playerModel.getPlayerX() - (ConstSet.PLAYER_SIZE / 2);
+            int modelTop = playerModel.getPlayerY() - (ConstSet.PLAYER_SIZE / 2);
 
-        // カメラのずれ(px) offset を計算.
-        int offsetX = playerDrawX - modelLeft;
-        int offsetY = playerDrawY - modelTop;
+            // カメラのずれ(px) offset を計算.
+            int offsetX = playerDrawX - modelLeft;
+            int offsetY = playerDrawY - modelTop;
 
-        // カメラのずれを一括して反映させる
-        mapView.drawMap(g, offsetX, offsetY); // マップの描画
-        enemyView.drawEnemies(g, offsetX, offsetY); // 敵の描画
-        playerView.drawPlayer(g, playerDrawX, playerDrawY); // プレイヤーの描画
-        bulletView.drawBullet(g, offsetX, offsetY); // 弾の描画
-        gameOverMenuView.drawGameOverMenu(g); // ゲームオーバー画面の描画
+            // カメラのずれを一括して反映させる
+            mapView.drawMap(g, offsetX, offsetY); // マップの描画
+            enemyView.drawEnemies(g, offsetX, offsetY); // 敵の描画
+            playerView.drawPlayer(g, playerDrawX, playerDrawY); // プレイヤーの描画
+            bulletView.drawBullet(g, offsetX, offsetY); // 弾の描画
+        } else if (GameState.getCurrentState() == GameState.GAME_OVER) {
+            gameOverMenuView.drawGameOverMenu(g); // ゲームオーバー画面の描画
+        }
     }
 }

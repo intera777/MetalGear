@@ -9,6 +9,7 @@ public class PlayerModel {
     private int playerX = -100; // 初期位置
     private int playerY = -100; // 初期位置
     private int playerDirection = ConstSet.RIGHT; // プレイヤーが向いている方向.0123の順で右上左下.
+    private int playerHP = 5;// プレイヤーの体力.
 
     // キーの状態管理フラグ
     private boolean isUpPressed = false;
@@ -23,14 +24,14 @@ public class PlayerModel {
             if (isUpPressed) {
                 playerY -= ConstSet.PLAYER_SPEED;
                 playerDirection = ConstSet.UP;
-                while (isObstacleExist(mm)) {
+                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
                     playerY += 1;
                 }
             }
             if (isDownPressed) {
                 playerY += ConstSet.PLAYER_SPEED;
                 playerDirection = ConstSet.DOWN;
-                while (isObstacleExist(mm)) {
+                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
                     playerY -= 1;
                 }
             }
@@ -38,14 +39,14 @@ public class PlayerModel {
             if (isLeftPressed) {
                 playerX -= ConstSet.PLAYER_SPEED;
                 playerDirection = ConstSet.LEFT;
-                while (isObstacleExist(mm)) {
+                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
                     playerX += 1;
                 }
             }
             if (isRightPressed) {
                 playerX += ConstSet.PLAYER_SPEED;
                 playerDirection = ConstSet.RIGHT;
-                while (isObstacleExist(mm)) {
+                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
                     playerX -= 1;
                 }
             }
@@ -95,6 +96,11 @@ public class PlayerModel {
         return playerDirection;
     }
 
+    // プレイヤーのHPを取得するメソッド.
+    public int getPlayerHP() {
+        return playerHP;
+    }
+
     // プレイヤーの座標を直接セットする.
     public void playerPositionSet(int tx, int ty) {
         playerX = tx;
@@ -110,8 +116,7 @@ public class PlayerModel {
                 mm.getTile(playerX + halfSize - 1, playerY - halfSize) // 右上
         };
 
-        // いずれかの隅が障害物タイルに一致するかどうかを判定します。
-        // ストリームを何度も生成するのを避け、効率化しています。
+        // いずれかの隅が障害物タイルに一致するかどうかを判定します.
         for (int tile : cornerTiles) {
             for (int obstacle : MapData.OBSTACLES) {
                 if (tile == obstacle) {
@@ -120,5 +125,29 @@ public class PlayerModel {
             }
         }
         return false;
+    }
+
+    // プレイヤーのHPを減少させる.
+    public void decreaseHP(int damage) {
+        this.playerHP -= damage;
+        if (this.playerHP < 0) {
+            this.playerHP = 0;
+        }
+        System.out.println("Player HP: " + this.playerHP); // デバッグ用: HP表示, 今は一時的にターミナルに表示.
+    }
+
+    /**
+     * プレイヤーが死亡したかどうかを返します。
+     * 
+     * @return HPが0以下ならtrue
+     */
+    public boolean isDead() {
+        return this.playerHP <= 0;
+    }
+
+    // ゲームリスタート時にプレイヤーのステータスを初期化するメソッド.
+    public void resetStatus() {
+        this.playerHP = 10; // HPを初期値に戻す
+        // 他にリセットすべき値があればここに追加
     }
 }

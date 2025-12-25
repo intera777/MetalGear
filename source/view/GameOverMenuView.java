@@ -9,8 +9,8 @@ public class GameOverMenuView {
     private GameOverMenuModel gameOverMenuModel;
 
     // フォントの設定
-    private final Font titleFont = new Font("Arial", Font.BOLD, 48); // タイトルのフォント
-    private final Font menuFont = new Font("Arial", Font.PLAIN, 32); // メニューのフォント
+    private final Font titleFont = new Font("SansSerif", Font.BOLD, 48); // タイトルのフォント
+    private final Font menuFont = new Font("SansSerif", Font.PLAIN, 32); // メニューのフォント
 
     // 色の設定
     private final Color titleColor = Color.RED; // タイトルの色
@@ -21,7 +21,7 @@ public class GameOverMenuView {
         this.gameOverMenuModel = gm;
     }
 
-    // ゲームオーバー画面を描画するメソッド    
+    // ゲームオーバー画面を描画するメソッド
     public void drawGameOverMenu(Graphics g) {
         // 背景を少し暗くする. 黒色の透明度 a を 150
         g.setColor(new Color(0, 0, 0, 150));
@@ -41,7 +41,7 @@ public class GameOverMenuView {
 
         for (int i = 0; i < items.length; i++) {
             String text = getMenuText(items[i]);
-            
+
             // 選択中の項目は色を変える、矢印をつける. 選択されてないものは白色
             if (i == selectedIndex) {
                 g.setColor(selectionColor);
@@ -60,9 +60,9 @@ public class GameOverMenuView {
     private String getMenuText(int gameState) {
         switch (gameState) {
             case ConstSet.RESTART_GAME:
-                return "RESTART";
+                return "もう一度プレイする";
             case ConstSet.FINISH_GAME:
-                return "QUIT TO MENU";
+                return "ゲームをやめる";
             default:
                 return "UNKNOWN";
         }

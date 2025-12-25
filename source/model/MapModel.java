@@ -50,6 +50,8 @@ public class MapModel {
         } else if (getPlayerTile() == MapData.TO_A1_FROM_A2) {
             setCurrentMap(MapData.MAPA1);
             pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 15);
+        } else if (getPlayerTile() == MapData.GAME_CLEAR) {
+            System.exit(0);
         }
     }
 

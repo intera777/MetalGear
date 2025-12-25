@@ -30,14 +30,13 @@ public class EnemyView {
         int direction = enemy.getEnemyDirection();
         int condition = enemy.getEnemyCondition();
 
-        // 敵の状態に応じた色
-        // 後々状態によって画像が変わるような仕様？
-        if (condition == ConstSet.ENEMY_ALIVE) {
-            g.setColor(Color.ORANGE);
-        } else if (condition == ConstSet.ENEMY_DEAD) { // 倒れた時
-            g.setColor(Color.RED);
-        } else if (condition == ConstSet.ENEMY_DAMAGED) { // 敵がダメージを受けた時.
+        // 敵の状態に応じて色を変える
+        if (condition == ConstSet.ENEMY_DAMAGED) {
             g.setColor(Color.PINK);
+        } else if (condition == ConstSet.ENEMY_ALIVE) {
+            g.setColor(Color.ORANGE); // 通常時の色
+        } else {
+            return; // DEAD状態の敵は描画しない
         }
 
         // 敵本体の描画

@@ -9,12 +9,16 @@ public class EnemyModel {
     private int enemycondition;
     private int enemydirection; // 敵が向いている方向.0123の順で右上左下.
     private int shoot_timer; // 弾を撃っている状態の管理用.
-    private int moving_timer; // 敵の移動の管理用.
+    private int moving_timer; // 敵の移動の管理用
 
+    private int enemyHP = 3; // 敵のHP. 初期値は3.
+    private int damage_timer = 0; // ダメージを受けた際の無敵時間兼、色変更用タイマー.
 
     public EnemyModel(int startX, int startY) {
         this.enemyX = startX;
         this.enemyY = startY;
+        this.enemyHP = 3; // 初期HPを設定
+        this.enemycondition = ConstSet.ENEMY_ALIVE;
     }
 
     public int getEnemyX() { // 敵のX座標を取得.
@@ -50,6 +54,23 @@ public class EnemyModel {
         return shoot_timer > 0;
     }
 
+    /**
+     * 敵のHPを減少させ、ダメージタイマーを設定します.
+     *
+     * @param damage 受けるダメージ量
+     */
+    public void decreaseHP(int damage) {
+        // 生存状態(ALIVE)の時のみダメージを受ける
+        if (this.enemycondition == ConstSet.ENEMY_ALIVE) {
+            this.enemyHP -= damage;
+            if (this.enemyHP <= 0) {
+                this.enemycondition = ConstSet.ENEMY_DEAD;
+            } else {
+                this.enemycondition = ConstSet.ENEMY_DAMAGED;
+                this.damage_timer = 15; // 15フレーム(約0.5秒)間、ダメージ状態にする
+            }
+        }
+    }
 
 
     public boolean isObstacleExist(MapModel mm) {// 敵と障害物が重なっていないか判定するメソッド.
@@ -72,22 +93,74 @@ public class EnemyModel {
     }
 
     // プレイヤーが前方にいるときに銃を撃つメソッド.
-    public void shootBullet(PlayerModel pm) {
-        if (getEnemyDirection() == ConstSet.RIGHT) {
-        } else if (getEnemyDirection() == ConstSet.UP) {
-
-        } else if (getEnemyDirection() == ConstSet.LEFT) {
-
-        } else if (getEnemyDirection() == ConstSet.DOWN) {
-
+    public void shootBullet(PlayerModel pm, BulletsModel bm) {
+        // 射撃クールダウン中でないか、プレイヤーがnullでないかを確認
+        if (isShooting() || pm == null) {
+            return;
         }
 
+        int playerX = pm.getPlayerX();
+        int playerY = pm.getPlayerY();
+        // 敵の視界の幅（Y軸またはX軸方向のずれの許容範囲）
+
+        boolean playerInSight = false;
+
+        switch (getEnemyDirection()) {
+            case ConstSet.RIGHT:
+                // プレイヤーが右側かつ、Y座標がほぼ同じ場合
+                if (playerX > this.enemyX
+                        && Math.abs(playerY - this.enemyY) < ConstSet.SIGHTRANGE) {
+                    playerInSight = true;
+                }
+                break;
+            case ConstSet.UP:
+                // プレイヤーが上側かつ、X座標がほぼ同じ場合
+                if (playerY < this.enemyY
+                        && Math.abs(playerX - this.enemyX) < ConstSet.SIGHTRANGE) {
+                    playerInSight = true;
+                }
+                break;
+            case ConstSet.LEFT:
+                // プレイヤーが左側かつ、Y座標がほぼ同じ場合
+                if (playerX < this.enemyX
+                        && Math.abs(playerY - this.enemyY) < ConstSet.SIGHTRANGE) {
+                    playerInSight = true;
+                }
+                break;
+            case ConstSet.DOWN:
+                // プレイヤーが下側かつ、X座標がほぼ同じ場合
+                if (playerY > this.enemyY
+                        && Math.abs(playerX - this.enemyX) < ConstSet.SIGHTRANGE) {
+                    playerInSight = true;
+                }
+                break;
+        }
+
+        if (playerInSight) {
+            bm.shootFromEnemy(this); // BulletsModelに弾の発射を依頼
+            this.shoot_timer = 60; // 射撃後のクールダウンを設定 (FPS:30 の場合 2秒)
+        }
     }
 
-    public void updateEnemyPosition(MapModel mm) {
+    public void updateEnemyPosition(MapModel mm, PlayerModel pm, BulletsModel bm) {
+        // 死亡していたら何もしない
+        if (this.enemycondition == ConstSet.ENEMY_DEAD) {
+            return;
+        }
 
+        // ダメージ状態からの復帰処理
+        if (this.enemycondition == ConstSet.ENEMY_DAMAGED) {
+            if (damage_timer > 0) {
+                damage_timer--;
+            }
+            if (damage_timer <= 0) {
+                this.enemycondition = ConstSet.ENEMY_ALIVE;
+            }
+        }
+        if (shoot_timer > 0) {
+            shoot_timer--;
+        }
+        // プレイヤーが視界にいれば弾を撃つ
+        shootBullet(pm, bm);
     }
-
-
-
 }

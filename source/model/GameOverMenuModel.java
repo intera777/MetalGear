@@ -38,17 +38,22 @@ public class GameOverMenuModel {
       }
 
       // ↓キーが押された時呼び出される.
-      public boolean downArrowPressed() {
-            return true;
+      public void downArrowPressed() {
+            moveSelectionDown();
       }
 
       // ↑キーが押された時呼び出される.
-      public boolean upArrowPressed() {
-            return true;
+      public void upArrowPressed() {
+            moveSelectionUp();
       }
 
       // エンターキーが押された時呼び出される.
-      public boolean enterPressed() {
-            return true;
+      public void enterPressed() {
+            if (getSelectedItem() == ConstSet.RESTART_GAME) {
+                  GameState.setGameState(GameState.PLAYING);
+            } else if (getSelectedItem() == ConstSet.FINISH_GAME) {
+                  System.exit(0);
+            }
+
       }
 }

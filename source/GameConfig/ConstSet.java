@@ -29,6 +29,8 @@ public final class ConstSet {
     public static final int ENEMY_ALIVE = 1; // 敵が生きているとき.
     public static final int ENEMY_DAMAGED = 100; // 敵がダメージを受けたとき.
 
+    public static final int SIGHTRANGE = ENEMY_SIZE / 2; // 敵の司会の範囲,この範囲に入ると敵は射撃してくる.
+
 
     // ゲームオーバー画面の定数.
     public static final int FINISH_GAME = 0; // ゲームとプログラムを終了.

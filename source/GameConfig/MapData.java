@@ -13,7 +13,7 @@ public class MapData {
     public static final int TO_A2_FROM_A1 = 103;
     public static final int TO_A1_FROM_A2 = 104;
 
-    public static final int CLEAR = 1000; // ゲームクリア地点.
+    public static final int GAME_CLEAR = 1000; // ゲームクリア地点.
 
     // プレイヤーが通過できない障害物のリスト.
     public static final int[] OBSTACLES = {CLEAR_OBSTACLE, STONEWALL, BED};

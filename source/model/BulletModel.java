@@ -10,6 +10,7 @@ public class BulletModel {
       private int speed_x = 0;
       private int speed_y = 0;
       private boolean exist = false; // フィールド上に存在していればtrue.
+      private boolean shotByPlayer; // プレイヤーによって撃たれた弾ならtrue
       PlayerModel playermodel;
 
       public BulletModel(PlayerModel pm) {
@@ -20,6 +21,7 @@ public class BulletModel {
       public void shootBullet() {
             if (!exist) {
                   exist = true;
+                  this.shotByPlayer = true; // プレイヤーが撃った弾
                   // プレイヤーの向きに応じて弾の初期位置と速度を設定.
                   if (playermodel.getPlayerDirection() == 0) {
                         x = playermodel.getPlayerX() + ConstSet.PLAYER_SIZE / 2
@@ -49,6 +51,38 @@ public class BulletModel {
             }
       }
 
+      // 敵が弾を発射するメソッド
+      public void shootBulletFromEnemy(EnemyModel enemy) {
+            if (!exist) {
+                  exist = true;
+                  this.shotByPlayer = false; // 敵が撃った弾
+                  // 敵の向きに応じて弾の初期位置と速度を設定
+                  if (enemy.getEnemyDirection() == ConstSet.RIGHT) {
+                        x = enemy.getEnemyX() + ConstSet.ENEMY_SIZE / 2 + ConstSet.BULLET_SIZE / 2;
+                        y = enemy.getEnemyY();
+                        speed_x = SPEED;
+                        speed_y = 0;
+                  } else if (enemy.getEnemyDirection() == ConstSet.UP) {
+                        x = enemy.getEnemyX();
+                        y = enemy.getEnemyY() - (ConstSet.ENEMY_SIZE / 2 + ConstSet.BULLET_SIZE / 2)
+                                    - 1;
+                        speed_x = 0;
+                        speed_y = -SPEED;
+                  } else if (enemy.getEnemyDirection() == ConstSet.LEFT) {
+                        x = enemy.getEnemyX() - (ConstSet.ENEMY_SIZE / 2 + ConstSet.BULLET_SIZE / 2)
+                                    - 1;
+                        y = enemy.getEnemyY();
+                        speed_x = -SPEED;
+                        speed_y = 0;
+                  } else if (enemy.getEnemyDirection() == ConstSet.DOWN) {
+                        x = enemy.getEnemyX();
+                        y = enemy.getEnemyY() + ConstSet.ENEMY_SIZE / 2 + ConstSet.BULLET_SIZE / 2;
+                        speed_x = 0;
+                        speed_y = SPEED;
+                  }
+            }
+      }
+
       public int getBulletX() {
             return x;
       }
@@ -60,6 +94,11 @@ public class BulletModel {
       // 弾が現在フィールド上に存在するかどうかを返すメソッド.
       public boolean bulletExist() {
             return exist;
+      }
+
+      // プレイヤーが撃った弾かどうかを返す
+      public boolean isShotByPlayer() {
+            return shotByPlayer;
       }
 
       // 銃弾と障害物が当たっているか判定するメソッド.遷移ポイントも障害物に含む.
@@ -85,6 +124,15 @@ public class BulletModel {
             return false;
       }
 
+      // 弾を消滅させるメソッド
+      public void destroy() {
+            exist = false;
+            x = -100;
+            y = -100;
+            speed_x = 0;
+            speed_y = 0;
+      }
+
       // 銃弾の位置を更新するメソッド.
       public void updateBulletPosition(MapModel mm) {
             x += speed_x;
@@ -92,11 +140,7 @@ public class BulletModel {
             // 画面外または障害物に当たったら消滅.
             if (x < 0 || mm.getMap()[0].length * ConstSet.TILE_SIZE < x || y < 0
                         || mm.getMap().length * ConstSet.TILE_SIZE < y || isObstacleHit(mm)) {
-                  exist = false;
-                  x = -100;
-                  y = -100;
-                  speed_x = 0;
-                  speed_y = 0;
+                  destroy();
             }
       }
 }
