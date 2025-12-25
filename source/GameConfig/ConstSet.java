@@ -28,6 +28,7 @@ public final class ConstSet {
     public static final int ENEMY_DEAD = 0; // 敵が死んでいるとき.
     public static final int ENEMY_ALIVE = 1; // 敵が生きているとき.
     public static final int ENEMY_DAMAGED = 100; // 敵がダメージを受けたとき.
+    public static final int ENEMY_SPEED = 2; // 敵の移動速度.
 
     public static final int SIGHTRANGE = ENEMY_SIZE / 2; // 敵の司会の範囲,この範囲に入ると敵は射撃してくる.
 

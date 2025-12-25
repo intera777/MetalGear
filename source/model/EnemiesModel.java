@@ -31,8 +31,13 @@ public class EnemiesModel {
         if (map == MapData.MAPA0) {
             // 敵なし.
         } else if (map == MapData.MAPA1) {
-            enemies.add(new EnemyModel(50 * ConstSet.TILE_SIZE, 5 * ConstSet.TILE_SIZE));
-            enemies.add(new EnemyModel(45 * ConstSet.TILE_SIZE, 8 * ConstSet.TILE_SIZE));
+            // MAPA1の敵を巡回ルートと共に生成
+            enemies.add(new EnemyModel(MapData.MAPA1_E0X[0], MapData.MAPA1_E0Y[0],
+                    MapData.MAPA1_E0X, MapData.MAPA1_E0Y));
+            enemies.add(new EnemyModel(MapData.MAPA1_E1X[0], MapData.MAPA1_E1Y[0],
+                    MapData.MAPA1_E1X, MapData.MAPA1_E1Y));
+            enemies.add(new EnemyModel(MapData.MAPA1_E2X[0], MapData.MAPA1_E2Y[0],
+                    MapData.MAPA1_E2X, MapData.MAPA1_E2Y));
         } else if (map == MapData.MAPA2) {
         }
     }

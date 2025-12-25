@@ -5,7 +5,7 @@ import GameConfig.*;
 public class GameOverMenuModel {
 
       // 項目を格納する配列.
-      private final int[] gamestate = {ConstSet.FINISH_GAME, ConstSet.RESTART_GAME};
+      private final int[] gamestate = {ConstSet.RESTART_GAME, ConstSet.FINISH_GAME};
 
       // 今上から何番目の項目を選択しているか.
       private int selectedIndex = 0;
