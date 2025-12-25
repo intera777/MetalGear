@@ -11,6 +11,7 @@ public class BulletModel {
       private int speed_y = 0;
       private boolean exist = false; // フィールド上に存在していればtrue.
       private boolean shotByPlayer; // プレイヤーによって撃たれた弾ならtrue
+      private int bulletDirection;
       PlayerModel playermodel;
 
       public BulletModel(PlayerModel pm) {
@@ -23,30 +24,34 @@ public class BulletModel {
                   exist = true;
                   this.shotByPlayer = true; // プレイヤーが撃った弾
                   // プレイヤーの向きに応じて弾の初期位置と速度を設定.
-                  if (playermodel.getPlayerDirection() == 0) {
+                  if (playermodel.getPlayerDirection() == ConstSet.RIGHT) {
                         x = playermodel.getPlayerX() + ConstSet.PLAYER_SIZE / 2
                                     + ConstSet.BULLET_SIZE / 2;
                         y = playermodel.getPlayerY();
                         speed_x = SPEED;
                         speed_y = 0;
-                  } else if (playermodel.getPlayerDirection() == 1) {
+                        bulletDirection = ConstSet.RIGHT;
+                  } else if (playermodel.getPlayerDirection() == ConstSet.UP) {
                         x = playermodel.getPlayerX();
                         y = playermodel.getPlayerY()
                                     - (ConstSet.PLAYER_SIZE / 2 + ConstSet.BULLET_SIZE / 2) - 1;
                         speed_x = 0;
                         speed_y = -SPEED;
-                  } else if (playermodel.getPlayerDirection() == 2) {
+                        bulletDirection = ConstSet.UP;
+                  } else if (playermodel.getPlayerDirection() == ConstSet.LEFT) {
                         x = playermodel.getPlayerX()
                                     - (ConstSet.PLAYER_SIZE / 2 + ConstSet.BULLET_SIZE / 2) - 1;
                         y = playermodel.getPlayerY();
                         speed_x = -SPEED;
                         speed_y = 0;
-                  } else if (playermodel.getPlayerDirection() == 3) {
+                        bulletDirection = ConstSet.LEFT;
+                  } else if (playermodel.getPlayerDirection() == ConstSet.DOWN) {
                         x = playermodel.getPlayerX();
                         y = playermodel.getPlayerY() + ConstSet.PLAYER_SIZE / 2
                                     + ConstSet.BULLET_SIZE / 2;
                         speed_x = 0;
                         speed_y = SPEED;
+                        bulletDirection = ConstSet.DOWN;
                   }
             }
       }
@@ -62,31 +67,37 @@ public class BulletModel {
                         y = enemy.getEnemyY();
                         speed_x = SPEED;
                         speed_y = 0;
+                        bulletDirection = ConstSet.RIGHT;
                   } else if (enemy.getEnemyDirection() == ConstSet.UP) {
                         x = enemy.getEnemyX();
                         y = enemy.getEnemyY() - (ConstSet.ENEMY_SIZE / 2 + ConstSet.BULLET_SIZE / 2)
                                     - 1;
                         speed_x = 0;
                         speed_y = -SPEED;
+                        bulletDirection = ConstSet.UP;
                   } else if (enemy.getEnemyDirection() == ConstSet.LEFT) {
                         x = enemy.getEnemyX() - (ConstSet.ENEMY_SIZE / 2 + ConstSet.BULLET_SIZE / 2)
                                     - 1;
                         y = enemy.getEnemyY();
                         speed_x = -SPEED;
                         speed_y = 0;
+                        bulletDirection = ConstSet.LEFT;
                   } else if (enemy.getEnemyDirection() == ConstSet.DOWN) {
                         x = enemy.getEnemyX();
                         y = enemy.getEnemyY() + ConstSet.ENEMY_SIZE / 2 + ConstSet.BULLET_SIZE / 2;
                         speed_x = 0;
                         speed_y = SPEED;
+                        bulletDirection = ConstSet.DOWN;
                   }
             }
       }
 
+      // 弾のX座標を取得するメソッド.
       public int getBulletX() {
             return x;
       }
 
+      // 弾のY座標を取得するメソッド.
       public int getBulletY() {
             return y;
       }
@@ -100,6 +111,12 @@ public class BulletModel {
       public boolean isShotByPlayer() {
             return shotByPlayer;
       }
+
+      // 弾の進んでいる方向.
+      public int getBulletDirection() {
+            return bulletDirection;
+      }
+
 
       // 銃弾と障害物が当たっているか判定するメソッド.遷移ポイントも障害物に含む.
       public boolean isObstacleHit(MapModel mm) {

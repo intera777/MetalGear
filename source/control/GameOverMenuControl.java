@@ -20,8 +20,7 @@ public class GameOverMenuControl implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -46,7 +45,7 @@ public class GameOverMenuControl implements KeyListener {
         // --- Enterキーが押された時 ---
         if (code == KeyEvent.VK_ENTER) {
             if (!isEnterPressed) {
-                model.enterPressed(); 
+                model.enterPressed();
                 isEnterTriggered = true;
                 isEnterPressed = true;
             }
