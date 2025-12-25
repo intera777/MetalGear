@@ -3,16 +3,43 @@ package view;
 import GameConfig.*;
 import model.*;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+import java.io.*;
+import javax.imageio.ImageIO;
 
 public class MapView {
     private MapModel mapModel;
     private PlayerModel playerModel;
 
+    // 画像保持用の変数
+    private Image floorImage;
+    private Image wallImage;
+    private Image bedImage;
+    private Image verticalStairImage;
+    private Image portalImage;
+
     public MapView(MapModel mm, PlayerModel pm) {
         this.mapModel = mm;
         this.playerModel = pm;
+        loadImages(); // コンストラクタ内で画像読み取り
+    }
+
+    private void loadImages() {
+        try {
+            floorImage = ImageIO.read(new File(ConstSet.IMG_PATH_FLOOR));
+            wallImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL));
+            bedImage = ImageIO.read(new File(ConstSet.IMG_PATH_BED));
+            verticalStairImage = ImageIO.read(new File(ConstSet.IMG_PATH_VERTICAL_STAIR));
+            
+            // 遷移ポイントの画像は未定
+            // portalImage = ImageIO.read(new File(ConstSet.IMG_PATH_PORTAL));
+
+        } catch (IOException e) {
+            // 読み込み失敗時のデバック用
+            System.err.println("読み込み失敗");
+            System.err.println("探した場所: " + new File(ConstSet.IMG_PATH_FLOOR).getAbsolutePath());
+            e.printStackTrace();
+        }
     }
 
     public void drawMap(Graphics g, int offsetX, int offsetY) {
@@ -35,22 +62,36 @@ public class MapView {
                     continue;
                 }
 
+                // タイルの種類に応じて画像を描画
+                Image imgToDraw = null;
+
                 // タイルの描画
                 if (tileType == MapData.STONEFLOOR) {
                     // 床の画像を描画
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE);
+                    imgToDraw = floorImage;
                 } else if (tileType == MapData.STONEWALL) {
                     // 壁の画像を描画
-                    g.setColor(Color.LIGHT_GRAY);
-                    g.fillRect(drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE);
+                    imgToDraw = wallImage;
+                } else if (tileType == MapData.BED) {
+                    imgToDraw = bedImage;
+                } else if (tileType == MapData.VERTIVAL_STAIR) {
+                    imgToDraw = verticalStairImage;
                 } else if (tileType > 100) {
                     // 遷移ポイント（101以上）の描画
+                    // 遷移ポイントの画像は未定
                     g.setColor(Color.CYAN);
                     g.fillRect(drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE);
                 }
+
+                // 画像が存在すれば描画
+                // ベッドサイズが異なるため, サイズ調整のための分岐
+                if (imgToDraw != null && imgToDraw != bedImage) {
+                    g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == bedImage) { // 2タイル×1タイル
+                    g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
+                }
+
             }
         }
-
     }
 }

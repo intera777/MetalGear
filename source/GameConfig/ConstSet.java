@@ -38,4 +38,11 @@ public final class ConstSet {
     public static final int RESTART_GAME = 1; // ゲームを再スタート.
 
     public static final int MAX_BULLETS = 5;// フィールド上に存在できる弾の最大数.
+
+
+    // 各タイルのパス
+    public static final String IMG_PATH_FLOOR = "../resources/tiles/floor.png";
+    public static final String IMG_PATH_WALL = "../resources/tiles/wall.png";
+    public static final String IMG_PATH_VERTICAL_STAIR = "../resources/tiles/vertical_stair.png";
+    public static final String IMG_PATH_BED = "../resources/tiles/bed.png";
 }
