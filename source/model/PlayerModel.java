@@ -11,6 +11,12 @@ public class PlayerModel {
     private int playerDirection = ConstSet.RIGHT; // プレイヤーが向いている方向.0123の順で右上左下.
     private int playerHP = 5;// プレイヤーの体力.
 
+    // アニメーション用
+    private int animationFrame = 0; // 0:静止, 1:足1, 2:足2
+    private int animationCounter = 0; // コマを切り替えるためのタイマー代わり
+    private int[] animSequence = {0, 1, 0, 2}; // 歩行パターンの順序
+    private int animIndex = 0; // animSequence の添字
+
     // キーの状態管理フラグ
     private boolean isUpPressed = false;
     private boolean isDownPressed = false;
@@ -19,37 +25,56 @@ public class PlayerModel {
 
     // Viewのタイマーから定期的に呼ばれるメソッド
     public void updatePlayerPosition(MapModel mm) {
-        // フラグを見て座標を更新
-        if (isUpPressed || isDownPressed) {
-            if (isUpPressed) {
-                playerY -= ConstSet.PLAYER_SPEED;
-                playerDirection = ConstSet.UP;
-                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
-                    playerY += 1;
+        // 移動中かどうかを判定
+        boolean isMoving = isUpPressed || isDownPressed || isLeftPressed || isRightPressed;
+
+        if (isMoving) { // プレーヤーが動いているとき
+            // フラグを見て座標を更新
+            if (isUpPressed || isDownPressed) {
+                if (isUpPressed) {
+                    playerY -= ConstSet.PLAYER_SPEED;
+                    playerDirection = ConstSet.UP;
+                    while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
+                        playerY += 1;
+                    }
+                }
+                if (isDownPressed) {
+                    playerY += ConstSet.PLAYER_SPEED;
+                    playerDirection = ConstSet.DOWN;
+                    while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
+                        playerY -= 1;
+                    }
+                }
+            } else if (isLeftPressed || isRightPressed) {
+                if (isLeftPressed) {
+                    playerX -= ConstSet.PLAYER_SPEED;
+                    playerDirection = ConstSet.LEFT;
+                    while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
+                        playerX += 1;
+                    }
+                }
+                if (isRightPressed) {
+                    playerX += ConstSet.PLAYER_SPEED;
+                    playerDirection = ConstSet.RIGHT;
+                    while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
+                        playerX -= 1;
+                    }
                 }
             }
-            if (isDownPressed) {
-                playerY += ConstSet.PLAYER_SPEED;
-                playerDirection = ConstSet.DOWN;
-                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
-                    playerY -= 1;
-                }
+
+            // アニメーション更新
+            animationCounter++;
+            if (animationCounter >= 10) { // 10回updateが呼ばれるごとに1コマ進める
+                // 配列のインデックスを 0 -> 1 -> 2 -> 3 -> 0... と回す
+                animIndex = (animIndex + 1) % animSequence.length;
+                animationFrame = animSequence[animIndex];
+                animationCounter = 0;
             }
-        } else if (isLeftPressed || isRightPressed) {
-            if (isLeftPressed) {
-                playerX -= ConstSet.PLAYER_SPEED;
-                playerDirection = ConstSet.LEFT;
-                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
-                    playerX += 1;
-                }
-            }
-            if (isRightPressed) {
-                playerX += ConstSet.PLAYER_SPEED;
-                playerDirection = ConstSet.RIGHT;
-                while (isObstacleExist(mm)) { // 障害物と重ならなくなるまで座標を戻す.
-                    playerX -= 1;
-                }
-            }
+
+        } else { // プレーヤーが止まっているとき
+            animationFrame = 0;
+            animIndex = 0;
+            animationCounter = 0;
         }
 
 
@@ -94,6 +119,11 @@ public class PlayerModel {
     // プレイヤーの向いている方向を取得する.
     public int getPlayerDirection() {
         return playerDirection;
+    }
+
+    // プレーヤーのアニメーションの番号を取得する.
+    public int getAnimationFrame() {
+        return animationFrame;
     }
 
     // プレイヤーのHPを取得するメソッド.

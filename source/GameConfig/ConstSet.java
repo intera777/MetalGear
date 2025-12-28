@@ -45,4 +45,7 @@ public final class ConstSet {
     public static final String IMG_PATH_WALL = "../resources/tiles/wall.png";
     public static final String IMG_PATH_VERTICAL_STAIR = "../resources/tiles/vertical_stair.png";
     public static final String IMG_PATH_BED = "../resources/tiles/bed.png";
+
+    // プレーヤーキットのパス
+    public static final String IMG_PATH_HEROIN = "../resources/player/HeroinKit2.png";
 }
