@@ -48,7 +48,7 @@ public class GameView extends JPanel {
 
         if (GameState.getCurrentState() == GameState.PLAYING) {
             // --- スケーリングの設定 ---
-            double scale = 1.5; // 1.5倍に拡大
+            double scale = 2; // 2.0倍に拡大
             // ドット絵をクッキリさせる設定
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
         
