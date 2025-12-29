@@ -13,10 +13,19 @@ public class MapView {
 
     // 画像保持用の変数
     private Image floorImage;
-    private Image wallImage;
+    private Image wallTopNorthImage;
+    private Image wallNorthImage;
+    private Image wallTopSouthImage;
+    private Image wallTopEastImage;
+    private Image wallTopWestImage;
     private Image bedImage;
     private Image verticalStairImage;
-    private Image portalImage;
+    private Image cornerNorthWestImage;
+    private Image cornerNorthEastImage;
+    private Image cornerSouthEastImage;
+    private Image cornerSouthWestimage;
+    private Image container1T2Image;
+    private Image container2T2Image;
 
     public MapView(MapModel mm, PlayerModel pm) {
         this.mapModel = mm;
@@ -27,12 +36,19 @@ public class MapView {
     private void loadImages() {
         try {
             floorImage = ImageIO.read(new File(ConstSet.IMG_PATH_FLOOR));
-            wallImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL));
+            wallTopNorthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_NORTH));
+            wallNorthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_NORTH));
+            wallTopSouthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_SOUTH));
+            wallTopEastImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_EAST));
+            wallTopWestImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_WEST));
+            cornerNorthWestImage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_NORTH_WEST));
+            cornerNorthEastImage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_NORTH_EAST));
+            cornerSouthEastImage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_SOUTH_EAST));
+            cornerSouthWestimage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_SOUTH_WEST));
             bedImage = ImageIO.read(new File(ConstSet.IMG_PATH_BED));
             verticalStairImage = ImageIO.read(new File(ConstSet.IMG_PATH_VERTICAL_STAIR));
-            
-            // 遷移ポイントの画像は未定
-            // portalImage = ImageIO.read(new File(ConstSet.IMG_PATH_PORTAL));
+            container1T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER1T2));
+            container2T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER2T2));
 
         } catch (IOException e) {
             // 読み込み失敗時のデバック用
@@ -56,9 +72,10 @@ public class MapView {
                 int drawX = x * ConstSet.TILE_SIZE + offsetX;
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
-                // 画面外のタイルは描画しない
-                if (drawX + ConstSet.TILE_SIZE < 0 || drawX > ConstSet.WINDOW_WIDTH
-                        || drawY + ConstSet.TILE_SIZE < 0 || drawY > ConstSet.WINDOW_HEIGHT) {
+                // 画面外のタイルは描画しない. 性格には少し余余分に描画している
+                int buffer = ConstSet.TILE_SIZE;
+                if (drawX + ConstSet.TILE_SIZE < - 2 * buffer || drawX > ConstSet.WINDOW_WIDTH + 2 * buffer
+                        || drawY + ConstSet.TILE_SIZE < -2 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 2 * buffer) {
                     continue;
                 }
 
@@ -66,29 +83,53 @@ public class MapView {
                 Image imgToDraw = null;
 
                 // タイルの描画
-                if (tileType == MapData.STONEFLOOR) {
-                    // 床の画像を描画
+                if (tileType == MapData.STONEFLOOR) { // 床
                     imgToDraw = floorImage;
-                } else if (tileType == MapData.STONEWALL) {
-                    // 壁の画像を描画
-                    imgToDraw = wallImage;
-                } else if (tileType == MapData.BED) {
+                } else if (tileType == MapData.WALL_TOP_NORTH) { // 壁
+                    imgToDraw = wallTopNorthImage;
+                } else if (tileType == MapData.WALL_NORTH) {
+                    imgToDraw = wallNorthImage;
+                } else if (tileType == MapData.WALL_TOP_SOUTH) {
+                    imgToDraw = wallTopSouthImage;
+                } else if (tileType == MapData.WALL_TOP_EAST) {
+                    imgToDraw = wallTopEastImage;
+                } else if (tileType == MapData.WALL_TOP_WEST) {
+                    imgToDraw = wallTopWestImage;
+                } else if (tileType == MapData.CORNER_NORTH_WEST) { // 壁の角
+                    imgToDraw = cornerNorthWestImage;
+                } else if (tileType == MapData.CORNER_NORTH_EAST) {
+                    imgToDraw = cornerNorthEastImage;
+                } else if (tileType == MapData.CORNER_SOUTH_EAST) {
+                    imgToDraw = cornerSouthEastImage;
+                } else if (tileType == MapData.CORNER_SOUTH_WEST) {
+                    imgToDraw = cornerSouthWestimage;
+                } else if (tileType > 100) { // 遷移点 → 何も描画しない
+                    imgToDraw = null;
+                } else if (tileType == MapData.BED) { // オブジェクト
                     imgToDraw = bedImage;
-                } else if (tileType == MapData.VERTIVAL_STAIR) {
+                } else if (tileType == MapData.VERTICAL_STAIR) {
                     imgToDraw = verticalStairImage;
-                } else if (tileType > 100) {
-                    // 遷移ポイント（101以上）の描画
-                    // 遷移ポイントの画像は未定
-                    g.setColor(Color.CYAN);
-                    g.fillRect(drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE);
+                } else if (tileType == MapData.CONTAINER_1T2) {
+                    imgToDraw = container1T2Image;
+                } else if (tileType == MapData.CONTAINER_2T2) {
+                    imgToDraw = container2T2Image;
                 }
 
                 // 画像が存在すれば描画
                 // ベッドサイズが異なるため, サイズ調整のための分岐
-                if (imgToDraw != null && imgToDraw != bedImage) {
+                if (imgToDraw != null && imgToDraw != wallNorthImage && imgToDraw != bedImage && imgToDraw != verticalStairImage &&
+                     imgToDraw != container1T2Image && imgToDraw != container2T2Image) { // 1×1マス
                     g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == bedImage) { // 2タイル×1タイル
+                } else if (imgToDraw == wallNorthImage) { // 2×2マス
+                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == bedImage) { // 1×2マス
                     g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == verticalStairImage) { // 3×6マス
+                    g.drawImage(imgToDraw, drawX, drawY, 3 * ConstSet.TILE_SIZE, 6 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == container1T2Image) { // 1×2マス
+                    g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == container2T2Image) { // 2×2マス
+                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
                 }
 
             }
