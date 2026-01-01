@@ -12,6 +12,7 @@ public class BulletsModel {
         }
     }
 
+    // 銃弾の配列の取得.
     public BulletModel[] getBullets() {
         return bullets;
     }
@@ -67,8 +68,13 @@ public class BulletsModel {
         int bulletTop = bullet.getBulletY() - ConstSet.BULLET_SIZE / 2;
         int bulletBottom = bullet.getBulletY() + ConstSet.BULLET_SIZE / 2;
 
-        return enemyLeft < bulletRight && enemyRight > bulletLeft && enemyTop < bulletBottom
-                && enemyBottom > bulletTop;
+        if (enemyLeft < bulletRight && enemyRight > bulletLeft && enemyTop < bulletBottom
+                && enemyBottom > bulletTop) {
+            // 敵がプレイヤーを追尾するようにする.
+            enemy.changePlayerTrack(1);
+            return true;
+        }
+        return false;
     }
 
     public void updateBulletsPosition(MapModel mm, PlayerModel pm, EnemiesModel em) {

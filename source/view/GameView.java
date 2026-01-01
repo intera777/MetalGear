@@ -48,20 +48,21 @@ public class GameView extends JPanel {
 
         if (GameState.getCurrentState() == GameState.PLAYING) {
             // --- スケーリングの設定 ---
-            double scale = 2; // 2.0倍に拡大
+            double scale = 2.0; // 2.0倍に拡大
             // ドット絵をクッキリさせる設定
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-        
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
             // 描画領域の中心を基準にスケーリングするために一旦保存
             AffineTransform oldTransform = g2d.getTransform();
-        
+
             // 画面全体を拡大（これ以降の座標指定は「拡大前の数値」でOKになる）
             g2d.scale(scale, scale);
 
             // --- 座標計算 (拡大を考慮した画面サイズで計算) ---
             // 画面が拡大された分、表示できる論理的な幅は WINDOW_WIDTH / scale になる
-            int logicWidth = (int)(ConstSet.WINDOW_WIDTH / scale);
-            int logicHeight = (int)(ConstSet.WINDOW_HEIGHT / scale);
+            int logicWidth = (int) (ConstSet.WINDOW_WIDTH / scale);
+            int logicHeight = (int) (ConstSet.WINDOW_HEIGHT / scale);
 
             int playerDrawX = (logicWidth - ConstSet.PLAYER_SIZE) / 2;
             int playerDrawY = (logicHeight - ConstSet.PLAYER_SIZE) / 2;

@@ -1,6 +1,6 @@
 package model;
 
-import java.util.Arrays;
+import java.util.*;
 import GameConfig.*;
 
 public class EnemyModel {
@@ -9,6 +9,7 @@ public class EnemyModel {
     private int enemycondition; // 敵の状態.
     private int enemydirection; // 敵が向いている方向.0123の順で右上左下.
     private int shoot_timer; // 弾を撃っている状態の管理用.
+    private int player_track = 0; // 1のときはプレイヤーを追尾.
 
     private int enemyHP = 3; // 敵のHP. 初期値は3.
     private int damage_timer = 0; // ダメージを受けた際の無敵時間兼、色変更用タイマー.
@@ -209,8 +210,22 @@ public class EnemyModel {
                 this.enemycondition = ConstSet.ENEMY_ALIVE;
             }
         } else {
-            // 敵が次の目的地へ向けて最短経路で動く機能をここで実装.
-            moveAlongPatrolRoute();
+            // プレイヤーと敵の距離がマンハッタン距離で32*14以内だったらplayer_track=1,そうでなければ0になる.
+            int distance = Math.abs(this.enemyX - pm.getPlayerX())
+                    + Math.abs(this.enemyY - pm.getPlayerY());
+            if (distance <= ConstSet.TILE_SIZE * 7) {
+                this.player_track = 1;
+            } else {
+                this.player_track = 0;
+            }
+
+            // player_trackの値が1だったらプレイヤーのいる位置に向けて最短経路で動く.障害物も加味した最短経路の計算を行えるようにする.
+            if (this.player_track == 1) {
+                moveTowardsPlayer(mm, pm);
+            } else {
+                // 敵が次の目的地へ向けて最短経路で動く機能をここで実装.
+                moveAlongPatrolRoute();
+            }
         }
         if (shoot_timer > 0) {
             shoot_timer--;
@@ -218,4 +233,101 @@ public class EnemyModel {
         // プレイヤーが視界にいれば弾を撃つ
         shootBullet(pm, bm);
     }
+
+    // プレイヤーを追尾するかどうかの変数の値を書き換える.
+    public void changePlayerTrack(int state) {
+        this.player_track = state;
+    }
+
+    public int getPlayerTrack() {
+        return this.player_track;
+    }
+
+    private void moveTowardsPlayer(MapModel mm, PlayerModel pm) {
+        int startX = this.enemyX / ConstSet.TILE_SIZE;
+        int startY = this.enemyY / ConstSet.TILE_SIZE;
+        int targetX = pm.getPlayerX() / ConstSet.TILE_SIZE;
+        int targetY = pm.getPlayerY() / ConstSet.TILE_SIZE;
+
+        int nextTile = getNextStep(startX, startY, targetX, targetY, mm.getMap());
+
+        if (nextTile != -1) {
+            int w = mm.getMap()[0].length;
+            int nextX = nextTile % w;
+            int nextY = nextTile / w;
+
+            int targetPixelX = nextX * ConstSet.TILE_SIZE + ConstSet.TILE_SIZE / 2;
+            int targetPixelY = nextY * ConstSet.TILE_SIZE + ConstSet.TILE_SIZE / 2;
+
+            if (enemyX < targetPixelX) {
+                enemyX = Math.min(enemyX + ConstSet.ENEMY_SPEED, targetPixelX);
+                setEnemyDirection(ConstSet.RIGHT);
+            } else if (enemyX > targetPixelX) {
+                enemyX = Math.max(enemyX - ConstSet.ENEMY_SPEED, targetPixelX);
+                setEnemyDirection(ConstSet.LEFT);
+            } else if (enemyY < targetPixelY) {
+                enemyY = Math.min(enemyY + ConstSet.ENEMY_SPEED, targetPixelY);
+                setEnemyDirection(ConstSet.DOWN);
+            } else if (enemyY > targetPixelY) {
+                enemyY = Math.max(enemyY - ConstSet.ENEMY_SPEED, targetPixelY);
+                setEnemyDirection(ConstSet.UP);
+            }
+        }
+    }
+
+    private int getNextStep(int startX, int startY, int targetX, int targetY, int[][] map) {
+        int h = map.length;
+        int w = map[0].length;
+        int start = startY * w + startX;
+        int target = targetY * w + targetX;
+
+        if (start == target)
+            return start;
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(start);
+        Map<Integer, Integer> cameFrom = new HashMap<>();
+        cameFrom.put(start, null);
+
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {-1, 1, 0, 0};
+
+        while (!queue.isEmpty()) {
+            int curr = queue.poll();
+            if (curr == target)
+                break;
+
+            int cx = curr % w;
+            int cy = curr / w;
+
+            for (int i = 0; i < 4; i++) {
+                int nx = cx + dx[i];
+                int ny = cy + dy[i];
+                if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+                    int next = ny * w + nx;
+                    if (!cameFrom.containsKey(next)) {
+                        boolean isObstacle = false;
+                        for (int obs : MapData.OBSTACLES) {
+                            if (map[ny][nx] == obs) {
+                                isObstacle = true;
+                                break;
+                            }
+                        }
+                        if (!isObstacle) {
+                            queue.add(next);
+                            cameFrom.put(next, curr);
+                        }
+                    }
+                }
+            }
+        }
+        if (!cameFrom.containsKey(target))
+            return -1;
+        int curr = target;
+        while (cameFrom.get(curr) != null && cameFrom.get(curr) != start) {
+            curr = cameFrom.get(curr);
+        }
+        return curr;
+    }
+
 }
