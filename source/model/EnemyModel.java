@@ -19,6 +19,10 @@ public class EnemyModel {
     private int[] waypointsY;
     private int currentWaypointIndex = 0;
 
+    // アニメーションに用いる変数
+    private int animationTick = 0; // アニメーションの経過時間
+    private int animationFrame = 0; // 0, 1, 2 のいずれか
+
     public EnemyModel(int startX, int startY) {
         this.enemyX = startX;
         this.enemyY = startY;
@@ -227,6 +231,10 @@ public class EnemyModel {
                 moveAlongPatrolRoute();
             }
         }
+
+        // 移動中は敵のコマを更新
+        updateAnimation();
+
         if (shoot_timer > 0) {
             shoot_timer--;
         }
@@ -328,6 +336,18 @@ public class EnemyModel {
             curr = cameFrom.get(curr);
         }
         return curr;
+    }
+
+    public int getAnimationFrame() { // ゲッター
+        return animationFrame;
+    }
+
+    private void updateAnimation() {
+        animationTick++;
+        // 10フレームごとに1コマ進める
+        if (animationTick % 10 == 0) {
+            animationFrame = (animationFrame + 1) % 3; // 0, 1, 2 を繰り返す
+        }
     }
 
 }

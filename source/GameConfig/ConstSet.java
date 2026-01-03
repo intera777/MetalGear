@@ -41,9 +41,9 @@ public final class ConstSet {
 
 
     // 各タイルのパス
-    public static final String IMG_PATH_FLOOR = "../resources/tiles/floor.png";
+    public static final String IMG_PATH_FLOOR = "../resources/tiles/floordark.png"; // 暗くした部分
     public static final String IMG_PATH_WALL_TOP_NORTH = "../resources/tiles/wall_top_north.png";
-    public static final String IMG_PATH_WALL_NORTH = "../resources/tiles/wall_north.png";
+    public static final String IMG_PATH_WALL_NORTH = "../resources/tiles/walldark.png"; // 暗くした部分
     public static final String IMG_PATH_WALL_TOP_SOUTH = "../resources/tiles/wall_top_south.png";
     public static final String IMG_PATH_WALL_TOP_EAST = "../resources/tiles/wall_top_east.png";
     public static final String IMG_PATH_WALL_TOP_WEST = "../resources/tiles/wall_top_west.png";
@@ -58,4 +58,5 @@ public final class ConstSet {
 
     // プレーヤーキットのパス
     public static final String IMG_PATH_HEROIN = "../resources/player/HeroinKit2.png";
+    public static final String IMG_PATH_ENEMY = "../resources/enemy/ViranKit.png";
 }
