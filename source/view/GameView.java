@@ -21,10 +21,11 @@ public class GameView extends JPanel {
     private EnemyView enemyView;
     private BulletView bulletView;
     private GameOverMenuView gameOverMenuView;
+    private DialogueBoxView dialogueBoxView;
 
     public GameView(PlayerModel pm, GameOverMenuModel gm, MapView mv, EnemyView ev, PlayerView pv,
             BulletView bv, GameOverMenuView gv, PlayerControl pc, BulletControl bc,
-            GameOverMenuControl gc) {
+            GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
         this.playerModel = pm;
         this.gameOverMenuModel = gm;
         this.mapView = mv;
@@ -32,11 +33,13 @@ public class GameView extends JPanel {
         this.playerView = pv;
         this.bulletView = bv;
         this.gameOverMenuView = gv;
+        this.dialogueBoxView = dv;
 
         // GameView内でまとめてキー登録をする
         this.addKeyListener(bc);
         this.addKeyListener(pc);
         this.addKeyListener(gc);
+        this.addKeyListener(dc);
         this.setFocusable(true);
         // this.requestFocusInWindow(); // 起動時に自動でキー入力を受け付ける魔法の呪文らしい
     }
@@ -81,6 +84,9 @@ public class GameView extends JPanel {
 
             // 元に戻す（UIなどは拡大しない場合）
             g2d.setTransform(oldTransform);
+
+            // 会話ボックスはUIとして最前面に描画
+            dialogueBoxView.drawDialogueBox(g2d);
 
         } else if (GameState.getCurrentState() == GameState.GAME_OVER) {
             gameOverMenuView.drawGameOverMenu(g);

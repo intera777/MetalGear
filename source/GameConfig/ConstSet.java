@@ -19,8 +19,7 @@ public final class ConstSet {
     // プレイヤーの定数.
     public static final int PLAYER_SIZE = 32; // プレイヤーの一辺の長さ.
     public static final int PLAYER_SPEED = 3; // プレイヤーの移動速度.
-    // 弾の定数.
-    public static final int BULLET_SIZE = 8; // 弾の一辺の長さ.
+
 
     // 敵の定数.
     public static final int MAX_ENEMIES = 10; // フィールド上に存在できる敵の最大数.
@@ -38,7 +37,8 @@ public final class ConstSet {
     public static final int RESTART_GAME = 1; // ゲームを再スタート.
 
     public static final int MAX_BULLETS = 5;// フィールド上に存在できる弾の最大数.
-
+    // 弾の定数.
+    public static final int BULLET_SIZE = 8; // 弾の一辺の長さ.
 
     // 各タイルのパス
     public static final String IMG_PATH_FLOOR = "../resources/tiles/floordark.png"; // 暗くした部分
@@ -47,11 +47,16 @@ public final class ConstSet {
     public static final String IMG_PATH_WALL_TOP_SOUTH = "../resources/tiles/wall_top_south.png";
     public static final String IMG_PATH_WALL_TOP_EAST = "../resources/tiles/wall_top_east.png";
     public static final String IMG_PATH_WALL_TOP_WEST = "../resources/tiles/wall_top_west.png";
-    public static final String IMG_PATH_CORNER_NORTH_WEST = "../resources/tiles/corner_northwest.png";
-    public static final String IMG_PATH_CORNER_NORTH_EAST = "../resources/tiles/corner_northeast.png";
-    public static final String IMG_PATH_CORNER_SOUTH_EAST = "../resources/tiles/corner_southeast.png";
-    public static final String IMG_PATH_CORNER_SOUTH_WEST = "../resources/tiles/corner_southwest.png";
-    public static final String IMG_PATH_VERTICAL_STAIR = "../resources/tiles/stair_MAPA2.png"; // 3×6マス階段が共通規格になるか分からないけど, とりあえず命名は一般形にした.
+    public static final String IMG_PATH_CORNER_NORTH_WEST =
+            "../resources/tiles/corner_northwest.png";
+    public static final String IMG_PATH_CORNER_NORTH_EAST =
+            "../resources/tiles/corner_northeast.png";
+    public static final String IMG_PATH_CORNER_SOUTH_EAST =
+            "../resources/tiles/corner_southeast.png";
+    public static final String IMG_PATH_CORNER_SOUTH_WEST =
+            "../resources/tiles/corner_southwest.png";
+    public static final String IMG_PATH_VERTICAL_STAIR = "../resources/tiles/stair_MAPA2.png"; // 3×6マス階段が共通規格になるか分からないけど,
+                                                                                               // とりあえず命名は一般形にした.
     public static final String IMG_PATH_BED = "../resources/tiles/bed.png";
     public static final String IMG_PATH_CONTAINER1T2 = "../resources/tiles/container1T2.png";
     public static final String IMG_PATH_CONTAINER2T2 = "../resources/tiles/container2T2.png";

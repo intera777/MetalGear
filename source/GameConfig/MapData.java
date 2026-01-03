@@ -1,57 +1,75 @@
 package GameConfig;
 
 public class MapData {
-    // 基本タイル (0~19の定数)
-    public static final int STONEFLOOR = 0; // 床, 1×1マス
-    public static final int WALL_TOP_NORTH = 1; // 北壁の上面, 1×1マス
-    public static final int WALL_NORTH = 2; // 北壁, 2×2マス
-    public static final int WALL_TOP_SOUTH = 3; // 南壁の上面, 1×1マス
-    public static final int WALL_TOP_EAST = 4; // 東壁の上面, 1×1マス
-    public static final int WALL_TOP_WEST = 5; // 西壁の上面, 1×1マス
-    public static final int CORNER_NORTH_WEST = 6; // 北西の壁の角
-    public static final int CORNER_NORTH_EAST = 7; // 北東の壁の角
-    public static final int CORNER_SOUTH_EAST = 8; // 南東の壁の角
-    public static final int CORNER_SOUTH_WEST = 9; // 南西の壁の角
-    
-    // public static final int PORTAR_POINT = 19; // 遷移点. 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
+        // 基本タイル (0~19の定数)
+        public static final int STONEFLOOR = 0; // 床, 1×1マス
+        public static final int WALL_TOP_NORTH = 1; // 北壁の上面, 1×1マス
+        public static final int WALL_NORTH = 2; // 北壁, 2×2マス
+        public static final int WALL_TOP_SOUTH = 3; // 南壁の上面, 1×1マス
+        public static final int WALL_TOP_EAST = 4; // 東壁の上面, 1×1マス
+        public static final int WALL_TOP_WEST = 5; // 西壁の上面, 1×1マス
+        public static final int CORNER_NORTH_WEST = 6; // 北西の壁の角
+        public static final int CORNER_NORTH_EAST = 7; // 北東の壁の角
+        public static final int CORNER_SOUTH_EAST = 8; // 南東の壁の角
+        public static final int CORNER_SOUTH_WEST = 9; // 南西の壁の角
 
-    // 特殊タイル (負の定数)
-    public static final int CLEAR_OBSTACLE = -1; // 見えない壁
-    public static final int DUMMY_TILE = -2; // 何も描画されないし, 素通りできるタイル. 1×1マス以上のオブジェクトの描画に利用する
+        // public static final int PORTAR_POINT = 19; // 遷移点. 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
 
-    // オブジェクト(20以上の定数)
-    public static final int BED = 20; // ベッド, 1×2マス
-    public static final int VERTICAL_STAIR = 21; // 階段(縦向き), 3×6マス
-    public static final int CONTAINER_1T2 = 22; // コンテナ, 1×2マス
-    public static final int CONTAINER_2T2 = 23; // コンテナ, 2×2マス
+        // 特殊タイル (負の定数)
+        public static final int CLEAR_OBSTACLE = -1; // 見えない壁
+        public static final int HALF_CLEAR_OBSTACLE = -2; // 下半ブロックだけの通過できない壁.
+        public static final int DUMMY_TILE = -2; // 何も描画されないし, 素通りできるタイル. 1×1マス以上のオブジェクトの描画に利用する
 
-    public static final int TO_A1_FROM_A0 = 101; // マップA0からA1への遷移ポイント.以下同様.a
-    public static final int TO_A0_FROM_A1 = 102;
-    public static final int TO_A2_FROM_A1 = 103;
-    public static final int TO_A1_FROM_A2 = 104;
+        // オブジェクト(20以上の定数)
+        public static final int BED = 20; // ベッド, 1×2マス
+        public static final int VERTICAL_STAIR = 21; // 階段(縦向き), 3×6マス
+        public static final int CONTAINER_1T2 = 22; // コンテナ, 1×2マス
+        public static final int CONTAINER_2T2 = 23; // コンテナ, 2×2マス
 
-    public static final int GAME_CLEAR = 1000; // ゲームクリア地点.
+        public static final int TO_A1_FROM_A0 = 101; // マップA0からA1への遷移ポイント.以下同様.a
+        public static final int TO_A0_FROM_A1 = 102;
+        public static final int TO_A2_FROM_A1 = 103;
+        public static final int TO_A1_FROM_A2 = 104;
 
-    private static final int TS = ConstSet.TILE_SIZE;
+        public static final int GAME_CLEAR = 1000; // ゲームクリア地点.
 
-    // プレイヤーが通過できない障害物のリスト.
-    public static final int[] OBSTACLES = {
-        CLEAR_OBSTACLE, WALL_NORTH, WALL_TOP_NORTH, WALL_TOP_SOUTH, WALL_TOP_EAST, WALL_TOP_WEST, BED,
-        CONTAINER_1T2, CONTAINER_2T2
-    };
+        private static final int TS = ConstSet.TILE_SIZE;
 
-    public static final int[][] MAPA0 = {
-        {6, 1, 1, 1, 1, 1, 1, 7}, // 北壁：上面
-        {5, 2, -1, 2, -1, 2, -1, 4}, // 北壁：正面（上段）
-        {5, -1, -1, -1, -1, -1, -1, 4}, // 北壁：正面（下段） ※これで2x2の見た目
-        {5, 0, 0, 0, 0, 0, 0, 4}, //
-        {5, 0, 0, 0, 0, 0, 0, 4}, // 
-        {5, 0, 0, 0, 20, 0, 0, 4}, // (ベッド) 
-        {5, 0, 0, 0, -1, 0, 0, 4}, // (ベッド障害物)
-        {5, 0, 0, 0, 0, 0, 0, 4}, //
-        {5, 0, 0, 0, 0, 0, 0, 4}, //
-        {9, 3, 101, 101, 3, 3, 3, 8} // 南壁：上面 兼 出入口
-    };
+        // プレイヤーが通過できない障害物のリスト.
+        public static final int[] OBSTACLES =
+                        {CLEAR_OBSTACLE, WALL_NORTH, WALL_TOP_NORTH, WALL_TOP_SOUTH, WALL_TOP_EAST,
+                                        WALL_TOP_WEST, BED, CONTAINER_1T2, CONTAINER_2T2};
+
+        public static final int[][] MAP0 = { // B4f
+                        {5, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 4},
+                        {5, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, 4},
+                        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 2, -1, 2, -1, 2, -1, 0, 0, 2, -1, 2, -1, 4},
+                        {5, -2, -2, -2, -2, -2, -2, 0, 0, -2, -2, -2, -1, 4},
+                        {5, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {5, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+                        {9, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 8},
+
+        };
+
+
+        public static final int[][] MAPA0 = {{6, 1, 1, 1, 1, 1, 1, 7}, // 北壁：上面
+                        {5, 2, -1, 2, -1, 2, -1, 4}, // 北壁：正面（上段）
+                        {5, -2, -2, -2, -2, -2, -2, 4}, // 北壁：正面（下段） ※これで2x2の見た目
+                        {5, 0, 0, 0, 0, 0, 0, 4}, //
+                        {5, 0, 0, 0, 0, 0, 0, 4}, //
+                        {5, 0, 0, 0, 20, 0, 0, 4}, // (ベッド)
+                        {5, 0, 0, 0, -1, 0, 0, 4}, // (ベッド障害物)
+                        {5, 0, 0, 0, 0, 0, 0, 4}, //
+                        {5, 0, 0, 0, 0, 0, 0, 4}, //
+                        {9, 3, 101, 101, 3, 3, 3, 8} // 南壁：上面 兼 出入口
+        };
 
     // @formatter:off 
     public static final int[][] MAPA1 = {
@@ -59,7 +77,7 @@ public class MapData {
         {6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -2, -2, 1, 1, 1, 1, 1, 1, 7},
         // 1-4: フロア（左右は西壁5と東壁4）
         {5, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 102, 102, 2, -1, 2, -1, 2, -1, 4},
-        {5, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, -1, -1, -1, -1, -1, -1, 4},
+        {5, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, 0, 0, -2, -2, -2, -2, -2, -2, 4},
         {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
         {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
         // 5-8: 縦長の障害物(1)があるエリア
@@ -101,29 +119,29 @@ public class MapData {
     };
     // @formatter:on
 
-    // 以下敵のデータ(敵が向かうポイントの数,ポイントのX座標の配列,ポイントのY座標の配列).
+        // 以下敵のデータ(敵が向かうポイントの数,ポイントのX座標の配列,ポイントのY座標の配列).
 
-    public static final int MAPA1_ENEMY_NUM = 3;
-    // 敵0のデータ.
-    public static int MAPA1_E0_PNUM = 4; // 敵が移動するポイントの数
-    public static int[] MAPA1_E0X =
-            {TS * 7 + TS / 2, TS * 16 + TS / 2, TS * 16 + TS / 2, TS * 7 + TS / 2};
-    public static final int[] MAPA1_E0Y =
-            {TS * 10 + TS / 2, TS * 10 + TS / 2, TS * 19 + TS / 2, TS * 19 + TS / 2};
+        public static final int MAPA1_ENEMY_NUM = 3;
+        // 敵0のデータ.
+        public static int MAPA1_E0_PNUM = 4; // 敵が移動するポイントの数
+        public static int[] MAPA1_E0X =
+                        {TS * 7 + TS / 2, TS * 16 + TS / 2, TS * 16 + TS / 2, TS * 7 + TS / 2};
+        public static final int[] MAPA1_E0Y =
+                        {TS * 10 + TS / 2, TS * 10 + TS / 2, TS * 19 + TS / 2, TS * 19 + TS / 2};
 
-    // 敵1のデータ.
-    public static final int MAPA1_E1_PNUM = 4;
-    public static int[] MAPA1_E1X =
-            {TS * 29 + TS / 2, TS * 42 + TS / 2, TS * 42 + TS / 2, TS * 29 + TS / 2,};
-    public static final int[] MAPA1_E1Y =
-            {TS * 8 + TS / 2, TS * 8 + TS / 2, TS * 21 + TS / 2, TS * 21 + TS / 2};
+        // 敵1のデータ.
+        public static final int MAPA1_E1_PNUM = 4;
+        public static int[] MAPA1_E1X =
+                        {TS * 29 + TS / 2, TS * 42 + TS / 2, TS * 42 + TS / 2, TS * 29 + TS / 2,};
+        public static final int[] MAPA1_E1Y =
+                        {TS * 8 + TS / 2, TS * 8 + TS / 2, TS * 21 + TS / 2, TS * 21 + TS / 2};
 
-    // 敵2のデータ.
-    public static final int MAPA1_E2_PNUM = 4;
-    public static int[] MAPA1_E2X =
-            {TS * 46 + TS / 2, TS * 50 + TS / 2, TS * 50 + TS / 2, TS * 46 + TS / 2,};
-    public static final int[] MAPA1_E2Y =
-            {TS * 3 + TS / 2, TS * 3 + TS / 2, TS * 10 + TS / 2, TS * 10 + TS / 2};
+        // 敵2のデータ.
+        public static final int MAPA1_E2_PNUM = 4;
+        public static int[] MAPA1_E2X =
+                        {TS * 46 + TS / 2, TS * 50 + TS / 2, TS * 50 + TS / 2, TS * 46 + TS / 2,};
+        public static final int[] MAPA1_E2Y =
+                        {TS * 3 + TS / 2, TS * 3 + TS / 2, TS * 10 + TS / 2, TS * 10 + TS / 2};
 
 
 

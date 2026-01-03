@@ -23,8 +23,20 @@ public class PlayerModel {
     private boolean isLeftPressed = false;
     private boolean isRightPressed = false;
 
+    // スクリプト移動用の変数
+    private boolean isScripted = false;
+    private int[] scriptX;
+    private int[] scriptY;
+    private int scriptIndex = 0;
+
     // Viewのタイマーから定期的に呼ばれるメソッド
     public void updatePlayerPosition(MapModel mm) {
+        // スクリプト移動中ならそちらを優先
+        if (isScripted) {
+            updateScriptedPosition(mm);
+            return;
+        }
+
         // 移動中かどうかを判定
         boolean isMoving = isUpPressed || isDownPressed || isLeftPressed || isRightPressed;
 
@@ -140,16 +152,28 @@ public class PlayerModel {
     // プレイヤーと障害物が重なっていないか判定するメソッド.
     public boolean isObstacleExist(MapModel mm) {
         int halfSize = ConstSet.PLAYER_SIZE / 2;
-        int[] cornerTiles = {mm.getTile(playerX + halfSize - 1, playerY + halfSize - 1), // 右下
-                mm.getTile(playerX - halfSize, playerY - halfSize), // 左上
-                mm.getTile(playerX - halfSize, playerY + halfSize - 1), // 左下
-                mm.getTile(playerX + halfSize - 1, playerY - halfSize) // 右上
+        int[][] corners = {{playerX + halfSize - 1, playerY + halfSize - 1}, // 右下
+                {playerX - halfSize, playerY - halfSize}, // 左上
+                {playerX - halfSize, playerY + halfSize - 1}, // 左下
+                {playerX + halfSize - 1, playerY - halfSize} // 右上
         };
 
         // いずれかの隅が障害物タイルに一致するかどうかを判定します.
-        for (int tile : cornerTiles) {
+        for (int[] point : corners) {
+            int x = point[0];
+            int y = point[1];
+            int tile = mm.getTile(x, y);
+
             for (int obstacle : MapData.OBSTACLES) {
                 if (tile == obstacle) {
+                    return true;
+                }
+            }
+
+            if (tile == MapData.HALF_CLEAR_OBSTACLE) {
+                // 上半分は通行不可. タイルのY座標の開始位置を計算し、そこから半分の高さ未満なら衝突とみなす
+                int tileTopY = (y / ConstSet.TILE_SIZE) * ConstSet.TILE_SIZE;
+                if (y < tileTopY + ConstSet.TILE_SIZE / 2) {
                     return true;
                 }
             }
@@ -179,5 +203,77 @@ public class PlayerModel {
     public void resetStatus() {
         this.playerHP = 10; // HPを初期値に戻す
         // 他にリセットすべき値があればここに追加
+    }
+
+    // スクリプト移動を開始するメソッド.
+    // 通過点(x, y)の配列を渡すと, 順番に移動する.
+    public void startScriptedMovement(int[] x, int[] y) {
+        this.scriptX = x;
+        this.scriptY = y;
+        this.scriptIndex = 0;
+        this.isScripted = true;
+
+        // 手動操作のフラグをクリア
+        this.isUpPressed = false;
+        this.isDownPressed = false;
+        this.isLeftPressed = false;
+        this.isRightPressed = false;
+    }
+
+    // スクリプトによる移動処理を行うメソッド.
+    private void updateScriptedPosition(MapModel mm) {
+        if (scriptX == null || scriptIndex >= scriptX.length) {
+            isScripted = false;
+            DialogueSet.dialogue_count++;
+            return;
+        }
+
+        int targetX = scriptX[scriptIndex];
+        int targetY = scriptY[scriptIndex];
+
+        // 移動方向の決定 (簡易的)
+        int dx = targetX - playerX;
+        int dy = targetY - playerY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            playerDirection = (dx > 0) ? ConstSet.RIGHT : ConstSet.LEFT;
+        } else if (dy != 0) {
+            playerDirection = (dy > 0) ? ConstSet.DOWN : ConstSet.UP;
+        }
+
+        // 座標更新
+        if (playerX < targetX)
+            playerX = Math.min(playerX + ConstSet.PLAYER_SPEED, targetX);
+        else if (playerX > targetX)
+            playerX = Math.max(playerX - ConstSet.PLAYER_SPEED, targetX);
+
+        if (playerY < targetY)
+            playerY = Math.min(playerY + ConstSet.PLAYER_SPEED, targetY);
+        else if (playerY > targetY)
+            playerY = Math.max(playerY - ConstSet.PLAYER_SPEED, targetY);
+
+        // 移動したか判定
+        if (playerX != targetX || playerY != targetY) {
+            // アニメーション更新
+            animationCounter++;
+            if (animationCounter >= 10) {
+                animIndex = (animIndex + 1) % animSequence.length;
+                animationFrame = animSequence[animIndex];
+                animationCounter = 0;
+            }
+        } else {
+            // 目標地点に到達したら次のポイントへ
+            scriptIndex++;
+            if (scriptIndex >= scriptX.length) {
+                isScripted = false;
+                animationFrame = 0; // 停止
+
+                DialogueSet.dialogue_count++;
+            }
+        }
+
+        if (mm.getPlayerTile() > 100) {
+            isScripted = false;
+            DialogueSet.dialogue_count++;
+        }
     }
 }
