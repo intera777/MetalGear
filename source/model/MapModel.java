@@ -5,7 +5,8 @@ import GameConfig.*;
 public class MapModel {
     PlayerModel playermodel;
     EnemiesModel enemiesModel;
-    private static int currentMap[][];
+
+    private int currentMap[][];
 
     public MapModel(PlayerModel pm, EnemiesModel em) {
         playermodel = pm;
@@ -30,26 +31,26 @@ public class MapModel {
     }
 
     // プレイヤーが遷移ポイントに達したかを確認し、達していたらマップを変更するメソッド.
-    public void updateMap(PlayerModel pm) {
+    public void updateMap() {
         if (getPlayerTile() > 100) {
-            changeMap(pm);
+            changeMap();
         }
     }
 
     // 遷移ポイントに達したときにマップを変更するメソッド.
-    public void changeMap(PlayerModel pm) {
+    public void changeMap() {
         if (getPlayerTile() == MapData.TO_A1_FROM_A0) {
             setCurrentMap(MapData.MAPA1);
-            pm.playerPositionSet(ConstSet.TILE_SIZE * 54, ConstSet.TILE_SIZE * 2);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 54, ConstSet.TILE_SIZE * 2);
         } else if (getPlayerTile() == MapData.TO_A0_FROM_A1) {
             setCurrentMap(MapData.MAPA0);
-            pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 6);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 6);
         } else if (getPlayerTile() == MapData.TO_A2_FROM_A1) {
             setCurrentMap(MapData.MAPA2);
-            pm.playerPositionSet(ConstSet.TILE_SIZE * 8, ConstSet.TILE_SIZE * 4);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 8, ConstSet.TILE_SIZE * 4);
         } else if (getPlayerTile() == MapData.TO_A1_FROM_A2) {
             setCurrentMap(MapData.MAPA1);
-            pm.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 15);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 15);
         } else if (getPlayerTile() == MapData.GAME_CLEAR) {
             System.exit(0);
         }

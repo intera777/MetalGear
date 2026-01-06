@@ -54,64 +54,68 @@ public class Metalgear extends JFrame {
         frame.add(gameview);
 
 
+        gamemodel.getDialogueBoxesModel().setGameView(gameview);
+
         frame.setVisible(true);
 
         final int FPS = 30; // フレームレート.
-        GameState gamestate = new GameState(GameState.GAME_OVER); // ゲームモードの設定.
-
+        GameState.setCurrentState(GameState.State.GAME_OVER);
         playermodel.playerPositionSet(10 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
                 12 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
         mapmodel.setCurrentMap(MapData.MAP0);
 
-        int previousState = -1;
-        int dialogue_count = 1;
-
         // ゲームループ本体.
         while (true) {
-            int currentstate = GameState.getCurrentState();
-            if (previousState != GameState.getCurrentState()) {
-                int[] pathX = {playermodel.getPlayerX(),
-                        playermodel.getPlayerX() - ConstSet.TILE_SIZE * 8};
-                int[] pathY = {playermodel.getPlayerY(), playermodel.getPlayerY()};
-                playermodel.startScriptedMovement(pathX, pathY);
-                if (DialogueSet.dialogue_count == 1) { // セリフセット1を表示.
-                    gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.nameset1,
-                            DialogueSet.dialogueset1);
-                } else if (DialogueSet.dialogue_count == 3) {
-                    gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.nameset2,
-                            DialogueSet.dialogueset2);
-                }
-            }
+            GameState.State currentstate = GameState.getCurrentState();
+
             // ゲームの状態に応じて更新処理を切り替える
             switch (currentstate) {
-                case GameState.MENU:
+                case MENU:
                     // メニュー画面の更新処理（例：選択項目の移動など）
                     // 今は特に何もしない
                     break;
-                case GameState.PLAYING:
-                    // プレイ中の更新処理
-
-                    // スクリプト移動と最初の会話が終わった後に次の会話を表示
-                    if (DialogueSet.dialogue_count == 3
+                case PLAYING:
+                    // プロローグのイベントシーケンス管理
+                    // 各ダイアログやイベントが一度だけ実行されるように、!isVisible() や !isScripted() でチェックします。
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.PROLOGUE
                             && !gamemodel.getDialogueBoxesModel().isVisible()) {
-                        gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.nameset2,
-                                DialogueSet.dialogueset2);
+                        gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.DIALOGUE_SET_0);
+                    }
+
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.AFTER_PROLOGUE_DIALOGUE
+                            && !gamemodel.getDialogueBoxesModel().isVisible()) { // セリフセット1を表示.
+                        gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.DIALOGUE_SET_1);
+                    }
+
+                    // スクリプト移動の開始
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION
+                            && !playermodel.isScripted() && !gameview.isPerspectiveMoving()) {
+                        int[] pathX = {playermodel.getPlayerX(),
+                                playermodel.getPlayerX() - ConstSet.TILE_SIZE * 8};
+                        int[] pathY = {playermodel.getPlayerY(), playermodel.getPlayerY()};
+                        playermodel.startScriptedMovement(pathX, pathY);
+                    }
+                    // スクリプト移動後の会話
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE
+                            && !gamemodel.getDialogueBoxesModel().isVisible()) {
+                        gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.DIALOGUE_SET_2);
                     }
 
                     // 会話中はゲームの更新を止める
-                    if (!gamemodel.getDialogueBoxesModel().isVisible()) {
+                    if (!gamemodel.getDialogueBoxesModel().isVisible()
+                            && !gameview.isPerspectiveMoving()) {
                         playermodel.updatePlayerPosition(mapmodel);
                         enemiesmodel.updateEnemiesPosition(mapmodel, playermodel, bulletsmodel);
                         bulletsmodel.updateBulletsPosition(mapmodel, playermodel, enemiesmodel);
-                        mapmodel.updateMap(playermodel);
+                        mapmodel.updateMap();
                     }
 
                     // プレイヤーが死亡したかチェック
                     if (playermodel.isDead()) {
-                        gamestate.setGameState(GameState.GAME_OVER);
+                        GameState.setCurrentState(GameState.State.GAME_OVER);
                     }
                     break;
-                case GameState.GAME_OVER:
+                case GAME_OVER:
                     // リスタートする場合のため初期位置をリセット.
                     playermodel.playerPositionSet(
                             10 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
@@ -122,7 +126,6 @@ public class Metalgear extends JFrame {
 
                     break;
             }
-            previousState = currentstate;
             gameview.repaint();
             try {
                 // 約0.033秒停止.

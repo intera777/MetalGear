@@ -1,20 +1,28 @@
 package model;
 
 import GameConfig.DialogueSet;
+import view.*;
 
 public class DialogueBoxesModel {
 
     private DialogueBoxModel[] dialogues;
     private int currentIndex = -1;
     private boolean isVisible = false;
+    private GameView gameview;
 
-    public void setDialogues(String[] names, String[] texts) {
-        if (names.length != texts.length)
-            return;
+    public DialogueBoxesModel() {
 
-        dialogues = new DialogueBoxModel[names.length];
-        for (int i = 0; i < names.length; i++) {
-            dialogues[i] = new DialogueBoxModel(names[i], texts[i]);
+    }
+
+    public void setGameView(GameView gv) {
+        gameview = gv;
+    }
+
+    public void setDialogues(DialogueSet.Dialogue[] newDialogues) {
+        dialogues = new DialogueBoxModel[newDialogues.length];
+        for (int i = 0; i < newDialogues.length; i++) {
+            DialogueSet.Dialogue d = newDialogues[i];
+            dialogues[i] = new DialogueBoxModel(d.name(), d.text());
         }
         currentIndex = 0;
         isVisible = true;
@@ -28,7 +36,24 @@ public class DialogueBoxesModel {
             isVisible = false;
             currentIndex = -1;
 
-            DialogueSet.dialogue_count++;
+            // 会話セットの表示が完了したタイミングで、ゲームの進行状況を次の段階へ進めます。
+            // このロジックは、会話イベントのシーケンスに強く依存しています。
+            switch (DialogueSet.dialogueState) {
+                case PROLOGUE:
+                    DialogueSet.dialogueState =
+                            DialogueSet.DialogueState.MOVING_PERSPECTIVE_TO_WORKING;
+                    gameview.startPerspectiveMoving();
+                    break;
+                case AFTER_PROLOGUE_DIALOGUE:
+                    DialogueSet.dialogueState =
+                            DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION;
+                    break;
+                case AFTER_SCRIPTED_MOVE:
+                    DialogueSet.dialogueState = DialogueSet.DialogueState.MAIN_GAMEPLAY;
+                    break;
+                default:
+                    break; // その他の状態では何もしない
+            }
         }
     }
 

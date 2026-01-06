@@ -1,6 +1,7 @@
 package view;
 
 import GameConfig.*;
+import GameConfig.DialogueSet.DialogueState;
 import control.*;
 
 import model.*;
@@ -23,6 +24,9 @@ public class GameView extends JPanel {
     private GameOverMenuView gameOverMenuView;
     private DialogueBoxView dialogueBoxView;
 
+    private boolean isPerspectiveMoving;
+    private int timer = 0; // 視点移動などのイベントの時間管理用.
+
     public GameView(PlayerModel pm, GameOverMenuModel gm, MapView mv, EnemyView ev, PlayerView pv,
             BulletView bv, GameOverMenuView gv, PlayerControl pc, BulletControl bc,
             GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
@@ -34,6 +38,7 @@ public class GameView extends JPanel {
         this.bulletView = bv;
         this.gameOverMenuView = gv;
         this.dialogueBoxView = dv;
+        this.isPerspectiveMoving = false;
 
         // GameView内でまとめてキー登録をする
         this.addKeyListener(bc);
@@ -49,7 +54,20 @@ public class GameView extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        if (GameState.getCurrentState() == GameState.PLAYING) {
+        if (GameState.getCurrentState() == GameState.State.PLAYING) {
+            int logicWidth;
+            int logicHeight;
+
+            int playerDrawX;
+            int playerDrawY;
+
+            int modelLeft;
+            int modelTop;
+
+            int offsetX;
+            int offsetY;
+
+
             // --- スケーリングの設定 ---
             double scale = 2.0; // 2.0倍に拡大
             // ドット絵をクッキリさせる設定
@@ -64,32 +82,70 @@ public class GameView extends JPanel {
 
             // --- 座標計算 (拡大を考慮した画面サイズで計算) ---
             // 画面が拡大された分、表示できる論理的な幅は WINDOW_WIDTH / scale になる
-            int logicWidth = (int) (ConstSet.WINDOW_WIDTH / scale);
-            int logicHeight = (int) (ConstSet.WINDOW_HEIGHT / scale);
+            logicWidth = (int) (ConstSet.WINDOW_WIDTH / scale);
+            logicHeight = (int) (ConstSet.WINDOW_HEIGHT / scale);
 
-            int playerDrawX = (logicWidth - ConstSet.PLAYER_SIZE) / 2;
-            int playerDrawY = (logicHeight - ConstSet.PLAYER_SIZE) / 2;
+            playerDrawX = (logicWidth - ConstSet.PLAYER_SIZE) / 2;
+            playerDrawY = (logicHeight - ConstSet.PLAYER_SIZE) / 2;
 
-            int modelLeft = playerModel.getPlayerX() - (ConstSet.PLAYER_SIZE / 2);
-            int modelTop = playerModel.getPlayerY() - (ConstSet.PLAYER_SIZE / 2);
-
-            int offsetX = playerDrawX - modelLeft;
-            int offsetY = playerDrawY - modelTop;
-
-            // --- 描画実行 ---
-            mapView.drawMap(g2d, offsetX, offsetY);
-            enemyView.drawEnemies(g2d, offsetX, offsetY);
-            playerView.drawPlayer(g2d, playerDrawX, playerDrawY);
-            bulletView.drawBullet(g2d, offsetX, offsetY);
-
+            modelLeft = playerModel.getPlayerX() - (ConstSet.PLAYER_SIZE / 2);
+            modelTop = playerModel.getPlayerY() - (ConstSet.PLAYER_SIZE / 2);
+            if (!isPerspectiveMoving) {
+                offsetX = playerDrawX - modelLeft;
+                offsetY = playerDrawY - modelTop;
+                // --- 描画実行 ---
+                mapView.drawMap(g2d, offsetX, offsetY);
+                enemyView.drawEnemies(g2d, offsetX, offsetY);
+                playerView.drawPlayer(g2d, playerDrawX, playerDrawY);
+                bulletView.drawBullet(g2d, offsetX, offsetY);
+            } else {
+                int moving = perspectiveMoving();
+                offsetX = playerDrawX - modelLeft + moving;
+                offsetY = playerDrawY - modelTop + moving;
+                // --- 描画実行 ---
+                mapView.drawMap(g2d, offsetX, offsetY);
+                enemyView.drawEnemies(g2d, offsetX, offsetY);
+                playerView.drawPlayer(g2d, playerDrawX + moving, playerDrawY + moving);
+                bulletView.drawBullet(g2d, offsetX, offsetY);
+            }
             // 元に戻す（UIなどは拡大しない場合）
             g2d.setTransform(oldTransform);
 
             // 会話ボックスはUIとして最前面に描画
             dialogueBoxView.drawDialogueBox(g2d);
 
-        } else if (GameState.getCurrentState() == GameState.GAME_OVER) {
+        } else if (GameState.getCurrentState() == GameState.State.GAME_OVER) {
             gameOverMenuView.drawGameOverMenu(g);
         }
+    }
+
+    public boolean isPerspectiveMoving() { // 視点が動いている状態ならtrueを返す.
+        return this.isPerspectiveMoving;
+    }
+
+    public void startPerspectiveMoving() {
+        isPerspectiveMoving = true;
+    }
+
+    public void finishPerspectiveMoving() {
+        isPerspectiveMoving = false;
+    }
+
+    private int perspectiveMoving() { // offsetへの補正値を返す.
+        if (DialogueSet.dialogueState == DialogueSet.DialogueState.MOVING_PERSPECTIVE_TO_WORKING) {
+            timer++;
+            if (timer < 60) {
+                return timer * 3;
+            } else if (60 <= timer && timer < 120) {
+                return 60 * 3;
+            } else if (120 <= timer && timer < 180) {
+                return 60 * 3 - 3 * (timer - 120);
+            } else {
+                timer = 0;
+                DialogueSet.dialogueState = DialogueSet.DialogueState.AFTER_PROLOGUE_DIALOGUE;
+                finishPerspectiveMoving();
+            }
+        }
+        return 0;
     }
 }

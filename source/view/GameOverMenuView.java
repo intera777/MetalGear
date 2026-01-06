@@ -36,7 +36,7 @@ public class GameOverMenuView {
 
         // メニュー項目の描画
         g.setFont(menuFont);
-        int[] items = gameOverMenuModel.getMenuItems(); // 項目のリスト自体を取得
+        GameOverMenuModel.MenuItem[] items = gameOverMenuModel.getMenuItems();
         int selectedIndex = gameOverMenuModel.getSelectedIndex(); // 今何番目の項目を選択しているかを取得
 
         for (int i = 0; i < items.length; i++) {
@@ -51,17 +51,18 @@ public class GameOverMenuView {
             }
 
             int itemX = getCenterX(g, text, ConstSet.WINDOW_WIDTH);
-            // タイトルの下から順に並べる
-            g.drawString(text, itemX, (ConstSet.WINDOW_HEIGHT / 2) + (i * 50)); // 選択項目の間隔が 50px
+            // タイトルの下から順に並べる (選択項目の間隔が 50px)
+            g.drawString(text, itemX, (ConstSet.WINDOW_HEIGHT / 2) + (i * 50));
         }
     }
 
     // gameState によって, 表示テキストを変える
-    private String getMenuText(int gameState) {
-        switch (gameState) {
-            case ConstSet.RESTART_GAME:
+
+    private String getMenuText(GameOverMenuModel.MenuItem item) {
+        switch (item) {
+            case RESTART_GAME:
                 return "もう一度プレイする";
-            case ConstSet.FINISH_GAME:
+            case FINISH_GAME:
                 return "ゲームをやめる";
             default:
                 return "UNKNOWN";

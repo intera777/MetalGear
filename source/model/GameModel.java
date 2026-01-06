@@ -1,5 +1,7 @@
 package model;
 
+import view.*;
+
 public class GameModel {
     private PlayerModel playerModel;
     private BulletsModel bulletsModel;

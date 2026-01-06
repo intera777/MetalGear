@@ -1,29 +1,50 @@
 package GameConfig;
 
 public final class DialogueSet {
+
     private DialogueSet() {}
 
-    public static int dialogue_count = 1;
+    public record Dialogue(String name, String text) {
+    }
+    /**
+     * ゲームの会話イベントの進行状況を示します。
+     * <ul>
+     * <li>{@code PROLOGUE}: プロローグ開始時 (旧 dialogue_count = 0)</li>
+     * <li>{@code AFTER_PROLOGUE_DIALOGUE}: プロローグ会話終了後 (旧 dialogue_count = 1)</li>
+     * <li>{@code AWAITING_SCRIPTED_MOVE_COMPLETION}: スクリプト移動完了待ち (旧 dialogue_count = 2)</li>
+     * <li>{@code AFTER_SCRIPTED_MOVE}: スクリプト移動完了後 (旧 dialogue_count = 3)</li>
+     * <li>{@code MAIN_GAMEPLAY}: メインゲームプレイ開始 (旧 dialogue_count = 4)</li>
+     * </ul>
+     */
+    public enum DialogueState {
+        PROLOGUE, MOVING_PERSPECTIVE_TO_WORKING, AFTER_PROLOGUE_DIALOGUE, AWAITING_SCRIPTED_MOVE_COMPLETION, AFTER_SCRIPTED_MOVE, MAIN_GAMEPLAY
+    }
+
+    public static DialogueState dialogueState = DialogueState.PROLOGUE;
 
     //@formatter:off
-    public final static String[] nameset1 = {
-        "プレイヤー", 
-        "プレイヤー",
+
+    public final static Dialogue[] DIALOGUE_SET_0 = {
+        new Dialogue("", "ここは名門大学,D大学"),
+        new Dialogue("", "ここでは世界に通用する学生の育成の名のもと"),
+        new Dialogue("", "常軌を逸する授業,基礎科学実験Aが行われていた..."),
+        new Dialogue("", "この科目の単位を落とした学生は地下に幽閉され,"),
+        new Dialogue("", "研究者の監視のもと強制的な学習をさせられることになる"),
+        new Dialogue("", "主人公も単位を落とし,地下で日夜勉強に励んでいたのだが..."),
+        new Dialogue("", "ある日地下で恐ろしい光景を目にしてしまう"),
+        new Dialogue("", "それは著しく成績の悪い学生たちが"),
+        new Dialogue("", "強制的に労働させられている姿であった"),
+        new Dialogue("", "(ここで左上に視線を移し,謎の棒をぐるぐる回すやつを表示)"),
     };
 
-    public final static String[] dialogueset1={
-        "なんで...ここでこんなことが...",
-        "うわああああああ!",
+    public final static Dialogue[] DIALOGUE_SET_1 = {
+        new Dialogue("プレイヤー", "なんで...ここでこんなことが..."),
+        new Dialogue("プレイヤー", "うわああああああ!"),
     };
 
-    public final static String[] nameset2={
-        "プレイヤー"
+    public final static Dialogue[] DIALOGUE_SET_2 = {
+        new Dialogue("プレイヤー", "一刻も早く...  ここから脱出しないと... ")
     };
-
-    public final static String[] dialogueset2={
-        "一刻も早く...  ここから脱出しないと... "
-    };
-
     //@formatter:on
 
 }

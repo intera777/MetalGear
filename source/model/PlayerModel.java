@@ -220,11 +220,18 @@ public class PlayerModel {
         this.isRightPressed = false;
     }
 
+    public boolean isScripted() {
+        return isScripted;
+    }
+
     // スクリプトによる移動処理を行うメソッド.
     private void updateScriptedPosition(MapModel mm) {
         if (scriptX == null || scriptIndex >= scriptX.length) {
             isScripted = false;
-            DialogueSet.dialogue_count++;
+            // スクリプト移動が完了したことを示すために状態を更新します。
+            if (DialogueSet.dialogueState == DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION) {
+                DialogueSet.dialogueState = DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE;
+            }
             return;
         }
 
@@ -267,13 +274,19 @@ public class PlayerModel {
                 isScripted = false;
                 animationFrame = 0; // 停止
 
-                DialogueSet.dialogue_count++;
+                // スクリプト移動が完了したことを示すために状態を更新します。
+                if (DialogueSet.dialogueState == DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION) {
+                    DialogueSet.dialogueState = DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE;
+                }
             }
         }
 
         if (mm.getPlayerTile() > 100) {
             isScripted = false;
-            DialogueSet.dialogue_count++;
+            // スクリプト移動が完了したことを示すために状態を更新します。
+            if (DialogueSet.dialogueState == DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION) {
+                DialogueSet.dialogueState = DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE;
+            }
         }
     }
 }
