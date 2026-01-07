@@ -23,8 +23,8 @@ public class GameOverMenuView {
 
     // ゲームオーバー画面を描画するメソッド
     public void drawGameOverMenu(Graphics g) {
-        // 背景を少し暗くする. 黒色の透明度 a を 150
-        g.setColor(new Color(0, 0, 0, 150));
+        // 背景を黒で塗りつぶす
+        g.setColor(new Color(0, 0, 0));
         g.fillRect(0, 0, ConstSet.WINDOW_WIDTH, ConstSet.WINDOW_HEIGHT);
 
         // 「GAME OVER」タイトルの描画

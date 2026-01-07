@@ -9,7 +9,8 @@ public class PlayerModel {
     private int playerX = -100; // 初期位置
     private int playerY = -100; // 初期位置
     private int playerDirection = ConstSet.RIGHT; // プレイヤーが向いている方向.0123の順で右上左下.
-    private int playerHP = 5;// プレイヤーの体力.
+    private int playerHP = 10;// プレイヤーの体力の初期値.
+    private int maxHP = 10; // プレイヤーの体力の最大値.
 
     // アニメーション用
     private int animationFrame = 0; // 0:静止, 1:足1, 2:足2
@@ -143,6 +144,11 @@ public class PlayerModel {
         return playerHP;
     }
 
+    // プレイヤーの最大HPを取得するメソッド.
+    public int getMaxHP() {
+        return maxHP;
+    }
+
     // プレイヤーの座標を直接セットする.
     public void playerPositionSet(int tx, int ty) {
         playerX = tx;
@@ -201,7 +207,7 @@ public class PlayerModel {
 
     // ゲームリスタート時にプレイヤーのステータスを初期化するメソッド.
     public void resetStatus() {
-        this.playerHP = 10; // HPを初期値に戻す
+        this.playerHP = maxHP; // HPを初期値に戻す
         // 他にリセットすべき値があればここに追加
     }
 

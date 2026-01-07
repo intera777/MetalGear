@@ -25,7 +25,7 @@ public class DialogueBoxView {
         // ウィンドウ下部に黒い半透明のボックスを描画
         int height = 150;
         int y = ConstSet.WINDOW_HEIGHT - height;
-        g.setColor(new Color(0, 0, 0, 200));
+        g.setColor(new Color(50, 50, 50, 220));
         g.fillRect(0, y, ConstSet.WINDOW_WIDTH, height);
 
         // 枠線

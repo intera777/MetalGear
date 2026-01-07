@@ -47,9 +47,12 @@ public class Metalgear extends JFrame {
                 new DialogueBoxControl(gamemodel.getDialogueBoxesModel());
         DialogueBoxView dialogueBoxView = new DialogueBoxView(gamemodel.getDialogueBoxesModel());
 
+        // HPBarクラス関連のオブジェクト生成
+        HPBarView hpBarView = new HPBarView();
+
         // 画面を描画するクラスの生成.
         GameView gameview = new GameView(playermodel, gameovermenumodel, mapview, enemyview,
-                playerview, bulletview, gameovermenuview, playercontrol, bulletcontrol,
+                playerview, bulletview, gameovermenuview, hpBarView, playercontrol, bulletcontrol,
                 gameovermenucontrol, dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
 

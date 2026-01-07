@@ -23,12 +23,13 @@ public class GameView extends JPanel {
     private BulletView bulletView;
     private GameOverMenuView gameOverMenuView;
     private DialogueBoxView dialogueBoxView;
+    private HPBarView hpBarView;
 
     private boolean isPerspectiveMoving;
     private int timer = 0; // 視点移動などのイベントの時間管理用.
 
     public GameView(PlayerModel pm, GameOverMenuModel gm, MapView mv, EnemyView ev, PlayerView pv,
-            BulletView bv, GameOverMenuView gv, PlayerControl pc, BulletControl bc,
+            BulletView bv, GameOverMenuView gv, HPBarView hpv, PlayerControl pc, BulletControl bc,
             GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
         this.playerModel = pm;
         this.gameOverMenuModel = gm;
@@ -37,6 +38,7 @@ public class GameView extends JPanel {
         this.playerView = pv;
         this.bulletView = bv;
         this.gameOverMenuView = gv;
+        this.hpBarView = hpv;
         this.dialogueBoxView = dv;
         this.isPerspectiveMoving = false;
 
@@ -51,7 +53,11 @@ public class GameView extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        // 画面全体を黒で塗りつぶす
         super.paintComponent(g);
+        g.setColor(java.awt.Color.BLACK);
+        g.fillRect(0, 0, ConstSet.WINDOW_WIDTH, ConstSet.WINDOW_HEIGHT);
+
         Graphics2D g2d = (Graphics2D) g;
 
         if (GameState.getCurrentState() == GameState.State.PLAYING) {
@@ -110,6 +116,9 @@ public class GameView extends JPanel {
             }
             // 元に戻す（UIなどは拡大しない場合）
             g2d.setTransform(oldTransform);
+
+            // UI描画時の拡大の影響を受けない. 視点移動の影響も受けない.
+            hpBarView.drawHPBar(g2d, 20, 30, playerModel.getPlayerHP(), playerModel.getMaxHP());
 
             // 会話ボックスはUIとして最前面に描画
             dialogueBoxView.drawDialogueBox(g2d);
