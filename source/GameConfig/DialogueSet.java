@@ -34,7 +34,6 @@ public final class DialogueSet {
         new Dialogue("", "ある日地下で恐ろしい光景を目にしてしまう"),
         new Dialogue("", "それは著しく成績の悪い学生たちが"),
         new Dialogue("", "強制的に労働させられている姿であった"),
-        new Dialogue("", "(ここで左上に視線を移し,謎の棒をぐるぐる回すやつを表示)"),
     };
 
     public final static Dialogue[] DIALOGUE_SET_1 = {
@@ -43,7 +42,8 @@ public final class DialogueSet {
     };
 
     public final static Dialogue[] DIALOGUE_SET_2 = {
-        new Dialogue("プレイヤー", "一刻も早く...  ここから脱出しないと... ")
+        new Dialogue("プレイヤー", "一刻も早く...  ここから脱出しないと... "),
+        new Dialogue("プレイヤー", "地上へ行って... 絶対に生きて帰るんだ")
     };
     //@formatter:on
 

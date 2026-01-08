@@ -42,6 +42,8 @@ public class Metalgear extends JFrame {
         GameOverMenuView gameovermenuview = new GameOverMenuView(gameovermenumodel);
         GameOverMenuControl gameovermenucontrol = new GameOverMenuControl(gameovermenumodel);
 
+        // MainMenuクラス関連のオブジェクトを生成.
+
         // Dialogueクラス関連のオブジェクト生成
         DialogueBoxControl dialogueBoxControl =
                 new DialogueBoxControl(gamemodel.getDialogueBoxesModel());
