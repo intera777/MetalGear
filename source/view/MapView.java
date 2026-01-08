@@ -4,12 +4,16 @@ import GameConfig.*;
 import model.*;
 
 import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.io.*;
 import javax.imageio.ImageIO;
 
 public class MapView {
     private MapModel mapModel;
     private PlayerModel playerModel;
+
+    // MobViewのインスタンスを作成
+    private MobView mobView = new MobView();
 
     // 画像保持用の変数
     private Image floorImage;
@@ -58,7 +62,7 @@ public class MapView {
         }
     }
 
-    public void drawMap(Graphics g, int offsetX, int offsetY) {
+    public void drawMap(Graphics g, int offsetX, int offsetY, ImageObserver observer) {
         // 現在のマップデータを取得
         int[][] map = mapModel.getMap();
 
@@ -72,10 +76,10 @@ public class MapView {
                 int drawX = x * ConstSet.TILE_SIZE + offsetX;
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
-                // 画面外のタイルは描画しない. 性格には少し余余分に描画している
+                // 画面外のタイルは描画しない. 正確には, 画面外から4マス分外れたところまで描画している
                 int buffer = ConstSet.TILE_SIZE;
-                if (drawX + ConstSet.TILE_SIZE < - 2 * buffer || drawX > ConstSet.WINDOW_WIDTH + 2 * buffer
-                        || drawY + ConstSet.TILE_SIZE < -2 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 2 * buffer) {
+                if (drawX + ConstSet.TILE_SIZE < - 4 * buffer || drawX > ConstSet.WINDOW_WIDTH + 4 * buffer
+                        || drawY + ConstSet.TILE_SIZE < -4 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 4 * buffer) {
                     continue;
                 }
 
@@ -113,6 +117,10 @@ public class MapView {
                     imgToDraw = container1T2Image;
                 } else if (tileType == MapData.CONTAINER_2T2) {
                     imgToDraw = container2T2Image;
+                } else if (tileType == MapData.SPIN_MOB) {
+                    int mobSize = ConstSet.TILE_SIZE * 4;
+                    mobView.drawMob(g, drawX, drawY, mobSize, mobSize, observer);
+                    continue; // Mobは既に描画しているので, 以下の描画処理はスキップ                
                 }
 
                 // 画像が存在すれば描画

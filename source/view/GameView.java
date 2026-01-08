@@ -100,7 +100,7 @@ public class GameView extends JPanel {
                 offsetX = playerDrawX - modelLeft;
                 offsetY = playerDrawY - modelTop;
                 // --- 描画実行 ---
-                mapView.drawMap(g2d, offsetX, offsetY);
+                mapView.drawMap(g2d, offsetX, offsetY, this);
                 enemyView.drawEnemies(g2d, offsetX, offsetY);
                 playerView.drawPlayer(g2d, playerDrawX, playerDrawY);
                 bulletView.drawBullet(g2d, offsetX, offsetY);
@@ -109,7 +109,7 @@ public class GameView extends JPanel {
                 offsetX = playerDrawX - modelLeft + moving;
                 offsetY = playerDrawY - modelTop + moving;
                 // --- 描画実行 ---
-                mapView.drawMap(g2d, offsetX, offsetY);
+                mapView.drawMap(g2d, offsetX, offsetY, this);
                 enemyView.drawEnemies(g2d, offsetX, offsetY);
                 playerView.drawPlayer(g2d, playerDrawX + moving, playerDrawY + moving);
                 bulletView.drawBullet(g2d, offsetX, offsetY);

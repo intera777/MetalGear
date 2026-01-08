@@ -67,6 +67,9 @@ public final class ConstSet {
         public static final String IMG_PATH_BED = "../resources/tiles/bed.png";
         public static final String IMG_PATH_CONTAINER1T2 = "../resources/tiles/container1T2.png";
         public static final String IMG_PATH_CONTAINER2T2 = "../resources/tiles/container2T2.png";
+        
+        // 棒回しするモブの GIF ファイルのパス
+        public static final String IMG_PATH_SPIN_MOB = "../resources/mob/SpinMob.gif";
 
         // プレーヤーキットのパス
         public static final String IMG_PATH_HEROIN = "../resources/player/HeroinKit2.png";
