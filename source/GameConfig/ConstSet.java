@@ -43,7 +43,7 @@ public final class ConstSet {
 
         public static final int MAX_BULLETS = 5;// フィールド上に存在できる弾の最大数.
         // 弾の定数.
-        public static final int BULLET_SIZE = 8; // 弾の一辺の長さ.
+        public static final int BULLET_SIZE = 6; // 弾の一辺の長さ.
 
         // 各タイルのパス
         public static final String IMG_PATH_FLOOR = "../resources/tiles/floordark.png"; // 暗くした部分
@@ -68,6 +68,9 @@ public final class ConstSet {
         public static final String IMG_PATH_CONTAINER1T2 = "../resources/tiles/container1T2.png";
         public static final String IMG_PATH_CONTAINER2T2 = "../resources/tiles/container2T2.png";
         
+        // ゴム弾のパス
+        public static final String IMG_PATH_BULLET = "../resources/weapon/Bullet.png";
+
         // 棒回しするモブの GIF ファイルのパス
         public static final String IMG_PATH_SPIN_MOB = "../resources/mob/SpinMob.gif";
 
