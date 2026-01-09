@@ -1,5 +1,6 @@
 import control.*;
 import model.*;
+import sound.BGMManager;
 import view.*;
 import GameConfig.*;
 
@@ -68,6 +69,12 @@ public class Metalgear extends JFrame {
         gamemodel.getDialogueBoxesModel().setGameView(gameview);
 
         frame.setVisible(true);
+
+        // BGMマネージャーを生成し、BGMをループ再生
+        BGMManager bgmManager = new BGMManager();
+        bgmManager.load(ConstSet.SOUND_PATH_BGM);
+        bgmManager.setVolume(0.6f); // 音量を30%に設定 (0.0f ~ 1.0f)
+        bgmManager.loop();
 
         final int FPS = 30; // フレームレート.
         GameState.setCurrentState(GameState.State.MENU); // 最初はメインメニュー画面から開始.
