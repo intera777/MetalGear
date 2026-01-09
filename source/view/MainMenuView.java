@@ -75,9 +75,9 @@ public class MainMenuView {
     public String getMenuText(ConstSet.MainMenuItems item) {
         switch (item) {
             case START_GAME:
-                return "START GAME";
+                return "ゲームを始める";
             case FINISH_GAME:
-                return "EXIT GAME";
+                return "ゲームを終了する";
             default:
                 return "Unknown";
         }

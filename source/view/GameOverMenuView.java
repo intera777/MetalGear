@@ -63,7 +63,7 @@ public class GameOverMenuView {
             case RESTART_GAME:
                 return "もう一度プレイする";
             case FINISH_GAME:
-                return "ゲームをやめる";
+                return "ゲームを終了する";
             default:
                 return "UNKNOWN";
         }
