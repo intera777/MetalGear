@@ -193,7 +193,6 @@ public class PlayerModel {
         if (this.playerHP < 0) {
             this.playerHP = 0;
         }
-        System.out.println("Player HP: " + this.playerHP); // デバッグ用: HP表示, 今は一時的にターミナルに表示.
     }
 
     /**

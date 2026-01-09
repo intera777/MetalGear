@@ -58,9 +58,10 @@ public class Metalgear extends JFrame {
         HPBarView hpBarView = new HPBarView();
 
         // 画面を描画するクラスの生成.
-        GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel, mapview, enemyview,
-                playerview, bulletview, mainmenuview, gameovermenuview, hpBarView, playercontrol, bulletcontrol,
-                mainmenucontrol, gameovermenucontrol, dialogueBoxView, dialogueBoxControl);
+        GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel, mapview,
+                enemyview, playerview, bulletview, mainmenuview, gameovermenuview, hpBarView,
+                playercontrol, bulletcontrol, mainmenucontrol, gameovermenucontrol, dialogueBoxView,
+                dialogueBoxControl);
         frame.add(gameview);
 
 
@@ -127,12 +128,11 @@ public class Metalgear extends JFrame {
                     break;
                 case GAME_OVER:
                     // リスタートする場合のため初期位置をリセット.
-                    playermodel.playerPositionSet(
-                            10 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
-                            12 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
+                    playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
+                            6 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
                     // プレイヤーのステータス(HPなど)をリセット
                     playermodel.resetStatus();
-                    mapmodel.setCurrentMap(MapData.MAP0);
+                    mapmodel.setCurrentMap(MapData.MAPA0);
 
                     break;
             }
