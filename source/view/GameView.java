@@ -17,10 +17,12 @@ import java.awt.geom.AffineTransform;
 public class GameView extends JPanel {
     private PlayerModel playerModel; // 使ってないけど一応保持しておく
     private GameOverMenuModel gameOverMenuModel; // なんか必要らしい
+    private MainMenuModel mainMenuModel;
     private MapView mapView;
     private PlayerView playerView;
     private EnemyView enemyView;
     private BulletView bulletView;
+    private MainMenuView mainMenuView;
     private GameOverMenuView gameOverMenuView;
     private DialogueBoxView dialogueBoxView;
     private HPBarView hpBarView;
@@ -28,16 +30,20 @@ public class GameView extends JPanel {
     private boolean isPerspectiveMoving;
     private int timer = 0; // 視点移動などのイベントの時間管理用.
 
-    public GameView(PlayerModel pm, GameOverMenuModel gm, MapView mv, EnemyView ev, PlayerView pv,
-            BulletView bv, GameOverMenuView gv, HPBarView hpv, PlayerControl pc, BulletControl bc,
-            GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
+    public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, MapView mv, EnemyView ev, PlayerView pv,
+            BulletView bv, MainMenuView mmv, GameOverMenuView gov, HPBarView hpv, PlayerControl pc, BulletControl bc,
+            MainMenuControl mc, GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
+        // Model
         this.playerModel = pm;
+        this.mainMenuModel = mm;
         this.gameOverMenuModel = gm;
+        // View
         this.mapView = mv;
         this.enemyView = ev;
         this.playerView = pv;
         this.bulletView = bv;
-        this.gameOverMenuView = gv;
+        this.mainMenuView = mmv;
+        this.gameOverMenuView = gov;
         this.hpBarView = hpv;
         this.dialogueBoxView = dv;
         this.isPerspectiveMoving = false;
@@ -45,6 +51,7 @@ public class GameView extends JPanel {
         // GameView内でまとめてキー登録をする
         this.addKeyListener(bc);
         this.addKeyListener(pc);
+        this.addKeyListener(mc);
         this.addKeyListener(gc);
         this.addKeyListener(dc);
         this.setFocusable(true);
@@ -60,7 +67,7 @@ public class GameView extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        if (GameState.getCurrentState() == GameState.State.PLAYING) {
+        if (GameState.getCurrentState() == GameState.State.PLAYING) { // ゲームプレイ中の描画
             int logicWidth;
             int logicHeight;
 
@@ -123,7 +130,9 @@ public class GameView extends JPanel {
             // 会話ボックスはUIとして最前面に描画
             dialogueBoxView.drawDialogueBox(g2d);
 
-        } else if (GameState.getCurrentState() == GameState.State.GAME_OVER) {
+        } else if (GameState.getCurrentState() == GameState.State.MENU) { // メインメニュー画面の描画
+            mainMenuView.drawMainMenu(g);
+        } else if (GameState.getCurrentState() == GameState.State.GAME_OVER) { // ゲームオーバー画面の描画
             gameOverMenuView.drawGameOverMenu(g);
         }
     }

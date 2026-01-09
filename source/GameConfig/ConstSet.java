@@ -74,4 +74,7 @@ public final class ConstSet {
         // プレーヤーキットのパス
         public static final String IMG_PATH_HEROIN = "../resources/player/HeroinKit2.png";
         public static final String IMG_PATH_ENEMY = "../resources/enemy/ViranKit.png";
+
+        // メインメニューの背景画像のパス
+        public static final String IMG_PATH_MAINMENU_BG = "../resources/background/MainMenuBackgroundWithTitle.png";
 }

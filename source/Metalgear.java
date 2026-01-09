@@ -20,6 +20,7 @@ public class Metalgear extends JFrame {
         // modelクラスのオブジェクトを持ってくる.
         PlayerModel playermodel = gamemodel.getPlayerModel();
         MapModel mapmodel = gamemodel.getMapModel();
+        MainMenuModel mainmenumodel = gamemodel.getMainMenuModel();
         GameOverMenuModel gameovermenumodel = gamemodel.getGameOverMenuModel();
         EnemiesModel enemiesmodel = gamemodel.getEnemiesModel();
         BulletsModel bulletsmodel = gamemodel.getBulletsModel();
@@ -38,6 +39,10 @@ public class Metalgear extends JFrame {
         // Mapクラス関連のオブジェクトを生成.
         MapView mapview = new MapView(mapmodel, playermodel);
 
+        // MainMenuクラス関連のオブジェクトを生成.
+        MainMenuView mainmenuview = new MainMenuView(mainmenumodel);
+        MainMenuControl mainmenucontrol = new MainMenuControl(mainmenumodel);
+
         // GameOverMenuクラス関連のオブジェクトを生成.
         GameOverMenuView gameovermenuview = new GameOverMenuView(gameovermenumodel);
         GameOverMenuControl gameovermenucontrol = new GameOverMenuControl(gameovermenumodel);
@@ -53,9 +58,9 @@ public class Metalgear extends JFrame {
         HPBarView hpBarView = new HPBarView();
 
         // 画面を描画するクラスの生成.
-        GameView gameview = new GameView(playermodel, gameovermenumodel, mapview, enemyview,
-                playerview, bulletview, gameovermenuview, hpBarView, playercontrol, bulletcontrol,
-                gameovermenucontrol, dialogueBoxView, dialogueBoxControl);
+        GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel, mapview, enemyview,
+                playerview, bulletview, mainmenuview, gameovermenuview, hpBarView, playercontrol, bulletcontrol,
+                mainmenucontrol, gameovermenucontrol, dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
 
 
@@ -64,7 +69,7 @@ public class Metalgear extends JFrame {
         frame.setVisible(true);
 
         final int FPS = 30; // フレームレート.
-        GameState.setCurrentState(GameState.State.GAME_OVER);
+        GameState.setCurrentState(GameState.State.MENU); // 最初はメインメニュー画面から開始.
         playermodel.playerPositionSet(10 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
                 12 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
         mapmodel.setCurrentMap(MapData.MAP0);

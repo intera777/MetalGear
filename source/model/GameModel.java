@@ -7,6 +7,7 @@ public class GameModel {
     private BulletsModel bulletsModel;
     private EnemiesModel enemiesModel;
     private MapModel mapModel;
+    private MainMenuModel mainMenuModel;
     private GameOverMenuModel gameOverMenuModel;
     private DialogueBoxesModel dialogueBoxesModel;
 
@@ -15,6 +16,7 @@ public class GameModel {
         bulletsModel = new BulletsModel(playerModel);
         enemiesModel = new EnemiesModel();
         mapModel = new MapModel(playerModel, enemiesModel);
+        mainMenuModel = new MainMenuModel();
         gameOverMenuModel = new GameOverMenuModel();
         dialogueBoxesModel = new DialogueBoxesModel();
     }
@@ -33,6 +35,10 @@ public class GameModel {
 
     public MapModel getMapModel() {
         return mapModel;
+    }
+
+    public MainMenuModel getMainMenuModel() {
+        return mainMenuModel;
     }
 
     public GameOverMenuModel getGameOverMenuModel() {
