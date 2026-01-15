@@ -31,6 +31,9 @@ public final class ConstSet {
 
         public static final int SIGHTRANGE = ENEMY_SIZE / 2; // 敵の司会の範囲,この範囲に入ると敵は射撃してくる.
 
+        // 警備員の定数.
+        public static final int GUARDSMAN_SPEED = 1; // 警備員の移動速度.
+
 
         // メニュー画面の定数.
         public enum MainMenuItems {
@@ -90,5 +93,6 @@ public final class ConstSet {
         public static final String SE_footstep = "../resources/sound/footstep.wav";
         public static final String SE_ENEMY_NOTICE = "../resources/sound/enemy_notice.wav";
         public static final String SE_BULLET_SHOOT = "../resources/sound/bullet_shoot.wav";
+        public static final String SE_ITEM_SELECTED = "../resources/sound/item_selected.wav";
 
 }

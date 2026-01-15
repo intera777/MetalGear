@@ -43,6 +43,8 @@ public class EnemiesModel {
         } else if (map == MapData.MAPB0) {
             enemies.add(new EnemyModel(MapData.MAPB0_E0X[0], MapData.MAPB0_E0Y[0],
                     MapData.MAPB0_E0X, MapData.MAPB0_E0Y));
+            enemies.add(new EnemyModel(MapData.MAPB0_E1X[0], MapData.MAPB0_E1Y[0],
+                    MapData.MAPB0_E1X, MapData.MAPB0_E1Y));
         }
     }
 
