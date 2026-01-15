@@ -1,42 +1,43 @@
 package GameConfig;
 
 public class MapData {
-    // 基本タイル (0~19の定数)
-    public static final int STONEFLOOR = 0; // 床, 1×1マス
-    public static final int WALL_TOP_NORTH = 1; // 北壁の上面, 1×1マス
-    public static final int WALL_NORTH = 2; // 北壁, 2×2マス
-    public static final int WALL_TOP_SOUTH = 3; // 南壁の上面, 1×1マス
-    public static final int WALL_TOP_EAST = 4; // 東壁の上面, 1×1マス
-    public static final int WALL_TOP_WEST = 5; // 西壁の上面, 1×1マス
-    public static final int CORNER_NORTH_WEST = 6; // 北西の壁の角
-    public static final int CORNER_NORTH_EAST = 7; // 北東の壁の角
-    public static final int CORNER_SOUTH_EAST = 8; // 南東の壁の角
-    public static final int CORNER_SOUTH_WEST = 9; // 南西の壁の角
+        // 基本タイル (0~19の定数)
+        public static final int STONEFLOOR = 0; // 床, 1×1マス
+        public static final int WALL_TOP_NORTH = 1; // 北壁の上面, 1×1マス
+        public static final int WALL_NORTH = 2; // 北壁, 2×2マス
+        public static final int WALL_TOP_SOUTH = 3; // 南壁の上面, 1×1マス
+        public static final int WALL_TOP_EAST = 4; // 東壁の上面, 1×1マス
+        public static final int WALL_TOP_WEST = 5; // 西壁の上面, 1×1マス
+        public static final int CORNER_NORTH_WEST = 6; // 北西の壁の角
+        public static final int CORNER_NORTH_EAST = 7; // 北東の壁の角
+        public static final int CORNER_SOUTH_EAST = 8; // 南東の壁の角
+        public static final int CORNER_SOUTH_WEST = 9; // 南西の壁の角
 
-    // public static final int PORTAR_POINT = 19; // 遷移点. 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
+        // public static final int PORTAR_POINT = 19; // 遷移点. 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
 
-    // 特殊タイル・オブジェクト (負の定数)
-    public static final int CLEAR_OBSTACLE = -1; // 見えない壁
-    public static final int HALF_CLEAR_OBSTACLE = -2; // 下半ブロックだけ通過できる壁.
-    public static final int DUMMY_TILE = -3; // 何も描画されないし, 素通りできるタイル. 1×1マス以上のオブジェクトの描画に利用する
+        // 特殊タイル・オブジェクト (負の定数)
+        public static final int CLEAR_OBSTACLE = -1; // 見えない壁
+        public static final int HALF_CLEAR_OBSTACLE = -2; // 下半ブロックだけ通過できる壁.
+        public static final int DUMMY_TILE = -3; // 何も描画されないし, 素通りできるタイル. 1×1マス以上のオブジェクトの描画に利用する
 
-    public static final int SPIN_MOB = -4; // 棒回しぐるぐる, 4×4マス
+        public static final int SPIN_MOB = -4; // 棒回しぐるぐる, 4×4マス
 
-    // オブジェクト(20以上の定数)
-    public static final int BED = 20; // ベッド, 1×2マス
-    public static final int VERTICAL_STAIR = 21; // 階段(縦向き), 3×6マス
-    public static final int CONTAINER_1T2 = 22; // コンテナ, 1×2マス
-    public static final int CONTAINER_2T2 = 23; // コンテナ, 2×2マス
-    public static final int TABLE = 24;
+        // オブジェクト(20以上の定数)
+        public static final int BED = 20; // ベッド, 1×2マス
+        public static final int VERTICAL_STAIR = 21; // 階段(縦向き), 3×6マス
+        public static final int CONTAINER_1T2 = 22; // コンテナ, 1×2マス
+        public static final int CONTAINER_2T2 = 23; // コンテナ, 2×2マス
+        public static final int TABLE = 24;
 
-    public static final int TO_A1_FROM_A0 = 101; // マップA0からA1への遷移ポイント.以下同様.a
-    public static final int TO_A0_FROM_A1 = 102;
-    public static final int TO_A2_FROM_A1 = 103;
-    public static final int TO_A1_FROM_A2 = 104;
+        public static final int TO_A1_FROM_A0 = 101; // マップA0からA1への遷移ポイント.以下同様.a
+        public static final int TO_A0_FROM_A1 = 102;
+        public static final int TO_A2_FROM_A1 = 103;
+        public static final int TO_A1_FROM_A2 = 104;
+        public static final int TO_B0_FROM_A2 = 105;
 
-    public static final int GAME_CLEAR = 1000; // ゲームクリア地点.
+        public static final int GAME_CLEAR = 1000; // ゲームクリア地点.
 
-    private static final int TS = ConstSet.TILE_SIZE;
+        private static final int TS = ConstSet.TILE_SIZE;
 
 
     // @formatter:off
@@ -123,29 +124,40 @@ public class MapData {
     };
     // @formatter:on
 
-    // 以下敵のデータ(敵が向かうポイントの数,ポイントのX座標の配列,ポイントのY座標の配列).
+        // 以下敵のデータ(敵が向かうポイントの数,ポイントのX座標の配列,ポイントのY座標の配列).
 
-    public static final int MAPA1_ENEMY_NUM = 3;
-    // 敵0のデータ.
-    public static int MAPA1_E0_PNUM = 4; // 敵が移動するポイントの数
-    public static int[] MAPA1_E0X =
-            {TS * 7 + TS / 2, TS * 16 + TS / 2, TS * 16 + TS / 2, TS * 7 + TS / 2};
-    public static final int[] MAPA1_E0Y =
-            {TS * 10 + TS / 2, TS * 10 + TS / 2, TS * 19 + TS / 2, TS * 19 + TS / 2};
+        public static final int MAPA1_ENEMY_NUM = 3;
+        // 敵0のデータ.
+        public static int MAPA1_E0_PNUM = 4; // 敵が移動するポイントの数
+        public static int[] MAPA1_E0X =
+                        {TS * 7 + TS / 2, TS * 16 + TS / 2, TS * 16 + TS / 2, TS * 7 + TS / 2};
+        public static final int[] MAPA1_E0Y =
+                        {TS * 10 + TS / 2, TS * 10 + TS / 2, TS * 19 + TS / 2, TS * 19 + TS / 2};
 
-    // 敵1のデータ.
-    public static final int MAPA1_E1_PNUM = 4;
-    public static int[] MAPA1_E1X =
-            {TS * 29 + TS / 2, TS * 42 + TS / 2, TS * 42 + TS / 2, TS * 29 + TS / 2,};
-    public static final int[] MAPA1_E1Y =
-            {TS * 8 + TS / 2, TS * 8 + TS / 2, TS * 21 + TS / 2, TS * 21 + TS / 2};
+        // 敵1のデータ.
+        public static final int MAPA1_E1_PNUM = 4;
+        public static int[] MAPA1_E1X =
+                        {TS * 29 + TS / 2, TS * 42 + TS / 2, TS * 42 + TS / 2, TS * 29 + TS / 2,};
+        public static final int[] MAPA1_E1Y =
+                        {TS * 8 + TS / 2, TS * 8 + TS / 2, TS * 21 + TS / 2, TS * 21 + TS / 2};
 
-    // 敵2のデータ.
-    public static final int MAPA1_E2_PNUM = 4;
-    public static int[] MAPA1_E2X =
-            {TS * 46 + TS / 2, TS * 50 + TS / 2, TS * 50 + TS / 2, TS * 46 + TS / 2,};
-    public static final int[] MAPA1_E2Y =
-            {TS * 3 + TS / 2, TS * 3 + TS / 2, TS * 10 + TS / 2, TS * 10 + TS / 2};
+        // 敵2のデータ.
+        public static final int MAPA1_E2_PNUM = 4;
+        public static int[] MAPA1_E2X =
+                        {TS * 46 + TS / 2, TS * 50 + TS / 2, TS * 50 + TS / 2, TS * 46 + TS / 2,};
+        public static final int[] MAPA1_E2Y =
+                        {TS * 3 + TS / 2, TS * 3 + TS / 2, TS * 10 + TS / 2, TS * 10 + TS / 2};
+
+        public static final int MAPB0_ENEMY_NUM = 2;
+
+        // B2F敵0のデータ.
+        public static final int MAPB0_E0_PNUM = 4;
+        public static int[] MAPB0_E0X = {TS * 2, TS * 6, TS * 6, TS * 2};
+        public static final int[] MAPB0_E0Y = {TS * 4, TS * 4, TS * 8, TS * 8};
+
+        public static final int MAPB0_E1_PNUM = 2;
+        public static final int[] MAPB0_E1X = {TS * 17, TS * 28};
+        public static final int[] MAPB0_E1Y = {TS * 6, TS * 6};
 
 
 
@@ -153,7 +165,7 @@ public class MapData {
 
     public static final int[][] MAPA2 = {
         {6,1,1,1,1,1,1,1,1,1,7},
-        {5,21,1000,1000,2,-1,2,-1,2,-1,4},
+        {5,21,105,105,2,-1,2,-1,2,-1,4},
         {5,-3,-3,-1,-1,-1,-1,-1,-1,-1,4},
         {5,-3,-3,-1,0,0,0,0,0,0,4},
         {5,-3,-3,-1,0,0,0,0,0,0,104},
@@ -165,14 +177,32 @@ public class MapData {
     };
 
     public static final int[][] MAPB0={
-        {6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7},
-        {5, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2, 4},
-        {5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 4},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,21,-3,-3, 4},
-        {5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0,24,24,24,24,24,24, 0, 0, 0,24,24,24,24, 0, 0, 4,-3,-3,-3, 4},
-        
-
-
+        { 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7},
+        { 5, 2,-1, 2,-1, 2,-1, 2,-1, 5, 2, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 2, 4},
+        { 5,-1,-1,-1,-1,-1,-1,-1,-1, 5,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 4},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,21,-3,-3, 4},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0,24,24,24,24,24,24, 0, 0, 0,24,24,24,24, 0, 0, 4,-3,-3,-3, 4},
+        { 5, 0, 0,23,-1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,-3,-3,-3, 4},
+        { 5, 0, 0,-1,-1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,-3,-3,-3, 4},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0,24,24,24,24,24,24, 0, 0, 0,24,24,24,24, 0, 0, 4,-3,-3,-3, 4},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,-3,-3,-3, 4},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 4, 0, 0, 0, 4},
+        { 9, 3, 3, 3, 3, 7, 0, 0, 0, 5, 2,-1, 0, 0, 2,-1, 2,-1, 2,-1, 2,-1, 2,-1, 4, 0, 0, 2,-1, 0, 0, 0, 4},
+        {-1,-1,-1,-1,-1, 5, 0, 0, 0, 9,-2,-2, 0, 0,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2, 4, 0, 0,-2,-2, 0, 0, 0, 4},
+        {-1,-1,-1,-1,-1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,23,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+        {-1,-1,-1,-1,-1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,23,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+        { 6, 1, 1, 1, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,23,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+        { 5, 2,-1, 2,-1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
+        { 5,-2,-2,-2,-2, 8, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 8},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+        { 5, 0, 0, 0, 0, 0, 0, 0, 0, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}, 
+        { 5,21,-3,-3, 0, 0, 0, 0, 0, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+        { 5,-3,-3,-3, 0, 0, 0, 0, 0, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+        { 5,-3,-3,-3, 0,23,-1,23,-1, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+        { 5,-3,-3,-3, 0,-1,-1,-1,-1, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+        { 5,-3,-3,-3, 0,23,-1,23,-1, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+        { 5,-3,-3,-3, 0,-1,-1,-1,-1, 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
+        { 9, 3, 3, 3, 3, 3, 3, 3, 3, 8,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
     };
     
     // @formatter:on
