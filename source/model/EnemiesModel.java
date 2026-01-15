@@ -42,4 +42,26 @@ public class EnemiesModel {
         }
     }
 
+    /**
+     * いずれかの敵がプレイヤーを追跡しているかどうかを判定します。
+     * 
+     * @param playerModel プレイヤーのモデル
+     * @return 1体でも追跡していればtrue
+     */
+    public boolean isAnyEnemyPursuing(PlayerModel playerModel) {
+        final int ENEMY_SIGHT_DISTANCE = ConstSet.TILE_SIZE * 8; // 敵が追跡を開始する距離
+        for (EnemyModel enemy : this.enemies) {
+            if (enemy == null || enemy.getEnemyCondition() == ConstSet.ENEMY_DEAD)
+                continue;
+
+            int dx = enemy.getEnemyX() - playerModel.getPlayerX();
+            int dy = enemy.getEnemyY() - playerModel.getPlayerY();
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < ENEMY_SIGHT_DISTANCE) {
+                return true; // 簡易的に、距離が近い＝追尾中とみなす
+            }
+        }
+        return false;
+    }
 }
