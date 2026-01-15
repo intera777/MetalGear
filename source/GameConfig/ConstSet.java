@@ -84,4 +84,9 @@ public final class ConstSet {
 
         // BGMのパス
         public static final String SOUND_PATH_BGM = "../resources/sound/maou_bgm_neorock82.wav";
+        public static final String BGM_TITLE = "../resources/sound/title.wav";
+        public static final String BGM_NORMAL="../resources/sound/normal.wav";
+        public static final String BGM_GAMEOVER="../resources/sound/gameover.wav";
+
+"
 }
