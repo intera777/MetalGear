@@ -97,6 +97,7 @@ public class Metalgear extends JFrame {
         // 一度だけ再生するSEはClipを直接扱う
         Clip noticeSEClip = SoundEffectManager.loadClip(ConstSet.SE_ENEMY_NOTICE, 0.8f);
         Clip bulletShootClip = SoundEffectManager.loadClip(ConstSet.SE_BULLET_SHOOT, 0.7f);
+        Clip itemSelectedClip = SoundEffectManager.loadClip(ConstSet.SE_ITEM_SELECTED, 0.8f);
 
         // --- ゲームの初期設定 ---
         final int FPS = 30; // フレームレート.
@@ -110,6 +111,7 @@ public class Metalgear extends JFrame {
         boolean wasPursuing = false;
         boolean isFootstepPlaying = false;
         int previousBulletCount = 0;
+        int previousMainMenuIndex = mainmenumodel.getSelectedIndex();
 
         // ゲームループ本体.
         while (true) {
@@ -155,8 +157,12 @@ public class Metalgear extends JFrame {
             // --- ゲーム状態ごとの更新処理 ---
             switch (currentstate) {
                 case MENU:
-                    // メニュー画面の更新処理（例：選択項目の移動など）
-                    // 今は特に何もしない
+                    // 選択項目が変更されたらSEを再生
+                    int currentMainMenuIndex = mainmenumodel.getSelectedIndex();
+                    if (currentMainMenuIndex != previousMainMenuIndex) {
+                        SoundEffectManager.playClip(itemSelectedClip);
+                        previousMainMenuIndex = currentMainMenuIndex;
+                    }
                     break;
                 case PLAYING:
                     // プロローグのイベントシーケンス管理
