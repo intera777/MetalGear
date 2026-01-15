@@ -106,4 +106,19 @@ public class BulletsModel {
             }
         }
     }
+
+    /**
+     * 現在画面に存在している弾の数を数えます。
+     * 
+     * @return アクティブな弾の数
+     */
+    public int countActiveBullets() {
+        int count = 0;
+        for (BulletModel bullet : this.bullets) {
+            if (bullet.bulletExist()) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

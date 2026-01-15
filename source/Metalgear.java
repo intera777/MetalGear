@@ -1,15 +1,12 @@
 import control.*;
 import model.*;
 import sound.BGMManager;
+import sound.SoundEffectManager;
 import view.*;
 import GameConfig.*;
 
-import java.io.File;
 import javax.swing.*;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 
 public class Metalgear extends JFrame {
 
@@ -98,8 +95,8 @@ public class Metalgear extends JFrame {
         footstepSEManager.setVolume(0.8f); // 足音は少し小さめ
 
         // 一度だけ再生するSEはClipを直接扱う
-        Clip noticeSEClip = loadClip(ConstSet.SE_ENEMY_NOTICE, 0.8f);
-        Clip bulletShootClip = loadClip(ConstSet.SE_BULLET_SHOOT, 0.7f);
+        Clip noticeSEClip = SoundEffectManager.loadClip(ConstSet.SE_ENEMY_NOTICE, 0.8f);
+        Clip bulletShootClip = SoundEffectManager.loadClip(ConstSet.SE_BULLET_SHOOT, 0.7f);
 
         // --- ゲームの初期設定 ---
         final int FPS = 30; // フレームレート.
@@ -119,7 +116,7 @@ public class Metalgear extends JFrame {
             GameState.State currentstate = GameState.getCurrentState();
             boolean isPursuing = false;
             if (currentstate == GameState.State.PLAYING) {
-                isPursuing = isAnyEnemyPursuing(enemiesmodel, playermodel);
+                isPursuing = enemiesmodel.isAnyEnemyPursuing(playermodel);
             }
 
             // --- BGM切り替え処理 ---
@@ -141,7 +138,7 @@ public class Metalgear extends JFrame {
                             pursueBgmManager.loop();
                             // 追跡が始まった瞬間に通知音を再生
                             if (!wasPursuing) {
-                                playClip(noticeSEClip);
+                                SoundEffectManager.playClip(noticeSEClip);
                             }
                         } else {
                             mainBgmManager.loop();
@@ -213,15 +210,15 @@ public class Metalgear extends JFrame {
                         }
 
                         // 弾の発射音 (弾が消滅する前に判定する必要がある)
-                        int currentBulletCount = countActiveBullets(bulletsmodel);
+                        int currentBulletCount = bulletsmodel.countActiveBullets();
                         if (currentBulletCount > previousBulletCount) {
-                            playClip(bulletShootClip);
+                            SoundEffectManager.playClip(bulletShootClip);
                         }
 
                         // 残りのモデル更新と、次フレームのための状態保存
                         bulletsmodel.updateBulletsPosition(mapmodel, playermodel, enemiesmodel);
                         mapmodel.updateMap();
-                        previousBulletCount = countActiveBullets(bulletsmodel);
+                        previousBulletCount = bulletsmodel.countActiveBullets();
                     }
 
                     // プレイヤーが死亡したかチェック
@@ -251,88 +248,4 @@ public class Metalgear extends JFrame {
 
     }
 
-    /**
-     * 指定されたパスからオーディオクリップを読み込み、音量を設定します。
-     * 
-     * @param path オーディオファイルのパス
-     * @param volume 音量 (0.0f - 1.0f)
-     * @return 読み込んだClipオブジェクト、失敗した場合はnull
-     */
-    private static Clip loadClip(String path, float volume) {
-        try {
-            File audioFile = new File(path);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-
-            // 音量調整
-            if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                FloatControl gainControl =
-                        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                float range = gainControl.getMaximum() - gainControl.getMinimum();
-                float gain = (range * volume) + gainControl.getMinimum();
-                gainControl.setValue(gain);
-            }
-            return clip;
-        } catch (Exception e) {
-            System.err.println("SEファイルの読み込みに失敗: " + path);
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * 指定されたクリップを最初から再生します。
-     * 
-     * @param clip 再生するClipオブジェクト
-     */
-    private static void playClip(Clip clip) {
-        if (clip != null) {
-            if (clip.isRunning()) {
-                clip.stop();
-            }
-            clip.setFramePosition(0);
-            clip.start();
-        }
-    }
-
-    /**
-     * いずれかの敵がプレイヤーを追跡しているかどうかを判定します。
-     * 
-     * @param enemiesModel 敵のモデル
-     * @param playerModel プレイヤーのモデル
-     * @return 1体でも追跡していればtrue
-     */
-    private static boolean isAnyEnemyPursuing(EnemiesModel enemiesModel, PlayerModel playerModel) {
-        final int ENEMY_SIGHT_DISTANCE = ConstSet.TILE_SIZE * 8; // 敵が追跡を開始する距離
-        for (EnemyModel enemy : enemiesModel.getEnemies()) {
-            if (enemy == null || enemy.getEnemyCondition() == ConstSet.ENEMY_DEAD)
-                continue;
-
-            int dx = enemy.getEnemyX() - playerModel.getPlayerX();
-            int dy = enemy.getEnemyY() - playerModel.getPlayerY();
-            double distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < ENEMY_SIGHT_DISTANCE) {
-                return true; // 簡易的に、距離が近い＝追尾中とみなす
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 現在画面に存在している弾の数を数えます。
-     * 
-     * @param bulletsModel 弾のモデル
-     * @return アクティブな弾の数
-     */
-    private static int countActiveBullets(BulletsModel bulletsModel) {
-        int count = 0;
-        for (BulletModel bullet : bulletsModel.getBullets()) {
-            if (bullet.bulletExist()) {
-                count++;
-            }
-        }
-        return count;
-    }
 }
