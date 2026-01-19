@@ -84,6 +84,10 @@ public final class ConstSet {
         // メインメニューの背景画像のパス
         public static final String IMG_PATH_MAINMENU_BG =
                         "../resources/background/MainMenuBackgroundWithTitle.png";
+        
+        // ゲームクリア時の背景画像のパス
+        public static final String IMG_PATH_GAMECLEAR_BG =
+                        "../resources/background/GameClearBackground.png";
 
         // BGMのパス
         public static final String BGM_TITLE = "../resources/sound/title.wav";
