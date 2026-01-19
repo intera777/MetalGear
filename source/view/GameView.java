@@ -138,9 +138,9 @@ public class GameView extends JPanel {
             mainMenuView.drawMainMenu(g);
         } else if (GameState.getCurrentState() == GameState.State.GAME_OVER) { // ゲームオーバー画面の描画
             gameOverMenuView.drawGameOverMenu(g);
-        } /* else if (GameState.getCurrentState() == GameState.State.GAME_CLEAR) { // まだGameStateの状態にGAME_CLEARない
+        } else if (GameState.getCurrentState() == GameState.State.GAME_CLEAR) { // ゲームクリア画面の描画
             gameClearMenuView.drawGameClearMenu(g);
-        }*/
+        }
     }
 
     public boolean isPerspectiveMoving() { // 視点が動いている状態ならtrueを返す.
