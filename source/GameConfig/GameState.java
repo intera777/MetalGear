@@ -3,7 +3,7 @@ package GameConfig;
 public class GameState {
 
       public enum State {
-            MENU, PLAYING, GAME_OVER
+            MENU, PLAYING, GAME_OVER, GAME_CLEAR
       }
 
       public static State currentState = State.GAME_OVER;

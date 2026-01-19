@@ -18,25 +18,28 @@ public class GameView extends JPanel {
     private PlayerModel playerModel; // 使ってないけど一応保持しておく
     private GameOverMenuModel gameOverMenuModel; // なんか必要らしい
     private MainMenuModel mainMenuModel;
+    private GameClearMenuModel gameClearMenuModel;
     private MapView mapView;
     private PlayerView playerView;
     private EnemyView enemyView;
     private BulletView bulletView;
     private MainMenuView mainMenuView;
     private GameOverMenuView gameOverMenuView;
+    private GameClearMenuView gameClearMenuView;
     private DialogueBoxView dialogueBoxView;
     private HPBarView hpBarView;
 
     private boolean isPerspectiveMoving;
     private int timer = 0; // 視点移動などのイベントの時間管理用.
 
-    public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, MapView mv, EnemyView ev, PlayerView pv,
-            BulletView bv, MainMenuView mmv, GameOverMenuView gov, HPBarView hpv, PlayerControl pc, BulletControl bc,
-            MainMenuControl mc, GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
+    public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, GameClearMenuModel gcm,
+            MapView mv, EnemyView ev, PlayerView pv, BulletView bv, MainMenuView mmv, GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, 
+            PlayerControl pc, BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
         // Model
         this.playerModel = pm;
         this.mainMenuModel = mm;
         this.gameOverMenuModel = gm;
+        this.gameClearMenuModel = gcm;
         // View
         this.mapView = mv;
         this.enemyView = ev;
@@ -44,6 +47,7 @@ public class GameView extends JPanel {
         this.bulletView = bv;
         this.mainMenuView = mmv;
         this.gameOverMenuView = gov;
+        this.gameClearMenuView = gcv;
         this.hpBarView = hpv;
         this.dialogueBoxView = dv;
         this.isPerspectiveMoving = false;
@@ -134,6 +138,8 @@ public class GameView extends JPanel {
             mainMenuView.drawMainMenu(g);
         } else if (GameState.getCurrentState() == GameState.State.GAME_OVER) { // ゲームオーバー画面の描画
             gameOverMenuView.drawGameOverMenu(g);
+        } else if (GameState.getCurrentState() == GameState.State.GAME_CLEAR) { // ゲームクリア画面の描画
+            gameClearMenuView.drawGameClearMenu(g);
         }
     }
 
