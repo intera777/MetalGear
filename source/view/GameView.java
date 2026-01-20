@@ -34,7 +34,7 @@ public class GameView extends JPanel {
 
     public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, GameClearMenuModel gcm,
             MapView mv, EnemyView ev, PlayerView pv, BulletView bv, MainMenuView mmv, GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, 
-            PlayerControl pc, BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, DialogueBoxView dv, DialogueBoxControl dc) {
+            PlayerControl pc, BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, GameClearMenuControl gcc, DialogueBoxView dv, DialogueBoxControl dc) {
         // Model
         this.playerModel = pm;
         this.mainMenuModel = mm;
@@ -58,6 +58,7 @@ public class GameView extends JPanel {
         this.addKeyListener(mc);
         this.addKeyListener(gc);
         this.addKeyListener(dc);
+        this.addKeyListener(gcc);
         this.setFocusable(true);
         // this.requestFocusInWindow(); // 起動時に自動でキー入力を受け付ける魔法の呪文らしい
     }
