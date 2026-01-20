@@ -70,6 +70,9 @@ public final class ConstSet {
         public static final String IMG_PATH_BED = "../resources/tiles/bed.png";
         public static final String IMG_PATH_CONTAINER1T2 = "../resources/tiles/container1T2.png";
         public static final String IMG_PATH_CONTAINER2T2 = "../resources/tiles/container2T2.png";
+        public static final String IMG_PATH_TABLE_LEFT = "../resources/tiles/table_left.png";
+        public static final String IMG_PATH_TABLE_MIDDLE = "../resources/tiles/table_middle.png";
+        public static final String IMG_PATH_TABLE_RIGHT = "../resources/tiles/table_right.png";
 
         // ゴム弾のパス
         public static final String IMG_PATH_BULLET = "../resources/weapon/Bullet.png";
@@ -84,7 +87,7 @@ public final class ConstSet {
         // メインメニューの背景画像のパス
         public static final String IMG_PATH_MAINMENU_BG =
                         "../resources/background/MainMenuBackgroundWithTitle.png";
-        
+
         // ゲームクリア時の背景画像のパス
         public static final String IMG_PATH_GAMECLEAR_BG =
                         "../resources/background/GameClearBackground.png";
