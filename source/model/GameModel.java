@@ -10,6 +10,7 @@ public class GameModel {
     private MainMenuModel mainMenuModel;
     private GameOverMenuModel gameOverMenuModel;
     private DialogueBoxesModel dialogueBoxesModel;
+    private GameClearMenuModel gameClearMenuModel;
 
     public GameModel() {
         playerModel = new PlayerModel();
@@ -19,6 +20,11 @@ public class GameModel {
         mainMenuModel = new MainMenuModel();
         gameOverMenuModel = new GameOverMenuModel();
         dialogueBoxesModel = new DialogueBoxesModel();
+        gameClearMenuModel = new GameClearMenuModel();
+    }
+
+    public GameClearMenuModel getGameClearMenuModel() {
+        return gameClearMenuModel;
     }
 
     public PlayerModel getPlayerModel() {

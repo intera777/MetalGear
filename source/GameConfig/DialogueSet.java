@@ -20,7 +20,7 @@ public final class DialogueSet {
         PROLOGUE, MOVING_PERSPECTIVE_TO_WORKING, AFTER_PROLOGUE_DIALOGUE, AWAITING_SCRIPTED_MOVE_COMPLETION, AFTER_SCRIPTED_MOVE, MAIN_GAMEPLAY
     }
 
-    public static DialogueState dialogueState = DialogueState.PROLOGUE;
+    public static DialogueState dialogueState = DialogueState.MAIN_GAMEPLAY;
 
     //@formatter:off
 

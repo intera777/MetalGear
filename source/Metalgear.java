@@ -26,6 +26,7 @@ public class Metalgear extends JFrame {
         GameOverMenuModel gameovermenumodel = gamemodel.getGameOverMenuModel();
         EnemiesModel enemiesmodel = gamemodel.getEnemiesModel();
         BulletsModel bulletsmodel = gamemodel.getBulletsModel();
+        GameClearMenuModel gameclearmenumodel = gamemodel.getGameClearMenuModel();
 
         // Playerクラス関連のオブジェクトの生成.
         PlayerControl playercontrol = new PlayerControl(playermodel);
@@ -49,7 +50,10 @@ public class Metalgear extends JFrame {
         GameOverMenuView gameovermenuview = new GameOverMenuView(gameovermenumodel);
         GameOverMenuControl gameovermenucontrol = new GameOverMenuControl(gameovermenumodel);
 
-        // MainMenuクラス関連のオブジェクトを生成.
+        // GameClearMenuクラス関連のオブジェクトを生成.
+        GameClearMenuView gameclearmenuview = new GameClearMenuView(gameclearmenumodel);
+        GameClearMenuControl gameclearmenucontrol = new GameClearMenuControl(gameclearmenumodel);
+
 
         // Dialogueクラス関連のオブジェクト生成
         DialogueBoxControl dialogueBoxControl =
@@ -60,10 +64,10 @@ public class Metalgear extends JFrame {
         HPBarView hpBarView = new HPBarView();
 
         // 画面を描画するクラスの生成.
-        GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel, mapview,
-                enemyview, playerview, bulletview, mainmenuview, gameovermenuview, hpBarView,
-                playercontrol, bulletcontrol, mainmenucontrol, gameovermenucontrol, dialogueBoxView,
-                dialogueBoxControl);
+        GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel,
+                gameclearmenumodel, mapview, enemyview, playerview, bulletview, mainmenuview,
+                gameovermenuview, gameclearmenuview, hpBarView, playercontrol, bulletcontrol,
+                mainmenucontrol, gameovermenucontrol, dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
 
 
@@ -104,7 +108,7 @@ public class Metalgear extends JFrame {
         GameState.setCurrentState(GameState.State.MENU); // 最初はメインメニュー画面から開始.
         playermodel.playerPositionSet(10 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
                 12 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
-        mapmodel.setCurrentMap(MapData.MAP0);
+        mapmodel.setCurrentMap(MapData.MAPB0);
 
         // --- 状態管理用の変数 ---
         GameState.State previousState = null;
@@ -240,6 +244,14 @@ public class Metalgear extends JFrame {
                     playermodel.resetStatus();
                     mapmodel.setCurrentMap(MapData.MAPA0);
 
+                    break;
+                case GAME_CLEAR:
+                    // リスタートする場合のため初期位置をリセット.
+                    playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
+                            6 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
+                    // プレイヤーのステータス(HPなど)をリセット
+                    playermodel.resetStatus();
+                    mapmodel.setCurrentMap(MapData.MAPA0);
                     break;
             }
             gameview.repaint();

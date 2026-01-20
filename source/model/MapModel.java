@@ -55,7 +55,7 @@ public class MapModel {
             setCurrentMap(MapData.MAPB0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 23);
         } else if (getPlayerTile() == MapData.GAME_CLEAR) {
-            System.exit(0);
+            GameState.setCurrentState(GameState.State.GAME_CLEAR);
         }
     }
 
