@@ -63,6 +63,12 @@ public class MapModel {
         } else if (getPlayerTile() == MapData.TO_B0_FROM_C0) {
             setCurrentMap(MapData.MAPB0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 31, ConstSet.TILE_SIZE * 5);
+        } else if (getPlayerTile() == MapData.TO_D0_FROM_C0) {
+            setCurrentMap(MapData.MAPD0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 29, ConstSet.TILE_SIZE * 25);
+        } else if (getPlayerTile() == MapData.TO_C0_FROM_D0) {
+            setCurrentMap(MapData.MAPC0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 4);
         } else if (getPlayerTile() == MapData.GAME_CLEAR) {
             GameState.setCurrentState(GameState.State.GAME_CLEAR);
         }
