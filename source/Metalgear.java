@@ -27,6 +27,7 @@ public class Metalgear extends JFrame {
         EnemiesModel enemiesmodel = gamemodel.getEnemiesModel();
         BulletsModel bulletsmodel = gamemodel.getBulletsModel();
         GameClearMenuModel gameclearmenumodel = gamemodel.getGameClearMenuModel();
+        DialogueBoxesModel dialogueboxesmodel = gamemodel.getDialogueBoxesModel();
 
         // Playerクラス関連のオブジェクトの生成.
         PlayerControl playercontrol = new PlayerControl(playermodel);
@@ -67,7 +68,8 @@ public class Metalgear extends JFrame {
         GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel,
                 gameclearmenumodel, mapview, enemyview, playerview, bulletview, mainmenuview,
                 gameovermenuview, gameclearmenuview, hpBarView, playercontrol, bulletcontrol,
-                mainmenucontrol, gameovermenucontrol, dialogueBoxView, dialogueBoxControl);
+                mainmenucontrol, gameovermenucontrol, gameclearmenucontrol, dialogueBoxView,
+                dialogueBoxControl);
         frame.add(gameview);
 
 
