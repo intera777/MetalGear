@@ -110,7 +110,7 @@ public class Metalgear extends JFrame {
         GameState.setCurrentState(GameState.State.MENU); // 最初はメインメニュー画面から開始.
         playermodel.playerPositionSet(10 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
                 12 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
-        mapmodel.setCurrentMap(MapData.MAPB0);
+        mapmodel.setCurrentMap(MapData.MAP0);
 
         // --- 状態管理用の変数 ---
         GameState.State previousState = null;
@@ -231,6 +231,11 @@ public class Metalgear extends JFrame {
                         bulletsmodel.updateBulletsPosition(mapmodel, playermodel, enemiesmodel);
                         mapmodel.updateMap();
                         previousBulletCount = bulletsmodel.countActiveBullets();
+                    } else {
+                        if (isFootstepPlaying) {
+                            footstepSEManager.stop();
+                            isFootstepPlaying = false;
+                        }
                     }
 
                     // プレイヤーが死亡したかチェック
@@ -239,6 +244,10 @@ public class Metalgear extends JFrame {
                     }
                     break;
                 case GAME_OVER:
+                    if (isFootstepPlaying) {
+                        footstepSEManager.stop();
+                        isFootstepPlaying = false;
+                    }
                     // リスタートする場合のため初期位置をリセット.
                     playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
                             6 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
@@ -248,6 +257,10 @@ public class Metalgear extends JFrame {
 
                     break;
                 case GAME_CLEAR:
+                    if (isFootstepPlaying) {
+                        footstepSEManager.stop();
+                        isFootstepPlaying = false;
+                    }
                     // リスタートする場合のため初期位置をリセット.
                     playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
                             6 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
