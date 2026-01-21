@@ -17,6 +17,8 @@ public class MapView {
 
     // 画像保持用の変数
     private Image floorImage;
+    private Image wallUnitImage;
+    private Image wallUpImage;
     private Image wallTopNorthImage;
     private Image wallNorthImage;
     private Image wallTopSouthImage;
@@ -40,6 +42,8 @@ public class MapView {
     private void loadImages() {
         try {
             floorImage = ImageIO.read(new File(ConstSet.IMG_PATH_FLOOR));
+            wallUnitImage = ImageIO.read(new File(ConstSet.IMG_PATH__WALL_UNIT));
+            wallUpImage = ImageIO.read(new File(ConstSet.IMG_PATH__WALL_UP));
             wallTopNorthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_NORTH));
             wallNorthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_NORTH));
             wallTopSouthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_SOUTH));
@@ -65,6 +69,29 @@ public class MapView {
     public void drawMap(Graphics g, int offsetX, int offsetY, ImageObserver observer) {
         // 現在のマップデータを取得
         int[][] map = mapModel.getMap();
+        // 画面外判定に用いる
+        int buffer = ConstSet.TILE_SIZE;
+
+        // 最初にすべての場所に床を敷き詰める
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++) {
+                // タイルの種類を取得
+                int tileType = map[y][x];
+
+                int drawX = x * ConstSet.TILE_SIZE + offsetX;
+                int drawY = y * ConstSet.TILE_SIZE + offsetY;
+
+                // 描写対象外の判定
+                if (tileType == MapData.DUMMY_TILE) continue;
+                if (drawX + ConstSet.TILE_SIZE < - 4 * buffer || drawX > ConstSet.WINDOW_WIDTH + 4 * buffer ||
+                    drawY + ConstSet.TILE_SIZE < -4 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 4 * buffer) {
+                    continue;
+                }
+
+                // まずは床を描く（すべてのタイルの背景として）
+                g.drawImage(floorImage, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
+            }
+        }
 
         // 二次元配列をループで回して描画. 二次元配列の座標を(x, y)とする.
         for (int y = 0; y < map.length; y++) {
@@ -77,9 +104,8 @@ public class MapView {
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
                 // 画面外のタイルは描画しない. 正確には, 画面外から4マス分外れたところまで描画している
-                int buffer = ConstSet.TILE_SIZE;
-                if (drawX + ConstSet.TILE_SIZE < - 4 * buffer || drawX > ConstSet.WINDOW_WIDTH + 4 * buffer
-                        || drawY + ConstSet.TILE_SIZE < -4 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 4 * buffer) {
+                if (drawX + ConstSet.TILE_SIZE < - 4 * buffer || drawX > ConstSet.WINDOW_WIDTH + 4 * buffer ||
+                    drawY + ConstSet.TILE_SIZE < -4 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 4 * buffer) {
                     continue;
                 }
 

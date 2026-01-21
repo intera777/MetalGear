@@ -50,6 +50,8 @@ public final class ConstSet {
 
         // 各タイルのパス
         public static final String IMG_PATH_FLOOR = "../resources/tiles/floordark.png"; // 暗くした部分
+        public static final String IMG_PATH__WALL_UNIT = "../resources/tiles/wall_unit.png"; // 32×32の壁
+        public static final String IMG_PATH__WALL_UP = "../resources/tiles/wall_up.png"; // 32×32の壁上部分
         public static final String IMG_PATH_WALL_TOP_NORTH =
                         "../resources/tiles/wall_top_north.png";
         public static final String IMG_PATH_WALL_NORTH = "../resources/tiles/walldark.png"; // 暗くした部分
