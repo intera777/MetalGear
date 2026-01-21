@@ -3,8 +3,10 @@ package GameConfig;
 public class MapData {
     // 基本タイル (0~19の定数)
     public static final int STONEFLOOR = 0; // 床, 1×1マス
-    public static final int WALL_TOP_NORTH = 1; // 北壁の上面, 1×1マス
-    public static final int WALL_NORTH = 2; // 北壁, 2×2マス
+    public static final int WALL_UNIT = 1; // 32×32の壁正面
+    public static final int WALL_UP = 2; // 32×32の壁上部
+
+    // 基本的に使わないタイル
     public static final int WALL_TOP_SOUTH = 3; // 南壁の上面, 1×1マス
     public static final int WALL_TOP_EAST = 4; // 東壁の上面, 1×1マス
     public static final int WALL_TOP_WEST = 5; // 西壁の上面, 1×1マス
@@ -12,9 +14,8 @@ public class MapData {
     public static final int CORNER_NORTH_EAST = 7; // 北東の壁の角
     public static final int CORNER_SOUTH_EAST = 8; // 南東の壁の角
     public static final int CORNER_SOUTH_WEST = 9; // 南西の壁の角
-    public static final int WALL_UNIT = 10; // 32×32の壁正面
-    public static final int WALL_UP = 11; // 32×32の壁上部
-
+    public static final int WALL_TOP_NORTH = 10; // 北壁の上面, 1×1マス
+    public static final int WALL_NORTH = 11; // 北壁, 2×2マス
 
     // public static final int PORTAR_POINT = 19; // 遷移点. 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
 
@@ -58,39 +59,39 @@ public class MapData {
 
     // @formatter:off
     // プレイヤーが通過できない障害物のリスト.
-    public static final int[] OBSTACLES = {CLEAR_OBSTACLE, WALL_NORTH, WALL_TOP_NORTH,
+    public static final int[] OBSTACLES = {CLEAR_OBSTACLE, WALL_UNIT, WALL_UP, WALL_NORTH, WALL_TOP_NORTH,
             WALL_TOP_SOUTH, WALL_TOP_EAST, WALL_TOP_WEST, BED, CONTAINER_1T2, CONTAINER_2T2, TABLE_LEFT, TABLE_MIDDLE, TABLE_RIGHT, HORIZONTAL_CABINET, TALL_CABINET, FRONT};
 
     public static final int[][] MAP0 = { // B4f
-            {5, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 2, -1, 4},
-            {5, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, 4},
-            {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-            {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-            {5, 0, 0, -4, -1, -1, -1, 0, -4, -1, -1, -1, 0, 4},
-            {5, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 4},
-            {5, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 4},
-            {5, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 4},
-            {5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-            {5, 2, -1, 2, -1, 2, -1, 0, 0, 2, -1, 2, -1, 4},
-            {5, -2, -2, -2, -2, -2, -2, 0, 0, -2, -2, -2, -1, 4},
-            {5, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-            {5, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-            {9, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 8},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 0, 0, -4, -1, -1, -1, 0, -4, -1, -1, -1, 0, 2},
+            {2, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 2},
+            {2, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 2},
+            {2, 0, 0, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0, 2},
+            {2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2},
+            {2, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 2},
+            {2, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 2},
+            {-3, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {-3, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
 
     };
 
 
     public static final int[][] MAPA0 = { // B3f 収容所
-            {6, 1, 1, 1, 1, 1, 1, 7}, // 北壁：上面
-            {5, 2, -1, 2, -1, 2, -1, 4}, // 北壁：正面（上段）
-            {5, -2, -2, -2, -2, -2, -2, 4}, // 北壁：正面（下段） ※これで2x2の見た目
-            {5, 0, 0, 0, 0, 0, 0, 4}, //
-            {5, 0, 0, 0, 0, 0, 0, 4}, //
-            {5, 0, 0, 0, 20, 0, 0, 4}, // (ベッド)
-            {5, 0, 0, 0, -1, 0, 0, 4}, // (ベッド障害物)
-            {5, 0, 0, 0, 0, TO_C0_FROM_B0, 0, 4}, //
-            {5, 0, 0, 0, 0, 0, 0, 4}, //
-            {9, 3, 101, 101, 3, 3, 3, 8} // 南壁：上面 兼 出入口
+            {2, 2, 2, 2, 2, 2, 2, 2}, // 北壁：上面
+            {2, 1, 1, 1, 1, 1, 1, 2}, // 北壁：正面（上段）
+            {2, 1, 1, 1, 1, 1, 1, 2}, // 北壁：正面（下段） ※これで2x2の見た目
+            {2, 0, 0, 0, 0, 0, 0, 2}, //
+            {2, 0, 0, 0, 0, 0, 0, 2}, //
+            {2, 0, 0, 0, 20, 0, 0, 2}, // (ベッド)
+            {2, 0, 0, 0, -1, 0, 0, 2}, // (ベッド障害物)
+            {2, 0, 0, 0, 0, TO_C0_FROM_B0, 0, 2}, //
+            {2, 0, 0, 0, 0, 0, 0, 2}, //
+            {2, 2, 101, 101, 2, 2, 2, 2} // 南壁：上面 兼 出入口
     };
 
     public static final int[][] MAPA1 = { // B3f 大部屋

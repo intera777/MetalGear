@@ -99,6 +99,20 @@ public class MapView {
             }
         }
 
+        // 次に壁正面を指定の場所に描画する → 壁正面前にオブジェクトを置いた際, 奥行き感を出せる
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++) {
+                // タイルの種類を取得
+                int tileType = map[y][x];
+
+                if (tileType == MapData.WALL_UNIT) {
+                    int drawX = x * ConstSet.TILE_SIZE + offsetX;
+                    int drawY = y * ConstSet.TILE_SIZE + offsetY;
+                    g.drawImage(wallUnitImage, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
+                }
+            }
+        }
+
         // 二次元配列をループで回して描画. 二次元配列の座標を(x, y)とする.
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
@@ -119,9 +133,9 @@ public class MapView {
                 Image imgToDraw = null;
 
                 // タイルの描画
-                if (tileType == MapData.STONEFLOOR) { // 床
-                    imgToDraw = floorImage;
-                } else if (tileType == MapData.WALL_TOP_NORTH) { // 壁
+                if (tileType == MapData.WALL_UP) { // 壁
+                    imgToDraw = wallUpImage;
+                } else if (tileType == MapData.WALL_TOP_NORTH) {
                     imgToDraw = wallTopNorthImage;
                 } else if (tileType == MapData.WALL_NORTH) {
                     imgToDraw = wallNorthImage;
