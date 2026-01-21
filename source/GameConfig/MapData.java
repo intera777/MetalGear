@@ -12,6 +12,9 @@ public class MapData {
         public static final int CORNER_NORTH_EAST = 7; // 北東の壁の角
         public static final int CORNER_SOUTH_EAST = 8; // 南東の壁の角
         public static final int CORNER_SOUTH_WEST = 9; // 南西の壁の角
+        public static final int WALL_UNIT = 10; // 32×32の壁正面
+        public static final int WALL_UP = 11; // 32×32の壁上部
+
 
         // public static final int PORTAR_POINT = 19; // 遷移点. 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
 
