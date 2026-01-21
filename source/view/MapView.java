@@ -25,6 +25,9 @@ public class MapView {
     private Image wallTopEastImage;
     private Image wallTopWestImage;
     private Image bedImage;
+    private Image tableLeftImage;
+    private Image tableMiddleImage;
+    private Image tableRightImage;
     private Image verticalStairImage;
     private Image cornerNorthWestImage;
     private Image cornerNorthEastImage;
@@ -54,6 +57,9 @@ public class MapView {
             cornerSouthEastImage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_SOUTH_EAST));
             cornerSouthWestimage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_SOUTH_WEST));
             bedImage = ImageIO.read(new File(ConstSet.IMG_PATH_BED));
+            tableLeftImage = ImageIO.read(new File(ConstSet.IMG_PATH_TABLE_LEFT));
+            tableMiddleImage = ImageIO.read(new File(ConstSet.IMG_PATH_TABLE_MIDDLE));
+            tableRightImage = ImageIO.read(new File(ConstSet.IMG_PATH_TABLE_RIGHT));
             verticalStairImage = ImageIO.read(new File(ConstSet.IMG_PATH_VERTICAL_STAIR));
             container1T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER1T2));
             container2T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER2T2));
@@ -82,7 +88,7 @@ public class MapView {
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
                 // 描写対象外の判定
-                if (tileType == MapData.DUMMY_TILE) continue;
+                if (tileType == MapData.CLEAR_OBSTACLE) continue;
                 if (drawX + ConstSet.TILE_SIZE < - 4 * buffer || drawX > ConstSet.WINDOW_WIDTH + 4 * buffer ||
                     drawY + ConstSet.TILE_SIZE < -4 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 4 * buffer) {
                     continue;
@@ -137,6 +143,12 @@ public class MapView {
                     imgToDraw = null;
                 } else if (tileType == MapData.BED) { // オブジェクト
                     imgToDraw = bedImage;
+                } else if (tileType == MapData.TABLE_LEFT) {
+                    imgToDraw = tableLeftImage;
+                } else if (tileType == MapData.TABLE_MIDDLE) {
+                    imgToDraw = tableMiddleImage;
+                } else if (tileType == MapData.TABLE_RIGHT) {
+                    imgToDraw = tableRightImage;
                 } else if (tileType == MapData.VERTICAL_STAIR) {
                     imgToDraw = verticalStairImage;
                 } else if (tileType == MapData.CONTAINER_1T2) {
