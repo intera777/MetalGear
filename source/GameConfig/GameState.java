@@ -6,7 +6,7 @@ public class GameState {
             MENU, PLAYING, GAME_OVER, GAME_CLEAR
       }
 
-      public static State currentState = State.GAME_OVER;
+      public static State currentState = State.MENU;
 
       private GameState() {
 

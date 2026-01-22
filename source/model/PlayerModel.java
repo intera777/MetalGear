@@ -30,11 +30,20 @@ public class PlayerModel {
     private int[] scriptY;
     private int scriptIndex = 0;
 
+    private boolean inputEnabled = true;
+
     // Viewのタイマーから定期的に呼ばれるメソッド
     public void updatePlayerPosition(MapModel mm) {
         // スクリプト移動中ならそちらを優先
         if (isScripted) {
             updateScriptedPosition(mm);
+            return;
+        }
+
+        if (!inputEnabled) {
+            animationFrame = 0;
+            animIndex = 0;
+            animationCounter = 0;
             return;
         }
 
@@ -117,6 +126,10 @@ public class PlayerModel {
 
     public void setRight(boolean pressed) {
         this.isRightPressed = pressed;
+    }
+
+    public void setInputEnabled(boolean enabled) {
+        this.inputEnabled = enabled;
     }
 
     // プレイヤーのX座標を取得する.

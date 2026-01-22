@@ -17,12 +17,12 @@ public class GameModel {
         playerModel = new PlayerModel();
         bulletsModel = new BulletsModel(playerModel);
         enemiesModel = new EnemiesModel();
-        mapModel = new MapModel(playerModel, enemiesModel);
         mainMenuModel = new MainMenuModel();
         gameOverMenuModel = new GameOverMenuModel();
         dialogueBoxesModel = new DialogueBoxesModel();
         gameClearMenuModel = new GameClearMenuModel();
         guardsmenmodel = new GuardsmenModel();
+        mapModel = new MapModel(playerModel, enemiesModel, guardsmenmodel);
     }
 
     public GameClearMenuModel getGameClearMenuModel() {

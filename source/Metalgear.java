@@ -70,10 +70,10 @@ public class Metalgear extends JFrame {
 
         // 画面を描画するクラスの生成.
         GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel,
-                gameclearmenumodel, mapview, enemyview, playerview, bulletview, mainmenuview,
-                gameovermenuview, gameclearmenuview, hpBarView, playercontrol, bulletcontrol,
-                mainmenucontrol, gameovermenucontrol, gameclearmenucontrol, dialogueBoxView,
-                dialogueBoxControl);
+                gameclearmenumodel, mapview, enemyview, guardsmanview, playerview, bulletview,
+                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, playercontrol,
+                bulletcontrol, mainmenucontrol, gameovermenucontrol, gameclearmenucontrol,
+                dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
 
 
@@ -209,9 +209,24 @@ public class Metalgear extends JFrame {
                         int prevPlayerX = playermodel.getPlayerX();
                         int prevPlayerY = playermodel.getPlayerY();
 
+                        // 警備員がプレイヤーを追尾しているときはプレイヤーに対する操作を無効化.
+                        boolean canControl = true;
+                        if (!guardsmenmodel.getguardsmen().isEmpty()) {
+                            boolean isTracking = false;
+                            for (GuardsmanModel gm : guardsmenmodel.getguardsmen()) {
+                                if (gm != null && gm.getPlayerTrack() != 0) {
+                                    isTracking = true;
+                                    break;
+                                }
+                            }
+                            canControl = isTracking;
+                        }
+                        playermodel.setInputEnabled(canControl);
+
                         // 各モデルの更新処理
                         playermodel.updatePlayerPosition(mapmodel);
                         enemiesmodel.updateEnemiesPosition(mapmodel, playermodel, bulletsmodel);
+                        guardsmenmodel.updateGuardsmenPosition(mapmodel, playermodel, bulletsmodel);
 
                         // --- SE再生処理 ---
                         // プレイヤーの足音

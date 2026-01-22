@@ -81,7 +81,7 @@ public class MapModel {
         currentMap = map;
         if (enemiesModel != null) {
             enemiesModel.setEnemiesForMap(map);
-
+            guardsmenmodel.setGuardsmenForMap(map);
         }
     }
 
