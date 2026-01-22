@@ -22,6 +22,7 @@ public class GameView extends JPanel {
     private MapView mapView;
     private PlayerView playerView;
     private EnemyView enemyView;
+    private GuardsmanView guardsmanView;
     private BulletView bulletView;
     private MainMenuView mainMenuView;
     private GameOverMenuView gameOverMenuView;
@@ -33,7 +34,7 @@ public class GameView extends JPanel {
     private int timer = 0; // 視点移動などのイベントの時間管理用.
 
     public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, GameClearMenuModel gcm,
-            MapView mv, EnemyView ev, PlayerView pv, BulletView bv, MainMenuView mmv,
+            MapView mv, EnemyView ev, GuardsmanView gmv, PlayerView pv, BulletView bv, MainMenuView mmv,
             GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, PlayerControl pc,
             BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, GameClearMenuControl gcc,
             DialogueBoxView dv, DialogueBoxControl dc) {
@@ -45,6 +46,7 @@ public class GameView extends JPanel {
         // View
         this.mapView = mv;
         this.enemyView = ev;
+        this.guardsmanView = gmv;
         this.playerView = pv;
         this.bulletView = bv;
         this.mainMenuView = mmv;
@@ -116,6 +118,7 @@ public class GameView extends JPanel {
                 // --- 描画実行 ---
                 mapView.drawMap(g2d, offsetX, offsetY, this);
                 enemyView.drawEnemies(g2d, offsetX, offsetY);
+                guardsmanView.drawGuardsmen(g2d, offsetX, offsetY);
                 playerView.drawPlayer(g2d, playerDrawX, playerDrawY);
                 bulletView.drawBullet(g2d, offsetX, offsetY);
             } else {
@@ -125,6 +128,7 @@ public class GameView extends JPanel {
                 // --- 描画実行 ---
                 mapView.drawMap(g2d, offsetX, offsetY, this);
                 enemyView.drawEnemies(g2d, offsetX, offsetY);
+                guardsmanView.drawGuardsmen(g2d, offsetX, offsetY);
                 playerView.drawPlayer(g2d, playerDrawX + moving, playerDrawY + moving);
                 bulletView.drawBullet(g2d, offsetX, offsetY);
             }
