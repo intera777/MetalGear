@@ -29,6 +29,7 @@ public class MapView {
     private Image tableMiddleImage;
     private Image tableRightImage;
     private Image verticalStairImage;
+    private Image stairGoDownImage;
     private Image cornerNorthWestImage;
     private Image cornerNorthEastImage;
     private Image cornerSouthEastImage;
@@ -36,6 +37,8 @@ public class MapView {
     private Image container1T2Image;
     private Image container2T2Image;
     private Image largeDoorImage;
+    private Image prisonDoorOpenedImage;
+    private Image prisonDoorClosedImage;
 
     public MapView(MapModel mm, PlayerModel pm) {
         this.mapModel = mm;
@@ -62,9 +65,12 @@ public class MapView {
             tableMiddleImage = ImageIO.read(new File(ConstSet.IMG_PATH_TABLE_MIDDLE));
             tableRightImage = ImageIO.read(new File(ConstSet.IMG_PATH_TABLE_RIGHT));
             verticalStairImage = ImageIO.read(new File(ConstSet.IMG_PATH_VERTICAL_STAIR));
+            stairGoDownImage = ImageIO.read(new File(ConstSet.IMG_PATH_STAIR_GODOWN));
             container1T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER1T2));
             container2T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER2T2));
             largeDoorImage = ImageIO.read(new File(ConstSet.IMG_PATH_LARGEDOOR));
+            prisonDoorOpenedImage = ImageIO.read(new File(ConstSet.IMG_PATH_PRISONDOOR_OPENED));
+            prisonDoorClosedImage = ImageIO.read(new File(ConstSet.IMG_PATH_PRISONDOOR_CLOSED));
 
         } catch (IOException e) {
             // 読み込み失敗時のデバック用
@@ -155,12 +161,18 @@ public class MapView {
                     imgToDraw = tableRightImage;
                 } else if (tileType == MapData.VERTICAL_STAIR) {
                     imgToDraw = verticalStairImage;
+                } else if (tileType == MapData.STAIRS_GODOWN) {
+                    imgToDraw = stairGoDownImage;
                 } else if (tileType == MapData.CONTAINER_1T2) {
                     imgToDraw = container1T2Image;
                 } else if (tileType == MapData.CONTAINER_2T2) {
                     imgToDraw = container2T2Image;
                 } else if (tileType == MapData.LARGE_DOOR) {
                     imgToDraw = largeDoorImage;
+                } else if (tileType == MapData.PRISONDOOR_OPENED) {
+                    imgToDraw = prisonDoorOpenedImage;
+                } else if (tileType == MapData.PRISONDOOR_CLOSED) {
+                    imgToDraw = prisonDoorClosedImage;
                 } else if (tileType == MapData.SPIN_MOB) {
                     int mobSize = ConstSet.TILE_SIZE * 4;
                     mobView.drawMob(g, drawX, drawY, mobSize, mobSize, observer);
@@ -169,11 +181,12 @@ public class MapView {
 
                 // 画像が存在すれば描画
                 // 1×1以外のサイズに関して, サイズ調整のための分岐する必要がある
-                if (imgToDraw != null && imgToDraw != wallNorthImage && imgToDraw != bedImage && imgToDraw != verticalStairImage &&
-                     imgToDraw != container1T2Image && imgToDraw != container2T2Image && imgToDraw != largeDoorImage) { // 1×1マス
+                if (imgToDraw != null && imgToDraw != stairGoDownImage && imgToDraw != bedImage && imgToDraw != verticalStairImage &&
+                    imgToDraw != container1T2Image && imgToDraw != container2T2Image && imgToDraw != largeDoorImage &&
+                    imgToDraw != prisonDoorOpenedImage && imgToDraw != prisonDoorClosedImage) { // 1×1マス
                     g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == wallNorthImage) { // 2×2マス
-                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == stairGoDownImage) { // 3×2マス
+                    g.drawImage(imgToDraw, drawX, drawY, 3 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
                 } else if (imgToDraw == bedImage) { // 1×2マス
                     g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
                 } else if (imgToDraw == verticalStairImage) { // 3×6マス
@@ -184,6 +197,10 @@ public class MapView {
                     g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
                 } else if (imgToDraw == largeDoorImage) {
                     g.drawImage(imgToDraw, drawX, drawY, 5 * ConstSet.TILE_SIZE, 3 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == prisonDoorOpenedImage) { // 2×2マス
+                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == prisonDoorClosedImage) { // 2×2マス
+                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
                 }
 
             }

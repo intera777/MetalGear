@@ -69,6 +69,7 @@ public final class ConstSet {
                         "../resources/tiles/corner_southwest.png";
         public static final String IMG_PATH_VERTICAL_STAIR = "../resources/tiles/stair_MAPA2.png"; // 3×6マス階段が共通規格になるか分からないけど,
                                                                                                    // とりあえず命名は一般形にした.
+        public static final String IMG_PATH_STAIR_GODOWN = "../resources/tiles/wall_goingdown.png";
         public static final String IMG_PATH_BED = "../resources/tiles/bed.png";
         public static final String IMG_PATH_CONTAINER1T2 = "../resources/tiles/container1T2.png";
         public static final String IMG_PATH_CONTAINER2T2 = "../resources/tiles/container2T2.png";
@@ -76,6 +77,8 @@ public final class ConstSet {
         public static final String IMG_PATH_TABLE_MIDDLE = "../resources/tiles/table_middle.png";
         public static final String IMG_PATH_TABLE_RIGHT = "../resources/tiles/table_right.png";
         public static final String IMG_PATH_LARGEDOOR = "../resources/tiles/GameClearDoor53.png";
+        public static final String IMG_PATH_PRISONDOOR_OPENED = "../resources/tiles/PrisonOpenedDoorWithBG.png";
+        public static final String IMG_PATH_PRISONDOOR_CLOSED = "../resources/tiles/PrisonClosedDoorWithBG.png";
 
         // ゴム弾のパス
         public static final String IMG_PATH_BULLET = "../resources/weapon/Bullet.png";
