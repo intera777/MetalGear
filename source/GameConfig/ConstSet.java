@@ -75,6 +75,7 @@ public final class ConstSet {
         public static final String IMG_PATH_TABLE_LEFT = "../resources/tiles/table_left.png";
         public static final String IMG_PATH_TABLE_MIDDLE = "../resources/tiles/table_middle.png";
         public static final String IMG_PATH_TABLE_RIGHT = "../resources/tiles/table_right.png";
+        public static final String IMG_PATH_LARGEDOOR = "../resources/tiles/GameClearDoor53.png";
 
         // ゴム弾のパス
         public static final String IMG_PATH_BULLET = "../resources/weapon/Bullet.png";
