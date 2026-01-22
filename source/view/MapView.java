@@ -99,20 +99,6 @@ public class MapView {
             }
         }
 
-        // 次に壁正面を指定の場所に描画する → 壁正面前にオブジェクトを置いた際, 奥行き感を出せる
-        for (int y = 0; y < map.length; y++) {
-            for (int x = 0; x < map[y].length; x++) {
-                // タイルの種類を取得
-                int tileType = map[y][x];
-
-                if (tileType == MapData.WALL_UNIT) {
-                    int drawX = x * ConstSet.TILE_SIZE + offsetX;
-                    int drawY = y * ConstSet.TILE_SIZE + offsetY;
-                    g.drawImage(wallUnitImage, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
-                }
-            }
-        }
-
         // 二次元配列をループで回して描画. 二次元配列の座標を(x, y)とする.
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
@@ -133,7 +119,9 @@ public class MapView {
                 Image imgToDraw = null;
 
                 // タイルの描画
-                if (tileType == MapData.WALL_UP) { // 壁
+                if (tileType == MapData.WALL_UNIT) { // 壁
+                    imgToDraw = wallUnitImage;
+                } else if (tileType == MapData.WALL_UP) {
                     imgToDraw = wallUpImage;
                 } else if (tileType == MapData.WALL_TOP_NORTH) {
                     imgToDraw = wallTopNorthImage;
@@ -176,7 +164,7 @@ public class MapView {
                 }
 
                 // 画像が存在すれば描画
-                // ベッドサイズが異なるため, サイズ調整のための分岐
+                // 1×1以外のサイズに関して, サイズ調整のための分岐する必要がある
                 if (imgToDraw != null && imgToDraw != wallNorthImage && imgToDraw != bedImage && imgToDraw != verticalStairImage &&
                      imgToDraw != container1T2Image && imgToDraw != container2T2Image) { // 1×1マス
                     g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);

@@ -77,7 +77,7 @@ public class PlayerModel {
 
             // アニメーション更新
             animationCounter++;
-            if (animationCounter >= 10) { // 10回updateが呼ばれるごとに1コマ進める
+            if (animationCounter >= 8) { // 8回updateが呼ばれるごとに1コマ進める
                 // 配列のインデックスを 0 -> 1 -> 2 -> 3 -> 0... と回す
                 animIndex = (animIndex + 1) % animSequence.length;
                 animationFrame = animSequence[animIndex];

@@ -41,10 +41,10 @@ public class MapModel {
     public void changeMap() {
         if (getPlayerTile() == MapData.TO_A1_FROM_A0) {
             setCurrentMap(MapData.MAPA1);
-            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 54, ConstSet.TILE_SIZE * 2);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 19, ConstSet.TILE_SIZE * 3);
         } else if (getPlayerTile() == MapData.TO_A0_FROM_A1) {
             setCurrentMap(MapData.MAPA0);
-            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 6);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 8);
         } else if (getPlayerTile() == MapData.TO_A2_FROM_A1) {
             setCurrentMap(MapData.MAPA2);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 8, ConstSet.TILE_SIZE * 4);
