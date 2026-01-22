@@ -17,7 +17,7 @@ public final class DialogueSet {
      * </ul>
      */
     public enum DialogueState {
-        PROLOGUE, MOVING_PERSPECTIVE_TO_WORKING, AFTER_PROLOGUE_DIALOGUE, AWAITING_SCRIPTED_MOVE_COMPLETION, AFTER_SCRIPTED_MOVE, MAIN_GAMEPLAY
+        PROLOGUE, MOVING_PERSPECTIVE_TO_WORKING, AFTER_PROLOGUE_DIALOGUE, AWAITING_SCRIPTED_MOVE_COMPLETION, AFTER_SCRIPTED_MOVE, MAIN_GAMEPLAY, GUARDSMAN, GAME_OVER
     }
 
     public static DialogueState dialogueState = DialogueState.PROLOGUE;
@@ -44,6 +44,14 @@ public final class DialogueSet {
     public final static Dialogue[] DIALOGUE_SET_2 = {
         new Dialogue("プレイヤー", "一刻も早く...  ここから脱出しないと... "),
         new Dialogue("プレイヤー", "地上へ行って... 絶対に生きて帰るんだ")
+    };
+
+    public final static Dialogue[] DIALOGUE_GUARDSMAN={
+        new Dialogue("警備員", "学生証,見せてくれる？"),
+        new Dialogue("プレイヤー","......"),
+        new Dialogue("警備員","……その銃は、何かな？"),
+        new Dialogue("プレイヤー","......"),
+        new Dialogue("警備員","君,脱獄者だよね.")
     };
     //@formatter:on
 

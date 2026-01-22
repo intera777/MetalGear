@@ -67,7 +67,7 @@ public class MapModel {
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 31, ConstSet.TILE_SIZE * 3);
         } else if (getPlayerTile() == MapData.TO_D0_FROM_C0) {
             setCurrentMap(MapData.MAPD0);
-            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 29, ConstSet.TILE_SIZE * 25);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 29, ConstSet.TILE_SIZE * 24);
         } else if (getPlayerTile() == MapData.TO_C0_FROM_D0) {
             setCurrentMap(MapData.MAPC0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 4);

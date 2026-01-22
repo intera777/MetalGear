@@ -4,7 +4,7 @@ import sound.BGMManager;
 import sound.SoundEffectManager;
 import view.*;
 import GameConfig.*;
-
+import GameConfig.DialogueSet.DialogueState;
 import javax.swing.*;
 import javax.sound.sampled.Clip;
 
@@ -175,6 +175,10 @@ public class Metalgear extends JFrame {
                     }
                     break;
                 case PLAYING:
+
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.GAME_OVER) {
+                        GameState.setCurrentState(GameState.State.GAME_OVER);
+                    }
                     // プロローグのイベントシーケンス管理
                     // 各ダイアログやイベントが一度だけ実行されるように、!isVisible() や !isScripted() でチェックします。
                     if (DialogueSet.dialogueState == DialogueSet.DialogueState.PROLOGUE
@@ -201,6 +205,13 @@ public class Metalgear extends JFrame {
                         gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.DIALOGUE_SET_2);
                     }
 
+                    // 警備員に捕まった時の会話.
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.GUARDSMAN
+                            && !gamemodel.getDialogueBoxesModel().isVisible()) {
+                        gamemodel.getDialogueBoxesModel()
+                                .setDialogues(DialogueSet.DIALOGUE_GUARDSMAN);
+                    }
+
                     // 会話中はゲームの更新を止める
                     if (!gamemodel.getDialogueBoxesModel().isVisible()
                             && !gameview.isPerspectiveMoving()) {
@@ -219,7 +230,7 @@ public class Metalgear extends JFrame {
                                     break;
                                 }
                             }
-                            canControl = isTracking;
+                            canControl = !isTracking;
                         }
                         playermodel.setInputEnabled(canControl);
 
@@ -228,6 +239,24 @@ public class Metalgear extends JFrame {
                         enemiesmodel.updateEnemiesPosition(mapmodel, playermodel, bulletsmodel);
                         guardsmenmodel.updateGuardsmenPosition(mapmodel, playermodel, bulletsmodel);
 
+                        if (!dialogueboxesmodel.isVisible()) {
+                            for (GuardsmanModel gm : guardsmenmodel.getguardsmen()) {
+                                if (gm != null && gm.getPlayerTrack() == 1) {
+                                    int distance = Math
+                                            .abs(gm.getguardsmanX() - playermodel.getPlayerX())
+                                            + Math.abs(
+                                                    gm.getguardsmanY() - playermodel.getPlayerY());
+                                    if (distance <= ConstSet.TILE_SIZE) {
+                                        gm.changePlayerTrack(0);
+                                        if (DialogueSet.dialogueState == DialogueSet.DialogueState.MAIN_GAMEPLAY) {
+                                            DialogueSet.dialogueState =
+                                                    DialogueSet.DialogueState.GUARDSMAN; // ここで状態を設定
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                         // --- SE再生処理 ---
                         // プレイヤーの足音
                         boolean isPlayerMoving = (playermodel.getPlayerX() != prevPlayerX

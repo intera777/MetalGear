@@ -1,6 +1,7 @@
 package model;
 
 import GameConfig.DialogueSet;
+import GameConfig.GameState;
 import view.*;
 
 public class DialogueBoxesModel {
@@ -50,6 +51,10 @@ public class DialogueBoxesModel {
                     break;
                 case AFTER_SCRIPTED_MOVE:
                     DialogueSet.dialogueState = DialogueSet.DialogueState.MAIN_GAMEPLAY;
+                    break;
+                case GUARDSMAN:
+                    GameState.setCurrentState(GameState.State.GAME_OVER);
+                    DialogueSet.dialogueState = DialogueSet.DialogueState.GAME_OVER;
                     break;
                 default:
                     break; // その他の状態では何もしない

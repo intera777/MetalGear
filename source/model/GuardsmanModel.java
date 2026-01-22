@@ -164,10 +164,56 @@ public class GuardsmanModel {
                   moveTowardsPlayer(mm, pm);
                   updateAnimation();
             } else {
-                  if (direction_timer++ == 30) {
-                        guardsmandirection = (guardsmandirection + 1) % 4;
-                        direction_timer = 0;
+                  checkPlayerInSight(pm);
+                  if (player_track == 0) {
+                        if (direction_timer++ == 30) {
+                              guardsmandirection = (guardsmandirection + 1) % 4;
+                              direction_timer = 0;
+                        }
                   }
+            }
+      }
+
+      private void checkPlayerInSight(PlayerModel pm) {
+            int playerX = pm.getPlayerX();
+            int playerY = pm.getPlayerY();
+            int sightDistance = ConstSet.TILE_SIZE * 10;
+
+            boolean isFound = false;
+
+            switch (guardsmandirection) {
+                  case ConstSet.RIGHT:
+                        if (playerX > guardsmanX
+                                    && Math.abs(playerY - guardsmanY) < ConstSet.SIGHTRANGE
+                                    && playerX - guardsmanX < sightDistance) {
+                              isFound = true;
+                        }
+                        break;
+                  case ConstSet.UP:
+                        if (playerY < guardsmanY
+                                    && Math.abs(playerX - guardsmanX) < ConstSet.SIGHTRANGE
+                                    && guardsmanY - playerY < sightDistance) {
+                              isFound = true;
+                        }
+                        break;
+                  case ConstSet.LEFT:
+                        if (playerX < guardsmanX
+                                    && Math.abs(playerY - guardsmanY) < ConstSet.SIGHTRANGE
+                                    && guardsmanX - playerX < sightDistance) {
+                              isFound = true;
+                        }
+                        break;
+                  case ConstSet.DOWN:
+                        if (playerY > guardsmanY
+                                    && Math.abs(playerX - guardsmanX) < ConstSet.SIGHTRANGE
+                                    && playerY - guardsmanY < sightDistance) {
+                              isFound = true;
+                        }
+                        break;
+            }
+
+            if (isFound) {
+                  player_track = 1;
             }
       }
 
