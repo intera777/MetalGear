@@ -11,6 +11,7 @@ public class GameModel {
     private GameOverMenuModel gameOverMenuModel;
     private DialogueBoxesModel dialogueBoxesModel;
     private GameClearMenuModel gameClearMenuModel;
+    private GuardsmenModel guardsmenmodel;
 
     public GameModel() {
         playerModel = new PlayerModel();
@@ -21,6 +22,7 @@ public class GameModel {
         gameOverMenuModel = new GameOverMenuModel();
         dialogueBoxesModel = new DialogueBoxesModel();
         gameClearMenuModel = new GameClearMenuModel();
+        guardsmenmodel = new GuardsmenModel();
     }
 
     public GameClearMenuModel getGameClearMenuModel() {
@@ -53,5 +55,9 @@ public class GameModel {
 
     public DialogueBoxesModel getDialogueBoxesModel() {
         return dialogueBoxesModel;
+    }
+
+    public GuardsmenModel getGuardsmenModel() {
+        return guardsmenmodel;
     }
 }
