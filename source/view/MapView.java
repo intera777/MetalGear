@@ -89,8 +89,8 @@ public class MapView {
 
                 // 描写対象外の判定
                 if (tileType == MapData.CLEAR_OBSTACLE) continue;
-                if (drawX + ConstSet.TILE_SIZE < - 4 * buffer || drawX > ConstSet.WINDOW_WIDTH + 4 * buffer ||
-                    drawY + ConstSet.TILE_SIZE < -4 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 4 * buffer) {
+                if (drawX + ConstSet.TILE_SIZE < - 6 * buffer || drawX > ConstSet.WINDOW_WIDTH + 6 * buffer ||
+                    drawY + ConstSet.TILE_SIZE < -6 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 6 * buffer) {
                     continue;
                 }
 
@@ -109,9 +109,9 @@ public class MapView {
                 int drawX = x * ConstSet.TILE_SIZE + offsetX;
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
-                // 画面外のタイルは描画しない. 正確には, 画面外から4マス分外れたところまで描画している
-                if (drawX + ConstSet.TILE_SIZE < - 4 * buffer || drawX > ConstSet.WINDOW_WIDTH + 4 * buffer ||
-                    drawY + ConstSet.TILE_SIZE < -4 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 4 * buffer) {
+                // 画面外のタイルは描画しない. 正確には, 画面外から6マス分外れたところまで描画している
+                if (drawX + ConstSet.TILE_SIZE < - 6 * buffer || drawX > ConstSet.WINDOW_WIDTH + 6 * buffer ||
+                    drawY + ConstSet.TILE_SIZE < -6 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 6 * buffer) {
                     continue;
                 }
 
