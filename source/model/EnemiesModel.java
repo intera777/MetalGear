@@ -45,6 +45,9 @@ public class EnemiesModel {
                     MapData.MAPB0_E0X, MapData.MAPB0_E0Y));
             enemies.add(new EnemyModel(MapData.MAPB0_E1X[0], MapData.MAPB0_E1Y[0],
                     MapData.MAPB0_E1X, MapData.MAPB0_E1Y));
+        } else if (map == MapData.MAPC0) {
+            enemies.add(new EnemyModel(MapData.MAPC0_E0X[0], MapData.MAPC0_E0Y[0],
+                    MapData.MAPC0_E0X, MapData.MAPC0_E0Y));
         }
     }
 
