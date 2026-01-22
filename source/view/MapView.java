@@ -35,6 +35,7 @@ public class MapView {
     private Image cornerSouthWestimage;
     private Image container1T2Image;
     private Image container2T2Image;
+    private Image largeDoorImage;
 
     public MapView(MapModel mm, PlayerModel pm) {
         this.mapModel = mm;
@@ -63,6 +64,7 @@ public class MapView {
             verticalStairImage = ImageIO.read(new File(ConstSet.IMG_PATH_VERTICAL_STAIR));
             container1T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER1T2));
             container2T2Image = ImageIO.read(new File(ConstSet.IMG_PATH_CONTAINER2T2));
+            largeDoorImage = ImageIO.read(new File(ConstSet.IMG_PATH_LARGEDOOR));
 
         } catch (IOException e) {
             // 読み込み失敗時のデバック用
@@ -157,6 +159,8 @@ public class MapView {
                     imgToDraw = container1T2Image;
                 } else if (tileType == MapData.CONTAINER_2T2) {
                     imgToDraw = container2T2Image;
+                } else if (tileType == MapData.LARGE_DOOR) {
+                    imgToDraw = largeDoorImage;
                 } else if (tileType == MapData.SPIN_MOB) {
                     int mobSize = ConstSet.TILE_SIZE * 4;
                     mobView.drawMob(g, drawX, drawY, mobSize, mobSize, observer);
@@ -166,7 +170,7 @@ public class MapView {
                 // 画像が存在すれば描画
                 // 1×1以外のサイズに関して, サイズ調整のための分岐する必要がある
                 if (imgToDraw != null && imgToDraw != wallNorthImage && imgToDraw != bedImage && imgToDraw != verticalStairImage &&
-                     imgToDraw != container1T2Image && imgToDraw != container2T2Image) { // 1×1マス
+                     imgToDraw != container1T2Image && imgToDraw != container2T2Image && imgToDraw != largeDoorImage) { // 1×1マス
                     g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
                 } else if (imgToDraw == wallNorthImage) { // 2×2マス
                     g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
@@ -178,6 +182,8 @@ public class MapView {
                     g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
                 } else if (imgToDraw == container2T2Image) { // 2×2マス
                     g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
+                } else if (imgToDraw == largeDoorImage) {
+                    g.drawImage(imgToDraw, drawX, drawY, 5 * ConstSet.TILE_SIZE, 3 * ConstSet.TILE_SIZE, null);
                 }
 
             }
