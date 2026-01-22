@@ -48,6 +48,14 @@ public class EnemiesModel {
         } else if (map == MapData.MAPC0) {
             enemies.add(new EnemyModel(MapData.MAPC0_E0X[0], MapData.MAPC0_E0Y[0],
                     MapData.MAPC0_E0X, MapData.MAPC0_E0Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E1X[0], MapData.MAPC0_E1Y[0],
+                    MapData.MAPC0_E1X, MapData.MAPC0_E1Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E2X[0], MapData.MAPC0_E2Y[0],
+                    MapData.MAPC0_E2X, MapData.MAPC0_E2Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E3X[0], MapData.MAPC0_E3Y[0],
+                    MapData.MAPC0_E3X, MapData.MAPC0_E3Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E4X[0], MapData.MAPC0_E4Y[0],
+                    MapData.MAPC0_E4X, MapData.MAPC0_E4Y));
         }
     }
 

@@ -165,6 +165,26 @@ public class MapData {
     public static final int[] MAPC0_E0X = {TS * 2, TS * 8};
     public static final int[] MAPC0_E0Y = {TS * 13, TS * 13};
 
+    // B1F敵1のデータ.
+    public static final int MAPC0_E1_PNUM = 2;
+    public static final int[] MAPC0_E1X = {TS * 24, TS * 35};
+    public static final int[] MAPC0_E1Y = {TS * 6, TS * 6};
+
+    // B1F敵2のデータ.
+    public static final int MAPC0_E2_PNUM = 2;
+    public static final int[] MAPC0_E2X = {TS * 30, TS * 30};
+    public static final int[] MAPC0_E2Y = {TS * 11, TS * 19};
+
+    // B1F敵3のデータ.
+    public static final int MAPC0_E3_PNUM = 2;
+    public static final int[] MAPC0_E3X = {TS * 25, TS * 35};
+    public static final int[] MAPC0_E3Y = {TS * 22, TS * 22};
+
+    // B1F敵4のデータ.
+    public static final int MAPC0_E4_PNUM = 2;
+    public static final int[] MAPC0_E4X = {TS * 43, TS * 43};
+    public static final int[] MAPC0_E4Y = {TS * 11, TS * 19};
+
 
 
     // @formatter:off

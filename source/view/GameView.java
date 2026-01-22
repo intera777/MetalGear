@@ -33,8 +33,10 @@ public class GameView extends JPanel {
     private int timer = 0; // 視点移動などのイベントの時間管理用.
 
     public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, GameClearMenuModel gcm,
-            MapView mv, EnemyView ev, PlayerView pv, BulletView bv, MainMenuView mmv, GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, 
-            PlayerControl pc, BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, GameClearMenuControl gcc, DialogueBoxView dv, DialogueBoxControl dc) {
+            MapView mv, EnemyView ev, PlayerView pv, BulletView bv, MainMenuView mmv,
+            GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, PlayerControl pc,
+            BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, GameClearMenuControl gcc,
+            DialogueBoxView dv, DialogueBoxControl dc) {
         // Model
         this.playerModel = pm;
         this.mainMenuModel = mm;
