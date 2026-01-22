@@ -3,14 +3,16 @@ package model;
 import GameConfig.*;
 
 public class MapModel {
-    PlayerModel playermodel;
-    EnemiesModel enemiesModel;
+    private PlayerModel playermodel;
+    private EnemiesModel enemiesModel;
+    private GuardsmenModel guardsmenmodel;
 
     private int currentMap[][];
 
-    public MapModel(PlayerModel pm, EnemiesModel em) {
+    public MapModel(PlayerModel pm, EnemiesModel em, GuardsmenModel gm) {
         playermodel = pm;
         enemiesModel = em;
+        guardsmenmodel = gm;
     }
 
     // プレイヤーが現在いる位置のマップタイルを取得するメソッド.
@@ -79,6 +81,7 @@ public class MapModel {
         currentMap = map;
         if (enemiesModel != null) {
             enemiesModel.setEnemiesForMap(map);
+
         }
     }
 

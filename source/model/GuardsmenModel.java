@@ -27,4 +27,15 @@ public class GuardsmenModel {
       public void setguardsmenForMap(int[][] map) {
             guardsmen.clear();
       }
+
+      public void setGuardsmenForMap(int[][] map) {
+            guardsmen.clear();
+            int HS = ConstSet.TILE_SIZE / 2;
+            if (map == MapData.MAPD0) {
+                  guardsmen.add(new GuardsmanModel(ConstSet.TILE_SIZE * 7 + HS,
+                              ConstSet.TILE_SIZE * 16 + HS));
+                  guardsmen.add(new GuardsmanModel(ConstSet.TILE_SIZE * 15 + HS,
+                              ConstSet.TILE_SIZE * 16 + HS));
+            }
+      }
 }
