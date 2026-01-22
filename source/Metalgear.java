@@ -179,6 +179,7 @@ public class Metalgear extends JFrame {
                     if (DialogueSet.dialogueState == DialogueSet.DialogueState.GAME_OVER) {
                         GameState.setCurrentState(GameState.State.GAME_OVER);
                     }
+
                     // プロローグのイベントシーケンス管理
                     // 各ダイアログやイベントが一度だけ実行されるように、!isVisible() や !isScripted() でチェックします。
                     if (DialogueSet.dialogueState == DialogueSet.DialogueState.PROLOGUE
