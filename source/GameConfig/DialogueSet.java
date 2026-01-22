@@ -49,7 +49,7 @@ public final class DialogueSet {
     public final static Dialogue[] DIALOGUE_GUARDSMAN={
         new Dialogue("警備員", "学生証,見せてくれる？"),
         new Dialogue("プレイヤー","......"),
-        new Dialogue("警備員","……その銃は、何かな？"),
+        new Dialogue("警備員","……その銃は,何かな？"),
         new Dialogue("プレイヤー","......"),
         new Dialogue("警備員","君,脱獄者だよね.")
     };
