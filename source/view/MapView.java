@@ -12,54 +12,50 @@ public class MapView {
     private MapModel mapModel;
     private PlayerModel playerModel;
 
-    // MobViewのインスタンスを作成
     private MobView mobView = new MobView();
 
     // 画像保持用の変数
     private Image floorImage;
     private Image wallUnitImage;
     private Image wallUpImage;
-    private Image wallTopNorthImage;
-    private Image wallNorthImage;
-    private Image wallTopSouthImage;
-    private Image wallTopEastImage;
-    private Image wallTopWestImage;
     private Image bedImage;
     private Image tableLeftImage;
     private Image tableMiddleImage;
     private Image tableRightImage;
     private Image verticalStairImage;
     private Image stairGoDownImage;
-    private Image cornerNorthWestImage;
-    private Image cornerNorthEastImage;
-    private Image cornerSouthEastImage;
-    private Image cornerSouthWestimage;
     private Image container1T2Image;
     private Image container2T2Image;
     private Image largeDoorImage;
     private Image prisonDoorOpenedImage;
     private Image prisonDoorClosedImage;
+    private Image alarmImage;
+    private Image shelfImage;
+    private Image bigshelfImage;
+    private Image counterImage;
+    private Image elevatorImage; // スペル修正
+    private Image floor1FImage;
+    private Image wallUnit1FImage;
+    private Image wallUp1FImage;
+    private Image plantImage;
+    private Image boxImage;
+    private Image pictureImage;
+    private Image booksImage;
 
     public MapView(MapModel mm, PlayerModel pm) {
         this.mapModel = mm;
         this.playerModel = pm;
-        loadImages(); // コンストラクタ内で画像読み取り
+        loadImages();
     }
 
     private void loadImages() {
         try {
+            // 基本タイル
             floorImage = ImageIO.read(new File(ConstSet.IMG_PATH_FLOOR));
             wallUnitImage = ImageIO.read(new File(ConstSet.IMG_PATH__WALL_UNIT));
             wallUpImage = ImageIO.read(new File(ConstSet.IMG_PATH__WALL_UP));
-            wallTopNorthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_NORTH));
-            wallNorthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_NORTH));
-            wallTopSouthImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_SOUTH));
-            wallTopEastImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_EAST));
-            wallTopWestImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_TOP_WEST));
-            cornerNorthWestImage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_NORTH_WEST));
-            cornerNorthEastImage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_NORTH_EAST));
-            cornerSouthEastImage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_SOUTH_EAST));
-            cornerSouthWestimage = ImageIO.read(new File(ConstSet.IMG_PATH_CORNER_SOUTH_WEST));
+
+            // オブジェクト
             bedImage = ImageIO.read(new File(ConstSet.IMG_PATH_BED));
             tableLeftImage = ImageIO.read(new File(ConstSet.IMG_PATH_TABLE_LEFT));
             tableMiddleImage = ImageIO.read(new File(ConstSet.IMG_PATH_TABLE_MIDDLE));
@@ -71,9 +67,22 @@ public class MapView {
             largeDoorImage = ImageIO.read(new File(ConstSet.IMG_PATH_LARGEDOOR));
             prisonDoorOpenedImage = ImageIO.read(new File(ConstSet.IMG_PATH_PRISONDOOR_OPENED));
             prisonDoorClosedImage = ImageIO.read(new File(ConstSet.IMG_PATH_PRISONDOOR_CLOSED));
+            
+            // 1F・追加オブジェクト
+            alarmImage = ImageIO.read(new File(ConstSet.IMG_PATH_ALARM));
+            shelfImage = ImageIO.read(new File(ConstSet.IMG_PATH_SHELF));
+            bigshelfImage = ImageIO.read(new File(ConstSet.IMG_PATH_BIGSHELF));
+            counterImage = ImageIO.read(new File(ConstSet.IMG_PATH_COUNTER));
+            elevatorImage = ImageIO.read(new File(ConstSet.IMG_PATH_ELAVATOR)); // 変数名はelavatorImageでもOK
+            floor1FImage = ImageIO.read(new File(ConstSet.IMG_PATH_FLOOR1F));
+            wallUnit1FImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_UNIT_1F));
+            wallUp1FImage = ImageIO.read(new File(ConstSet.IMG_PATH_WALL_UP_1F));
+            plantImage = ImageIO.read(new File(ConstSet.IMG_PATH_PLANT));
+            boxImage = ImageIO.read(new File(ConstSet.IMG_PATH_BOX));
+            pictureImage = ImageIO.read(new File(ConstSet.IMG_PATH_PICTURE));
+            booksImage = ImageIO.read(new File(ConstSet.IMG_PATH_BOOKS));
 
         } catch (IOException e) {
-            // 読み込み失敗時のデバック用
             System.err.println("読み込み失敗");
             System.err.println("探した場所: " + new File(ConstSet.IMG_PATH_FLOOR).getAbsolutePath());
             e.printStackTrace();
@@ -81,128 +90,94 @@ public class MapView {
     }
 
     public void drawMap(Graphics g, int offsetX, int offsetY, ImageObserver observer) {
-        // 現在のマップデータを取得
         int[][] map = mapModel.getMap();
-        // 画面外判定に用いる
         int buffer = ConstSet.TILE_SIZE;
 
-        // 最初にすべての場所に床を敷き詰める
+        // 背景一括描画（1F床の出し分け対応）
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
-                // タイルの種類を取得
                 int tileType = map[y][x];
+                if (tileType == MapData.CLEAR_OBSTACLE) continue;
 
                 int drawX = x * ConstSet.TILE_SIZE + offsetX;
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
-                // 描写対象外の判定
-                if (tileType == MapData.CLEAR_OBSTACLE) continue;
                 if (drawX + ConstSet.TILE_SIZE < - 6 * buffer || drawX > ConstSet.WINDOW_WIDTH + 6 * buffer ||
-                    drawY + ConstSet.TILE_SIZE < -6 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 6 * buffer) {
-                    continue;
-                }
+                    drawY + ConstSet.TILE_SIZE < -6 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 6 * buffer) continue;
 
-                // まずは床を描く（すべてのタイルの背景として）
-                g.drawImage(floorImage, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
+                Image bg = (tileType == MapData.FLOOR_1F || tileType == MapData.WALL_UNIT_1F) ? floor1FImage : floorImage;
+                g.drawImage(bg, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
             }
         }
 
-        // 二次元配列をループで回して描画. 二次元配列の座標を(x, y)とする.
+        // オブジェクト描画
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
-                // タイルの種類を取得
                 int tileType = map[y][x];
-
-                // 描画位置の計算 (絶対座標にoffsetを加算することで, プレイヤー中心の画面が描画できる)
                 int drawX = x * ConstSet.TILE_SIZE + offsetX;
                 int drawY = y * ConstSet.TILE_SIZE + offsetY;
 
-                // 画面外のタイルは描画しない. 正確には, 画面外から6マス分外れたところまで描画している
                 if (drawX + ConstSet.TILE_SIZE < - 6 * buffer || drawX > ConstSet.WINDOW_WIDTH + 6 * buffer ||
-                    drawY + ConstSet.TILE_SIZE < -6 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 6 * buffer) {
+                    drawY + ConstSet.TILE_SIZE < -6 * buffer || drawY > ConstSet.WINDOW_HEIGHT + 6 * buffer) continue;
+
+                Image imgToDraw = null;
+
+                // --- 画像特定セクション ---
+                if (tileType == MapData.WALL_UNIT) imgToDraw = wallUnitImage;
+                else if (tileType == MapData.WALL_UP) imgToDraw = wallUpImage;
+                else if (tileType == MapData.WALL_UNIT_1F) imgToDraw = wallUnit1FImage;
+                else if (tileType == MapData.BED) imgToDraw = bedImage;
+                else if (tileType == MapData.VERTICAL_STAIR) imgToDraw = verticalStairImage;
+                else if (tileType == MapData.STAIRS_GODOWN) imgToDraw = stairGoDownImage;
+                else if (tileType == MapData.CONTAINER_1T2) imgToDraw = container1T2Image;
+                else if (tileType == MapData.CONTAINER_2T2) imgToDraw = container2T2Image;
+                else if (tileType == MapData.LARGE_DOOR) imgToDraw = largeDoorImage;
+                else if (tileType == MapData.PRISONDOOR_OPENED) imgToDraw = prisonDoorOpenedImage;
+                else if (tileType == MapData.PRISONDOOR_CLOSED) imgToDraw = prisonDoorClosedImage;
+                else if (tileType == MapData.ALARM) imgToDraw = alarmImage;
+                else if (tileType == MapData.SHELF) imgToDraw = shelfImage;
+                else if (tileType == MapData.BIGSHELF) imgToDraw = bigshelfImage;
+                else if (tileType == MapData.COUNTER) imgToDraw = counterImage;
+                else if (tileType == MapData.ELAVATOR) imgToDraw = elevatorImage;
+                else if (tileType == MapData.TABLE_LEFT) imgToDraw = tableLeftImage;
+                else if (tileType == MapData.TABLE_MIDDLE) imgToDraw = tableMiddleImage;
+                else if (tileType == MapData.TABLE_RIGHT) imgToDraw = tableRightImage;
+                else if  (tileType == MapData.WALL_UP_1F) imgToDraw = wallUp1FImage;
+                else if (tileType == MapData.PLANT) imgToDraw = plantImage;
+                else if (tileType == MapData.BOX) imgToDraw = boxImage;
+                else if (tileType == MapData.PICTURE) imgToDraw = pictureImage;
+                else if (tileType == MapData.BOOKS) imgToDraw = booksImage;
+
+                else if (tileType == MapData.SPIN_MOB) {
+                    int mobSize = ConstSet.TILE_SIZE * 4;
+                    mobView.drawMob(g, drawX, drawY, mobSize, mobSize, observer);
                     continue;
                 }
 
-                // タイルの種類に応じて画像を描画
-                Image imgToDraw = null;
+                if (imgToDraw == null) continue;
 
-                // タイルの描画
-                if (tileType == MapData.WALL_UNIT) { // 壁
-                    imgToDraw = wallUnitImage;
-                } else if (tileType == MapData.WALL_UP) {
-                    imgToDraw = wallUpImage;
-                } else if (tileType == MapData.WALL_TOP_NORTH) {
-                    imgToDraw = wallTopNorthImage;
-                } else if (tileType == MapData.WALL_NORTH) {
-                    imgToDraw = wallNorthImage;
-                } else if (tileType == MapData.WALL_TOP_SOUTH) {
-                    imgToDraw = wallTopSouthImage;
-                } else if (tileType == MapData.WALL_TOP_EAST) {
-                    imgToDraw = wallTopEastImage;
-                } else if (tileType == MapData.WALL_TOP_WEST) {
-                    imgToDraw = wallTopWestImage;
-                } else if (tileType == MapData.CORNER_NORTH_WEST) { // 壁の角
-                    imgToDraw = cornerNorthWestImage;
-                } else if (tileType == MapData.CORNER_NORTH_EAST) {
-                    imgToDraw = cornerNorthEastImage;
-                } else if (tileType == MapData.CORNER_SOUTH_EAST) {
-                    imgToDraw = cornerSouthEastImage;
-                } else if (tileType == MapData.CORNER_SOUTH_WEST) {
-                    imgToDraw = cornerSouthWestimage;
-                } else if (tileType > 100) { // 遷移点 → 何も描画しない
-                    imgToDraw = null;
-                } else if (tileType == MapData.BED) { // オブジェクト
-                    imgToDraw = bedImage;
-                } else if (tileType == MapData.TABLE_LEFT) {
-                    imgToDraw = tableLeftImage;
-                } else if (tileType == MapData.TABLE_MIDDLE) {
-                    imgToDraw = tableMiddleImage;
-                } else if (tileType == MapData.TABLE_RIGHT) {
-                    imgToDraw = tableRightImage;
-                } else if (tileType == MapData.VERTICAL_STAIR) {
-                    imgToDraw = verticalStairImage;
-                } else if (tileType == MapData.STAIRS_GODOWN) {
-                    imgToDraw = stairGoDownImage;
-                } else if (tileType == MapData.CONTAINER_1T2) {
-                    imgToDraw = container1T2Image;
-                } else if (tileType == MapData.CONTAINER_2T2) {
-                    imgToDraw = container2T2Image;
-                } else if (tileType == MapData.LARGE_DOOR) {
-                    imgToDraw = largeDoorImage;
-                } else if (tileType == MapData.PRISONDOOR_OPENED) {
-                    imgToDraw = prisonDoorOpenedImage;
-                } else if (tileType == MapData.PRISONDOOR_CLOSED) {
-                    imgToDraw = prisonDoorClosedImage;
-                } else if (tileType == MapData.SPIN_MOB) {
-                    int mobSize = ConstSet.TILE_SIZE * 4;
-                    mobView.drawMob(g, drawX, drawY, mobSize, mobSize, observer);
-                    continue; // Mobは既に描画しているので, 以下の描画処理はスキップ                
+                // --- サイズ調整セクション ---
+                int tw = ConstSet.TILE_SIZE;
+                
+                if (tileType == MapData.LARGE_DOOR) { // 5x2
+                    g.drawImage(imgToDraw, drawX, drawY, 5 * tw, 2 * tw, null);
+                } else if (tileType == MapData.VERTICAL_STAIR) { // 3x6
+                    g.drawImage(imgToDraw, drawX, drawY, 3 * tw, 6 * tw, null);
+                } else if (tileType == MapData.STAIRS_GODOWN || tileType == MapData.BIGSHELF || 
+                           tileType == MapData.COUNTER || tileType == MapData.ELAVATOR) { // 3x2
+                    g.drawImage(imgToDraw, drawX, drawY, 3 * tw, 2 * tw, null);
+                } else if (tileType == MapData.CONTAINER_2T2 || tileType == MapData.PRISONDOOR_OPENED || 
+                           tileType == MapData.PRISONDOOR_CLOSED || tileType == MapData.SHELF) { // 2x2
+                    g.drawImage(imgToDraw, drawX, drawY, 2 * tw, 2 * tw, null);
+                } else if (tileType == MapData.BED || tileType == MapData.CONTAINER_1T2 || tileType == MapData.PLANT) { // 1x2
+                    g.drawImage(imgToDraw, drawX, drawY, tw, 2 * tw, null);
+                } else if (tileType == MapData.PICTURE) { // 2x1
+                    g.drawImage(imgToDraw, drawX, drawY, 2 * tw, tw, null);
+                } else if (tileType == MapData.BOOKS) { // 3x4
+                    g.drawImage(imgToDraw, drawX, drawY, 3 * tw, 4 * tw, null);
+                } else { // 1x1
+                    g.drawImage(imgToDraw, drawX, drawY, tw, tw, null);
                 }
-
-                // 画像が存在すれば描画
-                // 1×1以外のサイズに関して, サイズ調整のための分岐する必要がある
-                if (imgToDraw != null && imgToDraw != stairGoDownImage && imgToDraw != bedImage && imgToDraw != verticalStairImage &&
-                    imgToDraw != container1T2Image && imgToDraw != container2T2Image && imgToDraw != largeDoorImage &&
-                    imgToDraw != prisonDoorOpenedImage && imgToDraw != prisonDoorClosedImage) { // 1×1マス
-                    g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == stairGoDownImage) { // 3×2マス
-                    g.drawImage(imgToDraw, drawX, drawY, 3 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == bedImage) { // 1×2マス
-                    g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == verticalStairImage) { // 3×6マス
-                    g.drawImage(imgToDraw, drawX, drawY, 3 * ConstSet.TILE_SIZE, 6 * ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == container1T2Image) { // 1×2マス
-                    g.drawImage(imgToDraw, drawX, drawY, ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == container2T2Image) { // 2×2マス
-                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == largeDoorImage) {
-                    g.drawImage(imgToDraw, drawX, drawY, 5 * ConstSet.TILE_SIZE, 3 * ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == prisonDoorOpenedImage) { // 2×2マス
-                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
-                } else if (imgToDraw == prisonDoorClosedImage) { // 2×2マス
-                    g.drawImage(imgToDraw, drawX, drawY, 2 * ConstSet.TILE_SIZE, 2 * ConstSet.TILE_SIZE, null);
-                }
-
             }
         }
     }

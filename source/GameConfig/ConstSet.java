@@ -79,6 +79,18 @@ public final class ConstSet {
         public static final String IMG_PATH_LARGEDOOR = "../resources/tiles/GameClearDoor53.png";
         public static final String IMG_PATH_PRISONDOOR_OPENED = "../resources/tiles/PrisonOpenedDoorWithBG.png";
         public static final String IMG_PATH_PRISONDOOR_CLOSED = "../resources/tiles/PrisonClosedDoorWithBG.png";
+        public static final String IMG_PATH_ALARM = "../resources/tiles/alarm_1F.png";
+        public static final String IMG_PATH_SHELF = "../resources/tiles/shelf_1F.png";
+        public static final String IMG_PATH_BIGSHELF = "../resources/tiles/bigshelf.png";
+        public static final String IMG_PATH_COUNTER = "../resources/tiles/counter_1F.png";
+        public static final String IMG_PATH_ELAVATOR = "../resources/tiles/Elevator.png";
+        public static final String IMG_PATH_FLOOR1F = "../resources/tiles/floor_1F.png";
+        public static final String IMG_PATH_WALL_UNIT_1F = "../resources/tiles/wall_unit_1F.png";
+        public static final String IMG_PATH_WALL_UP_1F = "../resources/tiles/wall_up_1F.png";
+        public static final String IMG_PATH_PLANT = "../resources/tiles/plant.png";
+        public static final String IMG_PATH_BOX = "../resources/tiles/box.png";
+        public static final String IMG_PATH_PICTURE = "../resources/tiles/picture.png";
+        public static final String IMG_PATH_BOOKS = "../resources/tiles/books.png";
 
         // ゴム弾のパス
         public static final String IMG_PATH_BULLET = "../resources/weapon/Bullet.png";

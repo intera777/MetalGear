@@ -189,7 +189,8 @@ public class PlayerModel {
                 }
             }
 
-            if (tile == MapData.HALF_CLEAR_OBSTACLE || tile == MapData.WALL_UNIT) {
+            if (tile == MapData.HALF_CLEAR_OBSTACLE || tile == MapData.WALL_UNIT || tile == MapData.WALL_UNIT_1F ||
+                tile == MapData.ALARM || tile == MapData.BOX) {
                 // 上半分は通行不可. タイルのY座標の開始位置を計算し、そこから半分の高さ未満なら衝突とみなす
                 int tileTopY = (y / ConstSet.TILE_SIZE) * ConstSet.TILE_SIZE;
                 if (y < tileTopY + ConstSet.TILE_SIZE / 2) {
