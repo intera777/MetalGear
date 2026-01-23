@@ -304,6 +304,8 @@ public class Metalgear extends JFrame {
                     playermodel.resetStatus();
                     mapmodel.setCurrentMap(MapData.MAPA0);
 
+                    DialogueSet.dialogueState = DialogueState.MAIN_GAMEPLAY;
+
                     break;
                 case GAME_CLEAR:
                     if (isFootstepPlaying) {
