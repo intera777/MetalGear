@@ -119,7 +119,7 @@ public final class ConstSet {
         public static final String BGM_PURSUE = "../resources/sound/enemy_pursue.wav";
         public static final String BGM_GAMEOVER = "../resources/sound/gameover.wav";
         public static final String SE_footstep = "../resources/sound/footstep.wav";
-        public static final String SE_ENEMY_NOTICE = "../resources/sound/enemy_notice.wav";
+        public static final String SE_ENEMY_NOTICE = "../resources/sound/Parody_Accent04-1(High).wav";
         public static final String SE_BULLET_SHOOT = "../resources/sound/bullet_shoot.wav";
         public static final String SE_ITEM_SELECTED = "../resources/sound/item_selected.wav";
 

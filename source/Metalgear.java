@@ -10,6 +10,9 @@ import javax.sound.sampled.Clip;
 
 public class Metalgear extends JFrame {
 
+    // 追加: 発見SEが連続で鳴りすぎるのを防ぐためのフラグ
+    private static boolean wasTrackingGlobal = false;
+
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setTitle("MetalGear");
@@ -34,7 +37,7 @@ public class Metalgear extends JFrame {
         PlayerControl playercontrol = new PlayerControl(playermodel);
         PlayerView playerview = new PlayerView(playermodel);
 
-        // Bulletクラス関連のオブジェクトの生成.
+        // Bulletクラス関連 of オブジェクトの生成.
         BulletControl bulletcontrol = new BulletControl(bulletsmodel);
         BulletView bulletview = new BulletView(bulletsmodel);
 
@@ -56,7 +59,6 @@ public class Metalgear extends JFrame {
         GameClearMenuView gameclearmenuview = new GameClearMenuView(gameclearmenumodel);
         GameClearMenuControl gameclearmenucontrol = new GameClearMenuControl(gameclearmenumodel);
 
-
         // Dialogueクラス関連のオブジェクト生成
         DialogueBoxControl dialogueBoxControl =
                 new DialogueBoxControl(gamemodel.getDialogueBoxesModel());
@@ -75,7 +77,6 @@ public class Metalgear extends JFrame {
                 bulletcontrol, mainmenucontrol, gameovermenucontrol, gameclearmenucontrol,
                 dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
-
 
         gamemodel.getDialogueBoxesModel().setGameView(gameview);
 
@@ -126,14 +127,27 @@ public class Metalgear extends JFrame {
         // ゲームループ本体.
         while (true) {
             GameState.State currentstate = GameState.getCurrentState();
-            boolean isPursuing = false;
+
+            // 追加: BGM用（絶望モード）とSE用（単純な発見）の判定を分ける
+            boolean isDespairMode = false;
+            boolean isAnyTracking = false;
+
             if (currentstate == GameState.State.PLAYING) {
-                isPursuing = enemiesmodel.isAnyEnemyPursuing(playermodel);
+                // 戦闘BGMを開始させるのは、永久アラーム(絶望モード)になったときにしたい
+                isDespairMode = enemiesmodel.isAnyEnemyPursuing(playermodel);
+                // 純粋に誰かが追跡（発見）しているか
+                isAnyTracking = enemiesmodel.isAnyEnemyTracking();
             }
+
+            // --- 追加: 追跡が始まった瞬間に通知音を再生 (5秒待たずに鳴らす) ---
+            if (isAnyTracking && !wasTrackingGlobal) {
+                SoundEffectManager.playClip(noticeSEClip);
+            }
+            wasTrackingGlobal = isAnyTracking;
 
             // --- BGM切り替え処理 ---
             // ゲームの状態(MENU, PLAYING, GAME_OVER)または追跡状態が変わった時にBGMを切り替える
-            if (currentstate != previousState || isPursuing != wasPursuing) {
+            if (currentstate != previousState || isDespairMode != wasPursuing) {
                 // 念のため全てのBGMを停止
                 titleBgmManager.stop();
                 mainBgmManager.stop();
@@ -146,12 +160,8 @@ public class Metalgear extends JFrame {
                         titleBgmManager.loop();
                         break;
                     case PLAYING:
-                        if (isPursuing) {
+                        if (isDespairMode) {
                             pursueBgmManager.loop();
-                            // 追跡が始まった瞬間に通知音を再生
-                            if (!wasPursuing) {
-                                SoundEffectManager.playClip(noticeSEClip);
-                            }
                         } else {
                             mainBgmManager.loop();
                         }
@@ -162,7 +172,7 @@ public class Metalgear extends JFrame {
                 }
             }
             previousState = currentstate;
-            wasPursuing = isPursuing;
+            wasPursuing = isDespairMode;
 
             // --- ゲーム状態ごとの更新処理 ---
             switch (currentstate) {
@@ -305,6 +315,9 @@ public class Metalgear extends JFrame {
                     mapmodel.setCurrentMap(MapData.MAPA0);
 
                     DialogueSet.dialogueState = DialogueState.MAIN_GAMEPLAY;
+
+                    // 追加: 絶望モード（永続アラート）もリセットする
+                    EnemiesModel.isPermanentAlert = false;
 
                     break;
                 case GAME_CLEAR:

@@ -1,7 +1,6 @@
 package model;
 
 import GameConfig.*;
-
 import java.util.Arrays;
 
 public class PlayerModel {
@@ -32,8 +31,16 @@ public class PlayerModel {
 
     private boolean inputEnabled = true;
 
+    // --- 変更: 銃声タイマーを削除し、無敵タイマーを追加 ---
+    private int invincibleTimer = 0; // ダメージ後の無敵時間用
+
     // Viewのタイマーから定期的に呼ばれるメソッド
     public void updatePlayerPosition(MapModel mm) {
+        // --- 修正: 無敵タイマーを更新 ---
+        if (invincibleTimer > 0) {
+            invincibleTimer--;
+        }
+
         // スクリプト移動中ならそちらを優先
         if (isScripted) {
             updateScriptedPosition(mm);
@@ -87,7 +94,6 @@ public class PlayerModel {
             // アニメーション更新
             animationCounter++;
             if (animationCounter >= 8) { // 8回updateが呼ばれるごとに1コマ進める
-                // 配列のインデックスを 0 -> 1 -> 2 -> 3 -> 0... と回す
                 animIndex = (animIndex + 1) % animSequence.length;
                 animationFrame = animSequence[animIndex];
                 animationCounter = 0;
@@ -99,7 +105,7 @@ public class PlayerModel {
             animationCounter = 0;
         }
 
-
+        // 画面端の補正
         if (playerX < ConstSet.TILE_SIZE / 2)
             playerX = ConstSet.TILE_SIZE / 2;
         if (playerY < ConstSet.TILE_SIZE / 2)
@@ -111,143 +117,84 @@ public class PlayerModel {
 
     }
 
+    // --- 銃声(shootTimer)関連のメソッドは「概念消去」のため削除 ---
+
     // フラグをセットするメソッド
-    public void setUp(boolean pressed) {
-        this.isUpPressed = pressed;
-    }
+    public void setUp(boolean pressed) { this.isUpPressed = pressed; }
+    public void setDown(boolean pressed) { this.isDownPressed = pressed; }
+    public void setLeft(boolean pressed) { this.isLeftPressed = pressed; }
+    public void setRight(boolean pressed) { this.isRightPressed = pressed; }
+    public void setInputEnabled(boolean enabled) { this.inputEnabled = enabled; }
 
-    public void setDown(boolean pressed) {
-        this.isDownPressed = pressed;
-    }
+    public int getPlayerX() { return playerX; }
+    public int getPlayerY() { return playerY; }
+    public int getPlayerDirection() { return playerDirection; }
+    public int getAnimationFrame() { return animationFrame; }
+    public int getPlayerHP() { return playerHP; }
+    public int getMaxHP() { return maxHP; }
 
-    public void setLeft(boolean pressed) {
-        this.isLeftPressed = pressed;
-    }
+    // --- 追加: 無敵状態かどうかを返すメソッド ---
+    public boolean isInvincible() { return invincibleTimer > 0; }
 
-    public void setRight(boolean pressed) {
-        this.isRightPressed = pressed;
-    }
-
-    public void setInputEnabled(boolean enabled) {
-        this.inputEnabled = enabled;
-    }
-
-    // プレイヤーのX座標を取得する.
-    public int getPlayerX() {
-        return playerX;
-    }
-
-    // プレイヤーのY座標を取得する.
-    public int getPlayerY() {
-        return playerY;
-    }
-
-    // プレイヤーの向いている方向を取得する.
-    public int getPlayerDirection() {
-        return playerDirection;
-    }
-
-    // プレーヤーのアニメーションの番号を取得する.
-    public int getAnimationFrame() {
-        return animationFrame;
-    }
-
-    // プレイヤーのHPを取得するメソッド.
-    public int getPlayerHP() {
-        return playerHP;
-    }
-
-    // プレイヤーの最大HPを取得するメソッド.
-    public int getMaxHP() {
-        return maxHP;
-    }
-
-    // プレイヤーの座標を直接セットする.
     public void playerPositionSet(int tx, int ty) {
         playerX = tx;
         playerY = ty;
     }
 
-    // プレイヤーと障害物が重なっていないか判定するメソッド.
     public boolean isObstacleExist(MapModel mm) {
         int halfSize = ConstSet.PLAYER_SIZE / 2;
-        int[][] corners = {{playerX + halfSize - 1, playerY + halfSize - 1}, // 右下
-                {playerX - halfSize, playerY - halfSize}, // 左上
-                {playerX - halfSize, playerY + halfSize - 1}, // 左下
-                {playerX + halfSize - 1, playerY - halfSize} // 右上
-        };
+        int[][] corners = {{playerX + halfSize - 1, playerY + halfSize - 1}, 
+                           {playerX - halfSize, playerY - halfSize}, 
+                           {playerX - halfSize, playerY + halfSize - 1}, 
+                           {playerX + halfSize - 1, playerY - halfSize}};
 
-        // いずれかの隅が障害物タイルに一致するかどうかを判定します.
         for (int[] point : corners) {
             int x = point[0];
             int y = point[1];
             int tile = mm.getTile(x, y);
 
             for (int obstacle : MapData.OBSTACLES) {
-                if (tile == obstacle) {
-                    return true;
-                }
+                if (tile == obstacle) return true;
             }
 
             if (tile == MapData.HALF_CLEAR_OBSTACLE || tile == MapData.WALL_UNIT || tile == MapData.WALL_UNIT_1F ||
                 tile == MapData.ALARM || tile == MapData.BOX) {
-                // 上半分は通行不可. タイルのY座標の開始位置を計算し、そこから半分の高さ未満なら衝突とみなす
                 int tileTopY = (y / ConstSet.TILE_SIZE) * ConstSet.TILE_SIZE;
-                if (y < tileTopY + ConstSet.TILE_SIZE / 2) {
-                    return true;
-                }
+                if (y < tileTopY + ConstSet.TILE_SIZE / 2) return true;
             }
         }
         return false;
     }
 
-    // プレイヤーのHPを減少させる.
     public void decreaseHP(int damage) {
-        this.playerHP -= damage;
-        if (this.playerHP < 0) {
-            this.playerHP = 0;
+        // --- 修正: 無敵時間中でないときだけダメージを受ける ---
+        if (invincibleTimer <= 0) {
+            this.playerHP -= damage;
+            if (this.playerHP < 0) this.playerHP = 0;
+            this.invincibleTimer = 60; // 60フレーム(約2秒)の無敵時間を設定
         }
     }
 
-    /**
-     * プレイヤーが死亡したかどうかを返します。
-     * 
-     * @return HPが0以下ならtrue
-     */
-    public boolean isDead() {
-        return this.playerHP <= 0;
+    public boolean isDead() { return this.playerHP <= 0; }
+
+    public void resetStatus() { 
+        this.playerHP = maxHP; 
+        this.invincibleTimer = 0; // リセット時は無敵も解除
     }
 
-    // ゲームリスタート時にプレイヤーのステータスを初期化するメソッド.
-    public void resetStatus() {
-        this.playerHP = maxHP; // HPを初期値に戻す
-        // 他にリセットすべき値があればここに追加
-    }
-
-    // スクリプト移動を開始するメソッド.
-    // 通過点(x, y)の配列を渡すと, 順番に移動する.
     public void startScriptedMovement(int[] x, int[] y) {
         this.scriptX = x;
         this.scriptY = y;
         this.scriptIndex = 0;
         this.isScripted = true;
-
-        // 手動操作のフラグをクリア
-        this.isUpPressed = false;
-        this.isDownPressed = false;
-        this.isLeftPressed = false;
-        this.isRightPressed = false;
+        this.isUpPressed = this.isDownPressed = this.isLeftPressed = this.isRightPressed = false;
     }
 
-    public boolean isScripted() {
-        return isScripted;
-    }
+    public boolean isScripted() { return isScripted; }
 
-    // スクリプトによる移動処理を行うメソッド.
     private void updateScriptedPosition(MapModel mm) {
         if (scriptX == null || scriptIndex >= scriptX.length) {
             isScripted = false;
-            // スクリプト移動が完了したことを示すために状態を更新します。
             if (DialogueSet.dialogueState == DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION) {
                 DialogueSet.dialogueState = DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE;
             }
@@ -257,7 +204,6 @@ public class PlayerModel {
         int targetX = scriptX[scriptIndex];
         int targetY = scriptY[scriptIndex];
 
-        // 移動方向の決定 (簡易的)
         int dx = targetX - playerX;
         int dy = targetY - playerY;
         if (Math.abs(dx) > Math.abs(dy)) {
@@ -266,20 +212,13 @@ public class PlayerModel {
             playerDirection = (dy > 0) ? ConstSet.DOWN : ConstSet.UP;
         }
 
-        // 座標更新
-        if (playerX < targetX)
-            playerX = Math.min(playerX + ConstSet.PLAYER_SPEED, targetX);
-        else if (playerX > targetX)
-            playerX = Math.max(playerX - ConstSet.PLAYER_SPEED, targetX);
+        if (playerX < targetX) playerX = Math.min(playerX + ConstSet.PLAYER_SPEED, targetX);
+        else if (playerX > targetX) playerX = Math.max(playerX - ConstSet.PLAYER_SPEED, targetX);
 
-        if (playerY < targetY)
-            playerY = Math.min(playerY + ConstSet.PLAYER_SPEED, targetY);
-        else if (playerY > targetY)
-            playerY = Math.max(playerY - ConstSet.PLAYER_SPEED, targetY);
+        if (playerY < targetY) playerY = Math.min(playerY + ConstSet.PLAYER_SPEED, targetY);
+        else if (playerY > targetY) playerY = Math.max(playerY - ConstSet.PLAYER_SPEED, targetY);
 
-        // 移動したか判定
         if (playerX != targetX || playerY != targetY) {
-            // アニメーション更新
             animationCounter++;
             if (animationCounter >= 10) {
                 animIndex = (animIndex + 1) % animSequence.length;
@@ -287,13 +226,10 @@ public class PlayerModel {
                 animationCounter = 0;
             }
         } else {
-            // 目標地点に到達したら次のポイントへ
             scriptIndex++;
             if (scriptIndex >= scriptX.length) {
                 isScripted = false;
-                animationFrame = 0; // 停止
-
-                // スクリプト移動が完了したことを示すために状態を更新します。
+                animationFrame = 0;
                 if (DialogueSet.dialogueState == DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION) {
                     DialogueSet.dialogueState = DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE;
                 }
@@ -302,7 +238,6 @@ public class PlayerModel {
 
         if (mm.getPlayerTile() > 100) {
             isScripted = false;
-            // スクリプト移動が完了したことを示すために状態を更新します。
             if (DialogueSet.dialogueState == DialogueSet.DialogueState.AWAITING_SCRIPTED_MOVE_COMPLETION) {
                 DialogueSet.dialogueState = DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE;
             }

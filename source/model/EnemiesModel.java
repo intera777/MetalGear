@@ -1,25 +1,95 @@
 package model;
 
 import java.util.ArrayList;
-
 import GameConfig.*;
 
 public class EnemiesModel {
     private ArrayList<EnemyModel> enemies;
 
+    // --- 増援管理用の変数 ---
+    private int reinforcementTimer = 0;
+    private final int SPAWN_INTERVAL = 30 * 2; // 2秒ごとに増援 (30FPS)
+    private final int MAX_ENEMIES = 10;        // 画面内の最大敵数制限
+    private static final int TS = ConstSet.TILE_SIZE; // タイルのサイズ
+
+    // マップ全体が「永続アラート状態」かどうかの共有フラグ
+    // これが true になると増援が始まり、二度と止まらなくなる
+    public static boolean isPermanentAlert = false;
+
     public EnemiesModel() {
         this.enemies = new ArrayList<EnemyModel>();
+        isPermanentAlert = false; // インスタンス化時にリセット
     }
 
     public void updateEnemiesPosition(MapModel mm, PlayerModel pm, BulletsModel bm) {
-        // 各敵の位置や状態を更新
+        // 1. 各敵の位置や状態を更新
         for (EnemyModel enemy : enemies) {
             if (enemy != null) {
                 enemy.updateEnemyPosition(mm, pm, bm);
+                
+                // ★誰か一人が150フレーム（5秒）追跡したら、全体を永続アラートにする
+                if (enemy.getTrackingDuration() >= 150) {
+                    isPermanentAlert = true;
+                }
             }
         }
-        // HPが0になった敵をリストから削除する
+
+        // 2. HPが0になった敵をリストから削除する
         enemies.removeIf(enemy -> enemy.getEnemyCondition() == ConstSet.ENEMY_DEAD);
+
+        // 3. 増援チェック
+        checkAndSpawnReinforcements(mm, pm);
+    }
+
+    /**
+     * 増援の発生を管理するメソッド
+     */
+    private void checkAndSpawnReinforcements(MapModel mm, PlayerModel pm) {
+        // 3秒経過して「永続アラート状態」になった後から増援を開始する
+        if (isPermanentAlert) {
+            reinforcementTimer++;
+
+            if (reinforcementTimer >= SPAWN_INTERVAL) {
+                if (enemies.size() < MAX_ENEMIES) {
+                    spawnFromStairs(mm);
+                }
+                reinforcementTimer = 0; // スポーンしたらタイマーリセット
+            }
+        } else {
+            // 3秒経つまではタイマーを動かさない
+            reinforcementTimer = 0;
+        }
+    }
+
+    /**
+     * マップごとの階段位置に敵を生成する
+     */
+    private void spawnFromStairs(MapModel mm) {
+        int[][] currentMap = mm.getMap();
+        int spawnX = -100;
+        int spawnY = -100;
+
+        // 現在のマップに応じて階段の座標を決定
+        if (currentMap == MapData.MAPA1) {
+            spawnX = 2 * TS; 
+            spawnY = 15 * TS; 
+        } else if (currentMap == MapData.MAPB0) {
+            spawnX = 4 * TS;
+            spawnY = 23 * TS;
+        } else if (currentMap == MapData.MAPC0) {
+            spawnX = 58 * TS;
+            spawnY = 31 * TS;
+        }
+
+        if (spawnX != -100) {
+            EnemyModel newEnemy = new EnemyModel(spawnX, spawnY);
+            
+            // 出現した瞬間に追跡モードにする
+            newEnemy.changePlayerTrack(1);
+            
+            enemies.add(newEnemy);
+            System.out.println("増援部隊が階段から出現！ (2秒間隔モード)"); // 後で消去する
+        }
     }
 
     public ArrayList<EnemyModel> getEnemies() {
@@ -28,55 +98,37 @@ public class EnemiesModel {
 
     public void setEnemiesForMap(int[][] map) {
         enemies.clear();
+        reinforcementTimer = 0; 
+        isPermanentAlert = false; // マップ移動時はアラートを解除
+
         if (map == MapData.MAPA0) {
-            // 敵なし.
-        } else if (map == MapData.MAPA1) {
-            // MAPA1の敵を巡回ルートと共に生成
-            enemies.add(new EnemyModel(MapData.MAPA1_E0X[0], MapData.MAPA1_E0Y[0],
-                    MapData.MAPA1_E0X, MapData.MAPA1_E0Y));
-            enemies.add(new EnemyModel(MapData.MAPA1_E1X[0], MapData.MAPA1_E1Y[0],
-                    MapData.MAPA1_E1X, MapData.MAPA1_E1Y));
-            enemies.add(new EnemyModel(MapData.MAPA1_E2X[0], MapData.MAPA1_E2Y[0],
-                    MapData.MAPA1_E2X, MapData.MAPA1_E2Y));
-        } else if (map == MapData.MAPA2) {
             // 敵なし
+        } else if (map == MapData.MAPA1) {
+            enemies.add(new EnemyModel(MapData.MAPA1_E0X[0], MapData.MAPA1_E0Y[0], MapData.MAPA1_E0X, MapData.MAPA1_E0Y));
+            enemies.add(new EnemyModel(MapData.MAPA1_E1X[0], MapData.MAPA1_E1Y[0], MapData.MAPA1_E1X, MapData.MAPA1_E1Y));
+            enemies.add(new EnemyModel(MapData.MAPA1_E2X[0], MapData.MAPA1_E2Y[0], MapData.MAPA1_E2X, MapData.MAPA1_E2Y));
         } else if (map == MapData.MAPB0) {
-            enemies.add(new EnemyModel(MapData.MAPB0_E0X[0], MapData.MAPB0_E0Y[0],
-                    MapData.MAPB0_E0X, MapData.MAPB0_E0Y));
-            enemies.add(new EnemyModel(MapData.MAPB0_E1X[0], MapData.MAPB0_E1Y[0],
-                    MapData.MAPB0_E1X, MapData.MAPB0_E1Y));
+            enemies.add(new EnemyModel(MapData.MAPB0_E0X[0], MapData.MAPB0_E0Y[0], MapData.MAPB0_E0X, MapData.MAPB0_E0Y));
+            enemies.add(new EnemyModel(MapData.MAPB0_E1X[0], MapData.MAPB0_E1Y[0], MapData.MAPB0_E1X, MapData.MAPB0_E1Y));
         } else if (map == MapData.MAPC0) {
-            enemies.add(new EnemyModel(MapData.MAPC0_E0X[0], MapData.MAPC0_E0Y[0],
-                    MapData.MAPC0_E0X, MapData.MAPC0_E0Y));
-            enemies.add(new EnemyModel(MapData.MAPC0_E1X[0], MapData.MAPC0_E1Y[0],
-                    MapData.MAPC0_E1X, MapData.MAPC0_E1Y));
-            enemies.add(new EnemyModel(MapData.MAPC0_E2X[0], MapData.MAPC0_E2Y[0],
-                    MapData.MAPC0_E2X, MapData.MAPC0_E2Y));
-            enemies.add(new EnemyModel(MapData.MAPC0_E3X[0], MapData.MAPC0_E3Y[0],
-                    MapData.MAPC0_E3X, MapData.MAPC0_E3Y));
-            enemies.add(new EnemyModel(MapData.MAPC0_E4X[0], MapData.MAPC0_E4Y[0],
-                    MapData.MAPC0_E4X, MapData.MAPC0_E4Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E0X[0], MapData.MAPC0_E0Y[0], MapData.MAPC0_E0X, MapData.MAPC0_E0Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E1X[0], MapData.MAPC0_E1Y[0], MapData.MAPC0_E1X, MapData.MAPC0_E1Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E2X[0], MapData.MAPC0_E2Y[0], MapData.MAPC0_E2X, MapData.MAPC0_E2Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E3X[0], MapData.MAPC0_E3Y[0], MapData.MAPC0_E3X, MapData.MAPC0_E3Y));
+            enemies.add(new EnemyModel(MapData.MAPC0_E4X[0], MapData.MAPC0_E4Y[0], MapData.MAPC0_E4X, MapData.MAPC0_E4Y));
         }
     }
 
-    /**
-     * いずれかの敵がプレイヤーを追跡しているかどうかを判定します。
-     * 
-     * @param playerModel プレイヤーのモデル
-     * @return 1体でも追跡していればtrue
-     */
     public boolean isAnyEnemyPursuing(PlayerModel playerModel) {
-        final int ENEMY_SIGHT_DISTANCE = ConstSet.TILE_SIZE * 8; // 敵が追跡を開始する距離
+        return isPermanentAlert;
+    }
+
+    public boolean isAnyEnemyTracking() {
+        // 絶望モードかどうかに関わらず、誰か一人でも player_track == 1 なら true
         for (EnemyModel enemy : this.enemies) {
-            if (enemy == null || enemy.getEnemyCondition() == ConstSet.ENEMY_DEAD)
-                continue;
-
-            int dx = enemy.getEnemyX() - playerModel.getPlayerX();
-            int dy = enemy.getEnemyY() - playerModel.getPlayerY();
-            double distance = Math.sqrt(dx * dx + dy * dy);
-
-            if (distance < ENEMY_SIGHT_DISTANCE) {
-                return true; // 簡易的に、距離が近い＝追尾中とみなす
+            if (enemy != null && enemy.getEnemyCondition() != ConstSet.ENEMY_DEAD 
+                && enemy.getPlayerTrack() == 1) {
+                return true;
             }
         }
         return false;
