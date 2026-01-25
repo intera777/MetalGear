@@ -29,13 +29,14 @@ public class GameView extends JPanel {
     private GameClearMenuView gameClearMenuView;
     private DialogueBoxView dialogueBoxView;
     private HPBarView hpBarView;
+    private ItemView itemView;
 
     private boolean isPerspectiveMoving;
     private int timer = 0; // 視点移動などのイベントの時間管理用.
 
     public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, GameClearMenuModel gcm,
             MapView mv, EnemyView ev, GuardsmanView gmv, PlayerView pv, BulletView bv, MainMenuView mmv,
-            GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, PlayerControl pc,
+            GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, ItemView iv, PlayerControl pc,
             BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, GameClearMenuControl gcc,
             DialogueBoxView dv, DialogueBoxControl dc) {
         // Model
@@ -53,6 +54,7 @@ public class GameView extends JPanel {
         this.gameOverMenuView = gov;
         this.gameClearMenuView = gcv;
         this.hpBarView = hpv;
+        this.itemView = iv;
         this.dialogueBoxView = dv;
         this.isPerspectiveMoving = false;
 
@@ -117,6 +119,7 @@ public class GameView extends JPanel {
                 offsetY = playerDrawY - modelTop;
                 // --- 描画実行 ---
                 mapView.drawMap(g2d, offsetX, offsetY, this);
+                itemView.drawItems(g2d, offsetX, offsetY);
                 enemyView.drawEnemies(g2d, offsetX, offsetY);
                 guardsmanView.drawGuardsmen(g2d, offsetX, offsetY);
                 playerView.drawPlayer(g2d, playerDrawX, playerDrawY);
@@ -127,6 +130,7 @@ public class GameView extends JPanel {
                 offsetY = playerDrawY - modelTop + moving;
                 // --- 描画実行 ---
                 mapView.drawMap(g2d, offsetX, offsetY, this);
+                itemView.drawItems(g2d, offsetX, offsetY);
                 enemyView.drawEnemies(g2d, offsetX, offsetY);
                 guardsmanView.drawGuardsmen(g2d, offsetX, offsetY);
                 playerView.drawPlayer(g2d, playerDrawX + moving, playerDrawY + moving);
@@ -137,6 +141,11 @@ public class GameView extends JPanel {
 
             // UI描画時の拡大の影響を受けない. 視点移動の影響も受けない.
             hpBarView.drawHPBar(g2d, 20, 30, playerModel.getPlayerHP(), playerModel.getMaxHP());
+
+            // 弾数の表示
+            g2d.setColor(java.awt.Color.WHITE);
+            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
+            g2d.drawString("AMMO: " + playerModel.getAmmo(), 20, 65);
 
             // 会話ボックスはUIとして最前面に描画
             dialogueBoxView.drawDialogueBox(g2d);

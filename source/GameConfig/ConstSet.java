@@ -47,6 +47,10 @@ public final class ConstSet {
         public static final int MAX_BULLETS = 5;// フィールド上に存在できる弾の最大数.
         // 弾の定数.
         public static final int BULLET_SIZE = 6; // 弾の一辺の長さ.
+        // 弾薬の定数
+        public static final int INITIAL_PLAYER_AMMO = 6;  // ゲーム開始時の弾数
+        public static final int AMMO_REFILL_AMOUNT = 5;   // アイテム1個で回復する弾数
+        public static final int MAX_PLAYER_AMMO = 10; // 最大所持弾数
 
         // 各タイルのパス
         public static final String IMG_PATH_FLOOR = "../resources/tiles/floordark.png"; // 暗くした部分
@@ -122,5 +126,6 @@ public final class ConstSet {
         public static final String SE_ENEMY_NOTICE = "../resources/sound/Parody_Accent04-1(High).wav";
         public static final String SE_BULLET_SHOOT = "../resources/sound/bullet_shoot.wav";
         public static final String SE_ITEM_SELECTED = "../resources/sound/item_selected.wav";
+        public static final String SE_GET_ITEM = "../resources/sound/getItem.wav";
 
 }

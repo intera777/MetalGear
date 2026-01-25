@@ -6,13 +6,15 @@ public class MapModel {
     private PlayerModel playermodel;
     private EnemiesModel enemiesModel;
     private GuardsmenModel guardsmenmodel;
+    private ItemsModel itemsModel;
 
     private int currentMap[][];
 
-    public MapModel(PlayerModel pm, EnemiesModel em, GuardsmenModel gm) {
+    public MapModel(PlayerModel pm, EnemiesModel em, GuardsmenModel gm, ItemsModel im) {
         playermodel = pm;
         enemiesModel = em;
         guardsmenmodel = gm;
+        itemsModel = im;
     }
 
     // プレイヤーが現在いる位置のマップタイルを取得するメソッド.
@@ -82,6 +84,7 @@ public class MapModel {
         if (enemiesModel != null) {
             enemiesModel.setEnemiesForMap(map);
             guardsmenmodel.setGuardsmenForMap(map);
+            itemsModel.setItemsForMap(map);
         }
     }
 

@@ -10,6 +10,7 @@ public class PlayerModel {
     private int playerDirection = ConstSet.RIGHT; // プレイヤーが向いている方向.0123の順で右上左下.
     private int playerHP = 10;// プレイヤーの体力の初期値.
     private int maxHP = 10; // プレイヤーの体力の最大値.
+    private int ammo = ConstSet.INITIAL_PLAYER_AMMO; // 初期弾数
 
     // アニメーション用
     private int animationFrame = 0; // 0:静止, 1:足1, 2:足2
@@ -132,6 +133,7 @@ public class PlayerModel {
     public int getAnimationFrame() { return animationFrame; }
     public int getPlayerHP() { return playerHP; }
     public int getMaxHP() { return maxHP; }
+    public int getAmmo() { return ammo; }
 
     // --- 追加: 無敵状態かどうかを返すメソッド ---
     public boolean isInvincible() { return invincibleTimer > 0; }
@@ -171,14 +173,30 @@ public class PlayerModel {
         if (invincibleTimer <= 0) {
             this.playerHP -= damage;
             if (this.playerHP < 0) this.playerHP = 0;
-            this.invincibleTimer = 60; // 60フレーム(約2秒)の無敵時間を設定
+            this.invincibleTimer = 15; // 15フレーム(0.5秒)の無敵時間を設定
         }
+    }
+
+    // 弾薬を取得したときに弾数を増やす.
+    public void addAmmo(int amount) { 
+        // 現在の弾数 + 追加分 が MAX_PLAYER_AMMO を超えないようにする
+        this.ammo = Math.min(this.ammo + amount, ConstSet.MAX_PLAYER_AMMO);
+    }
+
+    // 弾を撃てるか判定
+    public boolean useAmmo() {
+        if (this.ammo > 0) {
+            this.ammo--;
+            return true; // 発射許可
+        }
+        return false; // 弾切れ
     }
 
     public boolean isDead() { return this.playerHP <= 0; }
 
     public void resetStatus() { 
         this.playerHP = maxHP; 
+        this.ammo = ConstSet.INITIAL_PLAYER_AMMO;
         this.invincibleTimer = 0; // リセット時は無敵も解除
     }
 

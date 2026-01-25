@@ -32,6 +32,7 @@ public class Metalgear extends JFrame {
         GameClearMenuModel gameclearmenumodel = gamemodel.getGameClearMenuModel();
         DialogueBoxesModel dialogueboxesmodel = gamemodel.getDialogueBoxesModel();
         GuardsmenModel guardsmenmodel = gamemodel.getGuardsmenModel();
+        ItemsModel itemsModel = gamemodel.getItemsModel();
 
         // Playerクラス関連のオブジェクトの生成.
         PlayerControl playercontrol = new PlayerControl(playermodel);
@@ -70,10 +71,13 @@ public class Metalgear extends JFrame {
         // HPBarクラス関連のオブジェクト生成
         HPBarView hpBarView = new HPBarView();
 
+        // アイテムクラスに関するオブジェクト生成
+        ItemView itemView = new ItemView(itemsModel);
+
         // 画面を描画するクラスの生成.
         GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel,
                 gameclearmenumodel, mapview, enemyview, guardsmanview, playerview, bulletview,
-                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, playercontrol,
+                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, itemView, playercontrol,
                 bulletcontrol, mainmenucontrol, gameovermenucontrol, gameclearmenucontrol,
                 dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
@@ -109,6 +113,7 @@ public class Metalgear extends JFrame {
         Clip noticeSEClip = SoundEffectManager.loadClip(ConstSet.SE_ENEMY_NOTICE, 0.8f);
         Clip bulletShootClip = SoundEffectManager.loadClip(ConstSet.SE_BULLET_SHOOT, 0.7f);
         Clip itemSelectedClip = SoundEffectManager.loadClip(ConstSet.SE_ITEM_SELECTED, 0.8f);
+        Clip itemGetClip = SoundEffectManager.loadClip(ConstSet.SE_GET_ITEM, 0.8f);
 
         // --- ゲームの初期設定 ---
         final int FPS = 30; // フレームレート.
@@ -250,6 +255,7 @@ public class Metalgear extends JFrame {
                         enemiesmodel.updateEnemiesPosition(mapmodel, playermodel, bulletsmodel);
                         guardsmenmodel.updateGuardsmenPosition(mapmodel, playermodel, bulletsmodel);
 
+
                         if (!dialogueboxesmodel.isVisible()) {
                             for (GuardsmanModel gm : guardsmenmodel.getguardsmen()) {
                                 if (gm != null && gm.getPlayerTrack() == 1) {
@@ -286,6 +292,11 @@ public class Metalgear extends JFrame {
                             SoundEffectManager.playClip(bulletShootClip);
                         }
 
+                        // Itemモデルの更新処理とアイテム取得音を兼ねている
+                        if (itemsModel.updateItems(playermodel)) {
+                            SoundEffectManager.playClip(itemGetClip);
+                        }
+
                         // 残りのモデル更新と、次フレームのための状態保存
                         bulletsmodel.updateBulletsPosition(mapmodel, playermodel, enemiesmodel);
                         mapmodel.updateMap();
@@ -310,9 +321,10 @@ public class Metalgear extends JFrame {
                     // リスタートする場合のため初期位置をリセット.
                     playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
                             6 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
-                    // プレイヤーのステータス(HPなど)をリセット
+                    // プレイヤーのステータス(HPや弾薬数など)をリセット
                     playermodel.resetStatus();
                     mapmodel.setCurrentMap(MapData.MAPA0);
+                    itemsModel.setItemsForMap(MapData.MAPA0);
 
                     DialogueSet.dialogueState = DialogueState.MAIN_GAMEPLAY;
 

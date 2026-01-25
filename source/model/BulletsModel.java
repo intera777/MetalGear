@@ -4,8 +4,10 @@ import GameConfig.*;
 
 public class BulletsModel {
     private BulletModel[] bullets;
+    private PlayerModel playerModel;
 
     public BulletsModel(PlayerModel pm) {
+        this.playerModel = pm;
         this.bullets = new BulletModel[ConstSet.MAX_BULLETS];
         for (int i = 0; i < ConstSet.MAX_BULLETS; i++) {
             bullets[i] = new BulletModel(pm);
@@ -19,9 +21,16 @@ public class BulletsModel {
 
     public void keyTappedNewly() {
         for (int i = 0; i < ConstSet.MAX_BULLETS; i++) {
+            // 1. まず空いている弾スロットを探す
             if (!bullets[i].bulletExist()) {
-                bullets[i].shootBullet();
-                break;
+                // 2. 弾数を確認し、あれば消費して発射する
+                if (playerModel.useAmmo()) { 
+                    bullets[i].shootBullet();
+                } else {
+                    // ここで弾切れ時の「カチッ」という音のフラグを立てても良い
+                    System.out.println("弾切れ!"); 
+                }
+                break; // 1回につき1発だけ
             }
         }
     }
