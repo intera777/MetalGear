@@ -10,9 +10,6 @@ import javax.sound.sampled.Clip;
 
 public class Metalgear extends JFrame {
 
-    // 追加: 発見SEが連続で鳴りすぎるのを防ぐためのフラグ
-    private static boolean wasTrackingGlobal = false;
-
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setTitle("MetalGear");
@@ -128,27 +125,45 @@ public class Metalgear extends JFrame {
         boolean isFootstepPlaying = false;
         int previousBulletCount = 0;
         int previousMainMenuIndex = mainmenumodel.getSelectedIndex();
+        boolean isClearSequenceStarted = false;
+        Timer scoreTimer = null;
+        Timer menuTimer = null;
 
         // ゲームループ本体.
         while (true) {
             GameState.State currentstate = GameState.getCurrentState();
 
-            // 追加: BGM用（絶望モード）とSE用（単純な発見）の判定を分ける
+            boolean isComingFromEnd = ( // リセットする条件
+                previousState == GameState.State.GAME_CLEAR ||
+                previousState == GameState.State.GAME_OVER
+            );
+            
+            // リセット処理をここに集中させた
+            if (isComingFromEnd && currentstate == GameState.State.PLAYING) {
+                // 1. 動いているタイマーがあれば即座に止める
+                if (scoreTimer != null) scoreTimer.stop();
+                if (menuTimer != null) menuTimer.stop();
+
+                // データをリセット
+                playermodel.resetStatus();
+                playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2, 6 * ConstSet.TILE_SIZE);
+                mapmodel.setCurrentMap(MapData.MAPA0);
+                itemsModel.setItemsForMap(MapData.MAPA0);
+        
+                // フラグ類
+                gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.BACKGROUND_ONLY);
+                isClearSequenceStarted = false; 
+                EnemiesModel.isPermanentAlert = false;
+                DialogueSet.dialogueState = DialogueState.MAIN_GAMEPLAY;
+            }
+
+            // BGM用（絶望モード）とSE用（単純な発見）の判定を分ける
             boolean isDespairMode = false;
-            boolean isAnyTracking = false;
 
             if (currentstate == GameState.State.PLAYING) {
                 // 戦闘BGMを開始させるのは、永久アラーム(絶望モード)になったときにしたい
                 isDespairMode = enemiesmodel.isAnyEnemyPursuing(playermodel);
-                // 純粋に誰かが追跡（発見）しているか
-                isAnyTracking = enemiesmodel.isAnyEnemyTracking();
             }
-
-            // --- 追加: 追跡が始まった瞬間に通知音を再生 (5秒待たずに鳴らす) ---
-            if (isAnyTracking && !wasTrackingGlobal) {
-                SoundEffectManager.playClip(noticeSEClip);
-            }
-            wasTrackingGlobal = isAnyTracking;
 
             // --- BGM切り替え処理 ---
             // ゲームの状態(MENU, PLAYING, GAME_OVER)または追跡状態が変わった時にBGMを切り替える
@@ -255,6 +270,11 @@ public class Metalgear extends JFrame {
                         enemiesmodel.updateEnemiesPosition(mapmodel, playermodel, bulletsmodel);
                         guardsmenmodel.updateGuardsmenPosition(mapmodel, playermodel, bulletsmodel);
 
+                        int discoveryCount = enemiesmodel.countNewDiscoveries();
+                        for (int i = 0; i < discoveryCount; i++) {
+                            // 見つかった数だけ再生を試みる
+                            SoundEffectManager.playClip(noticeSEClip);
+                        }
 
                         if (!dialogueboxesmodel.isVisible()) {
                             for (GuardsmanModel gm : guardsmenmodel.getguardsmen()) {
@@ -318,18 +338,6 @@ public class Metalgear extends JFrame {
                         footstepSEManager.stop();
                         isFootstepPlaying = false;
                     }
-                    // リスタートする場合のため初期位置をリセット.
-                    playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
-                            6 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
-                    // プレイヤーのステータス(HPや弾薬数など)をリセット
-                    playermodel.resetStatus();
-                    mapmodel.setCurrentMap(MapData.MAPA0);
-                    itemsModel.setItemsForMap(MapData.MAPA0);
-
-                    DialogueSet.dialogueState = DialogueState.MAIN_GAMEPLAY;
-
-                    // 追加: 絶望モード（永続アラート）もリセットする
-                    EnemiesModel.isPermanentAlert = false;
 
                     break;
                 case GAME_CLEAR:
@@ -337,12 +345,34 @@ public class Metalgear extends JFrame {
                         footstepSEManager.stop();
                         isFootstepPlaying = false;
                     }
-                    // リスタートする場合のため初期位置をリセット.
-                    playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
-                            6 * ConstSet.TILE_SIZE); // プレイヤーの初期位置を設定.
-                    // プレイヤーのステータス(HPなど)をリセット
-                    playermodel.resetStatus();
-                    mapmodel.setCurrentMap(MapData.MAPA0);
+
+                    // ゲームクリア時の演出
+                    if (!isClearSequenceStarted) {
+                        isClearSequenceStarted = true;
+
+                        // スコアを確定させてランクを判定
+                        gameclearmenumodel.setFinalResult(playermodel.getScore());
+        
+                        // クリア背景画像のみ
+                        gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.BACKGROUND_ONLY);
+
+                        // 2秒後に暗転・スコア表示へ
+                        scoreTimer = new Timer(2000, e -> {
+                            gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.SCORE_DISPLAY);
+                            gameview.repaint();
+                        });
+                        scoreTimer.setRepeats(false);
+                        scoreTimer.start();
+
+                        // 4秒後にメニュー出現へ
+                        menuTimer = new Timer(4000, e -> {
+                            gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.MENU_DISPLAY);
+                            gameview.repaint();
+                        });
+                        menuTimer.setRepeats(false);
+                        menuTimer.start();
+                    }
+
                     break;
             }
             gameview.repaint();

@@ -5,6 +5,7 @@ import GameConfig.*;
 
 public class EnemiesModel {
     private ArrayList<EnemyModel> enemies;
+    private int discoveryCountThisFrame = 0;
 
     // --- 増援管理用の変数 ---
     private int reinforcementTimer = 0;
@@ -16,34 +17,64 @@ public class EnemiesModel {
     // これが true になると増援が始まり、二度と止まらなくなる
     public static boolean isPermanentAlert = false;
 
+    public int countNewDiscoveries() {
+        return discoveryCountThisFrame;
+    }
+
     public EnemiesModel() {
         this.enemies = new ArrayList<EnemyModel>();
         isPermanentAlert = false; // インスタンス化時にリセット
     }
 
     public void updateEnemiesPosition(MapModel mm, PlayerModel pm, BulletsModel bm) {
-        // 1. 各敵の位置や状態を更新
+
+        // 各敵の位置や状態を更新
         for (EnemyModel enemy : enemies) {
             if (enemy != null) {
                 enemy.updateEnemyPosition(mm, pm, bm);
-                
-                // ★誰か一人が150フレーム（5秒）追跡したら、全体を永続アラートにする
+                // 誰か一人が120フレーム（4秒）追跡したら、全体を永続アラートにする
                 if (enemy.getTrackingDuration() >= 150) {
                     isPermanentAlert = true;
                 }
             }
         }
 
-        // 2. HPが0になった敵をリストから削除する
-        enemies.removeIf(enemy -> enemy.getEnemyCondition() == ConstSet.ENEMY_DEAD);
+        // このフレームでの新規発見数を一括集計
+        this.discoveryCountThisFrame = calculateDiscoveryCount();
 
-        // 3. 増援チェック
+        // 発見があったら減点
+        if (discoveryCountThisFrame > 0) { 
+            pm.penaltyForAlert(); 
+        }
+
+        // HPが0になった敵をリストから削除する. マップ内の敵数が減ったら減点.
+        int beforeCount = enemies.size();
+        enemies.removeIf(enemy -> enemy.getEnemyCondition() == ConstSet.ENEMY_DEAD);
+        int afterCount = enemies.size();
+        if (afterCount < beforeCount) {
+            // 減った分だけペナルティ
+            for (int i = 0; i < (beforeCount - afterCount); i++) {
+                pm.penaltyForKill(); // PlayerModelに新規作成するメソッド
+            }
+        }
+        // 増援チェック
         checkAndSpawnReinforcements(mm, pm);
     }
 
     /**
-     * 増援の発生を管理するメソッド
+     * 内部でのみ使用。実際に敵のフラグをチェックして数を数える。
      */
+    private int calculateDiscoveryCount() {
+        int count = 0;
+        for (EnemyModel enemy : enemies) {
+            if (enemy != null && enemy.pullJustDetected()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // 増援の発生を管理するメソッド
     private void checkAndSpawnReinforcements(MapModel mm, PlayerModel pm) {
         // 3秒経過して「永続アラート状態」になった後から増援を開始する
         if (isPermanentAlert) {

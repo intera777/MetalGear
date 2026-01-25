@@ -16,6 +16,7 @@ public class GameOverMenuView {
     private final Color titleColor = Color.RED; // タイトルの色
     private final Color normalColor = Color.WHITE; // 通常の色
     private final Color selectionColor = Color.YELLOW; // 選択されるときの色
+    private final Color rankColor = new Color(200, 0, 0); // 評価を表示するときの色
 
     public GameOverMenuView(GameOverMenuModel gm) {
         this.gameOverMenuModel = gm;
@@ -24,25 +25,25 @@ public class GameOverMenuView {
     // ゲームオーバー画面を描画するメソッド
     public void drawGameOverMenu(Graphics g) {
         // 背景を黒で塗りつぶす
-        g.setColor(new Color(0, 0, 0));
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, ConstSet.WINDOW_WIDTH, ConstSet.WINDOW_HEIGHT);
 
-        // 「GAME OVER」タイトルの描画
-        g.setFont(titleFont);
-        g.setColor(titleColor);
-        String title = "GAME OVER";
-        int titleX = getCenterX(g, title, ConstSet.WINDOW_WIDTH);
-        g.drawString(title, titleX, ConstSet.WINDOW_HEIGHT / 3);
+        // 「評価：不可」を画面中央より少し上にドカンと配置
+        g.setFont(new Font("MS Gothic", Font.BOLD, 120)); // 少しサイズをアップ
+        g.setColor(new Color(220, 0, 0)); // 鮮烈な赤
+    
+        String rankText = "評価：不可";
+        int rankX = getCenterX(g, rankText, ConstSet.WINDOW_WIDTH);
+        // 画面の 1/3 くらいの高さに配置
+        g.drawString(rankText, rankX, ConstSet.WINDOW_HEIGHT / 3 + 50);
 
         // メニュー項目の描画
         g.setFont(menuFont);
         GameOverMenuModel.MenuItem[] items = gameOverMenuModel.getMenuItems();
-        int selectedIndex = gameOverMenuModel.getSelectedIndex(); // 今何番目の項目を選択しているかを取得
+        int selectedIndex = gameOverMenuModel.getSelectedIndex();
 
         for (int i = 0; i < items.length; i++) {
             String text = getMenuText(items[i]);
-
-            // 選択中の項目は色を変える、矢印をつける. 選択されてないものは白色
             if (i == selectedIndex) {
                 g.setColor(selectionColor);
                 text = "> " + text + " <";
@@ -51,8 +52,8 @@ public class GameOverMenuView {
             }
 
             int itemX = getCenterX(g, text, ConstSet.WINDOW_WIDTH);
-            // タイトルの下から順に並べる (選択項目の間隔が 50px)
-            g.drawString(text, itemX, (ConstSet.WINDOW_HEIGHT / 2) + (i * 50));
+            // 「不可」から少し離れた位置（画面半分より下）に配置
+            g.drawString(text, itemX, (ConstSet.WINDOW_HEIGHT / 2 + 50) + (i * 60));
         }
     }
 
@@ -61,9 +62,9 @@ public class GameOverMenuView {
     private String getMenuText(GameOverMenuModel.MenuItem item) {
         switch (item) {
             case RESTART_GAME:
-                return "もう一度プレイする";
+                return "もう一度脱出を試みる";
             case FINISH_GAME:
-                return "ゲームを終了する";
+                return "諦めて謎の棒をぐるぐる回す";
             default:
                 return "UNKNOWN";
         }

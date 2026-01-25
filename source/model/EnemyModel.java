@@ -27,6 +27,7 @@ public class EnemyModel {
     private int effect_type = 0;    // 0:なし, 1:発見(!), 2:見失い(?)
     private int effect_timer = 0;   // エフェクト表示時間用タイマー
     private boolean bgm_alert = false; // 現在アラートBGMを流すべき状態か
+    private boolean justDetected = false; // 発見した瞬間フラグ
     
     // --- フリーズ用タイマー ---
     private int freeze_timer = 0;   // 発見時に足を止めるタイマー
@@ -76,6 +77,14 @@ public class EnemyModel {
                 this.damage_timer = 15;
             }
         }
+    }
+
+    public boolean pullJustDetected() {
+        if (justDetected) {
+            justDetected = false; // 一度チェックされたらフラグを落とす
+            return true;
+        }
+        return false;
     }
 
     public boolean isObstacleExist(MapModel mm) {
@@ -181,6 +190,7 @@ public class EnemyModel {
                 this.effect_timer = 45; // 1.5秒「！」頭上に発現
                 this.freeze_timer = 45; // 1.5秒フリーズ
                 this.tracking_duration = 0; 
+                this.justDetected = true;
             }
         } else {
             // 追跡中ロジック

@@ -4,6 +4,13 @@ import GameConfig.*;
 
 public class GameClearMenuModel {
 
+      // 演出のフェーズ定義
+      public enum Phase {
+            BACKGROUND_ONLY, // ステージクリア画像のみ
+            SCORE_DISPLAY,   // 暗転してスコアとランクを表示
+            MENU_DISPLAY     // 最後に選択メニューが出現
+      }
+
       public enum MenuItem {
             RESTART_GAME, FINISH_GAME
       }
@@ -13,6 +20,10 @@ public class GameClearMenuModel {
 
       // 今上から何番目の項目を選択しているか.
       private int selectedIndex = 0;
+
+      private Phase currentPhase = Phase.BACKGROUND_ONLY;
+      private String finalRank = "";
+      private int finalScore = 0;
 
       public GameClearMenuModel() {}
 
@@ -26,8 +37,7 @@ public class GameClearMenuModel {
             selectedIndex = (selectedIndex + 1) % menuItems.length;
       }
 
-      // 選択したゲームの状態を取得するメソッド.
-
+      // ゲッター
       public MenuItem getSelectedItem() {
             return menuItems[selectedIndex];
       }
@@ -41,6 +51,37 @@ public class GameClearMenuModel {
       // 今何番目の項目を選択しているかを取得.
       public int getSelectedIndex() {
             return selectedIndex;
+      }
+
+      public Phase getCurrentPhase() {
+            return currentPhase;
+      }
+
+      public String getFinalRank() {
+            return finalRank;
+      }
+
+      public int getFinalScore() {
+            return finalScore;
+      }
+
+      // セッター
+      public void setFinalResult(int score) {
+            this.finalScore = score;
+            if (score >= 9000) {
+                  this.finalRank = "秀";
+            } else if (score >= 7000) {
+                  this.finalRank = "優";
+            } else if (score >= 4000) {
+                  this.finalRank = "良";
+            } else {
+                  this.finalRank = "可";
+            }
+      }
+
+      // フェーズの切り
+      public void setCurrentPhase(Phase phase) {
+            this.currentPhase = phase;
       }
 
       // ↓キーが押された時呼び出される.
