@@ -19,6 +19,7 @@ public class GameView extends JPanel {
     private GameOverMenuModel gameOverMenuModel; // なんか必要らしい
     private MainMenuModel mainMenuModel;
     private GameClearMenuModel gameClearMenuModel;
+    private GuideModel guideModel;
     private MapView mapView;
     private PlayerView playerView;
     private EnemyView enemyView;
@@ -29,21 +30,23 @@ public class GameView extends JPanel {
     private GameClearMenuView gameClearMenuView;
     private DialogueBoxView dialogueBoxView;
     private HPBarView hpBarView;
+    private GuideView guideView;
     private ItemView itemView;
 
     private boolean isPerspectiveMoving;
     private int timer = 0; // 視点移動などのイベントの時間管理用.
 
-    public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, GameClearMenuModel gcm,
+    public GameView(PlayerModel pm, MainMenuModel mm, GameOverMenuModel gm, GameClearMenuModel gcm, GuideModel guidem,
             MapView mv, EnemyView ev, GuardsmanView gmv, PlayerView pv, BulletView bv, MainMenuView mmv,
-            GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, ItemView iv, PlayerControl pc,
-            BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, GameClearMenuControl gcc,
+            GameOverMenuView gov, GameClearMenuView gcv, HPBarView hpv, GuideView gv, ItemView iv, PlayerControl pc,
+            BulletControl bc, MainMenuControl mc, GameOverMenuControl gc, GameClearMenuControl gcc, GuideControl guidec,
             DialogueBoxView dv, DialogueBoxControl dc) {
         // Model
         this.playerModel = pm;
         this.mainMenuModel = mm;
         this.gameOverMenuModel = gm;
         this.gameClearMenuModel = gcm;
+        this.guideModel = guidem;
         // View
         this.mapView = mv;
         this.enemyView = ev;
@@ -54,6 +57,7 @@ public class GameView extends JPanel {
         this.gameOverMenuView = gov;
         this.gameClearMenuView = gcv;
         this.hpBarView = hpv;
+        this.guideView = gv;
         this.itemView = iv;
         this.dialogueBoxView = dv;
         this.isPerspectiveMoving = false;
@@ -65,6 +69,7 @@ public class GameView extends JPanel {
         this.addKeyListener(gc);
         this.addKeyListener(dc);
         this.addKeyListener(gcc);
+        this.addKeyListener(guidec);
         this.setFocusable(true);
         // this.requestFocusInWindow(); // 起動時に自動でキー入力を受け付ける魔法の呪文らしい
     }
@@ -124,6 +129,7 @@ public class GameView extends JPanel {
                 guardsmanView.drawGuardsmen(g2d, offsetX, offsetY);
                 playerView.drawPlayer(g2d, playerDrawX, playerDrawY);
                 bulletView.drawBullet(g2d, offsetX, offsetY);
+                guideView.drawGuide(g2d, guideModel);
             } else {
                 int moving = perspectiveMoving();
                 offsetX = playerDrawX - modelLeft + moving;
@@ -144,8 +150,8 @@ public class GameView extends JPanel {
 
             // 弾数の表示
             g2d.setColor(java.awt.Color.WHITE);
-            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
-            g2d.drawString("AMMO: " + playerModel.getAmmo(), 20, 65);
+            g2d.setFont(new java.awt.Font("MS ゴシック", java.awt.Font.BOLD, 16));
+            g2d.drawString("残弾数: " + playerModel.getAmmo(), 20, 65);
 
             // 会話ボックスはUIとして最前面に描画
             dialogueBoxView.drawDialogueBox(g2d);

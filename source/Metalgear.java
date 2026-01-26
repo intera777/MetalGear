@@ -78,10 +78,10 @@ public class Metalgear extends JFrame {
 
         // 画面を描画するクラスの生成.
         GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel,
-                gameclearmenumodel, mapview, enemyview, guardsmanview, playerview, bulletview,
-                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, itemView,
+                gameclearmenumodel, guidemodel, mapview, enemyview, guardsmanview, playerview, bulletview,
+                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, guideview, itemView,
                 playercontrol, bulletcontrol, mainmenucontrol, gameovermenucontrol,
-                gameclearmenucontrol, dialogueBoxView, dialogueBoxControl);
+                gameclearmenucontrol, guidecontrol, dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
 
         gamemodel.getDialogueBoxesModel().setGameView(gameview);
