@@ -125,6 +125,8 @@ public class Metalgear extends JFrame {
         boolean isFootstepPlaying = false;
         int previousBulletCount = 0;
         int previousMainMenuIndex = mainmenumodel.getSelectedIndex();
+        int previousGameOverIndex = gameovermenumodel.getSelectedIndex();
+        int previousClearMenuIndex = gameclearmenumodel.getSelectedIndex();
         boolean isClearSequenceStarted = false;
         Timer scoreTimer = null;
         Timer menuTimer = null;
@@ -200,7 +202,7 @@ public class Metalgear extends JFrame {
                     // 選択項目が変更されたらSEを再生
                     int currentMainMenuIndex = mainmenumodel.getSelectedIndex();
                     if (currentMainMenuIndex != previousMainMenuIndex) {
-                        SoundEffectManager.playClip(itemSelectedClip);
+                        SoundEffectManager.playOverlap(ConstSet.SE_ITEM_SELECTED, 0.8f);;
                         previousMainMenuIndex = currentMainMenuIndex;
                     }
                     break;
@@ -273,7 +275,7 @@ public class Metalgear extends JFrame {
                         int discoveryCount = enemiesmodel.countNewDiscoveries();
                         for (int i = 0; i < discoveryCount; i++) {
                             // 見つかった数だけ再生を試みる
-                            SoundEffectManager.playClip(noticeSEClip);
+                            SoundEffectManager.playOverlap(ConstSet.SE_ENEMY_NOTICE, 0.8f);
                         }
 
                         if (!dialogueboxesmodel.isVisible()) {
@@ -309,12 +311,12 @@ public class Metalgear extends JFrame {
                         // 弾の発射音 (弾が消滅する前に判定する必要がある)
                         int currentBulletCount = bulletsmodel.countActiveBullets();
                         if (currentBulletCount > previousBulletCount) {
-                            SoundEffectManager.playClip(bulletShootClip);
+                            SoundEffectManager.playOverlap(ConstSet.SE_BULLET_SHOOT, 0.7f);;
                         }
 
                         // Itemモデルの更新処理とアイテム取得音を兼ねている
                         if (itemsModel.updateItems(playermodel)) {
-                            SoundEffectManager.playClip(itemGetClip);
+                            SoundEffectManager.playOverlap(ConstSet.SE_GET_ITEM, 0.8f);;
                         }
 
                         // 残りのモデル更新と、次フレームのための状態保存
@@ -337,6 +339,13 @@ public class Metalgear extends JFrame {
                     if (isFootstepPlaying) {
                         footstepSEManager.stop();
                         isFootstepPlaying = false;
+                    }
+
+                    int currentGameOverIndex = gameovermenumodel.getSelectedIndex();
+                    if (currentGameOverIndex != previousGameOverIndex) {
+                        // 選択肢が変わったらSEを再生（playOverlapを使用）
+                        SoundEffectManager.playOverlap(ConstSet.SE_ITEM_SELECTED, 0.8f);
+                        previousGameOverIndex = currentGameOverIndex;
                     }
 
                     break;
@@ -371,6 +380,14 @@ public class Metalgear extends JFrame {
                         });
                         menuTimer.setRepeats(false);
                         menuTimer.start();
+                    }
+
+                    if (gameclearmenumodel.getCurrentPhase() == GameClearMenuModel.Phase.MENU_DISPLAY) {
+                        int currentClearMenuIndex = gameclearmenumodel.getSelectedIndex();
+                        if (currentClearMenuIndex != previousClearMenuIndex) {
+                            SoundEffectManager.playOverlap(ConstSet.SE_ITEM_SELECTED, 0.8f);
+                            previousClearMenuIndex = currentClearMenuIndex;
+                        }
                     }
 
                     break;

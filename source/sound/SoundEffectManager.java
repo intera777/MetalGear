@@ -54,17 +54,37 @@ public final class SoundEffectManager {
       }
 
       /**
-       * 指定されたクリップを最初から再生します。
-       * 
-       * @param clip 再生するClipオブジェクト
-       */
-      public static void playClip(Clip clip) {
-            if (clip != null) {
-                  if (clip.isRunning()) {
-                        clip.stop();
+            * ファイルパスを指定して、音を重ねて再生します。
+      * 呼び出しのたびに新しいスレッドでClipを生成するため、音が重なります。
+      */
+      public static void playOverlap(String path, float volume) {
+            new Thread(() -> {
+                  try {
+                        File audioFile = new File(path);
+                        try (AudioInputStream ais = AudioSystem.getAudioInputStream(audioFile)) {
+                              Clip clip = AudioSystem.getClip();
+                              clip.open(ais);
+
+                              // 音量設定
+                              if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                                    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                                    float range = gainControl.getMaximum() - gainControl.getMinimum();
+                                    float gain = (range * volume) + gainControl.getMinimum();
+                                    gainControl.setValue(gain);
+                              }
+
+                              // 終わったらリソースを解放
+                              clip.addLineListener(event -> {
+                                    if (event.getType() == javax.sound.sampled.LineEvent.Type.STOP) {
+                                          clip.close();
+                                    }
+                              });
+
+                              clip.start();
+                        }
+                  } catch (Exception e) {
+                        e.printStackTrace();
                   }
-                  clip.setFramePosition(0);
-                  clip.start();
-            }
+            }).start();
       }
 }
