@@ -30,6 +30,7 @@ public class Metalgear extends JFrame {
         DialogueBoxesModel dialogueboxesmodel = gamemodel.getDialogueBoxesModel();
         GuardsmenModel guardsmenmodel = gamemodel.getGuardsmenModel();
         ItemsModel itemsModel = gamemodel.getItemsModel();
+        GuideModel guidemodel = gamemodel.getGuideModel();
 
         // Playerクラス関連のオブジェクトの生成.
         PlayerControl playercontrol = new PlayerControl(playermodel);
@@ -65,6 +66,10 @@ public class Metalgear extends JFrame {
         // Guardsmanクラス関連のオブジェクトを生成.
         GuardsmanView guardsmanview = new GuardsmanView(guardsmenmodel);
 
+        // Guideクラス関連のオブジェクトを生成.
+        GuideControl guidecontrol = new GuideControl(guidemodel);
+        GuideView guideview = new GuideView();
+
         // HPBarクラス関連のオブジェクト生成
         HPBarView hpBarView = new HPBarView();
 
@@ -74,9 +79,9 @@ public class Metalgear extends JFrame {
         // 画面を描画するクラスの生成.
         GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel,
                 gameclearmenumodel, mapview, enemyview, guardsmanview, playerview, bulletview,
-                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, itemView, playercontrol,
-                bulletcontrol, mainmenucontrol, gameovermenucontrol, gameclearmenucontrol,
-                dialogueBoxView, dialogueBoxControl);
+                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, itemView,
+                playercontrol, bulletcontrol, mainmenucontrol, gameovermenucontrol,
+                gameclearmenucontrol, dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
 
         gamemodel.getDialogueBoxesModel().setGameView(gameview);
@@ -136,25 +141,27 @@ public class Metalgear extends JFrame {
             GameState.State currentstate = GameState.getCurrentState();
 
             boolean isComingFromEnd = ( // リセットする条件
-                previousState == GameState.State.GAME_CLEAR ||
-                previousState == GameState.State.GAME_OVER
-            );
-            
+            previousState == GameState.State.GAME_CLEAR
+                    || previousState == GameState.State.GAME_OVER);
+
             // リセット処理をここに集中させた
             if (isComingFromEnd && currentstate == GameState.State.PLAYING) {
                 // 1. 動いているタイマーがあれば即座に止める
-                if (scoreTimer != null) scoreTimer.stop();
-                if (menuTimer != null) menuTimer.stop();
+                if (scoreTimer != null)
+                    scoreTimer.stop();
+                if (menuTimer != null)
+                    menuTimer.stop();
 
                 // データをリセット
                 playermodel.resetStatus();
-                playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2, 6 * ConstSet.TILE_SIZE);
+                playermodel.playerPositionSet(3 * ConstSet.TILE_SIZE - ConstSet.PLAYER_SIZE / 2,
+                        6 * ConstSet.TILE_SIZE);
                 mapmodel.setCurrentMap(MapData.MAPA0);
                 itemsModel.setItemsForMap(MapData.MAPA0);
-        
+
                 // フラグ類
                 gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.BACKGROUND_ONLY);
-                isClearSequenceStarted = false; 
+                isClearSequenceStarted = false;
                 EnemiesModel.isPermanentAlert = false;
                 DialogueSet.dialogueState = DialogueState.MAIN_GAMEPLAY;
             }
@@ -361,13 +368,15 @@ public class Metalgear extends JFrame {
 
                         // スコアを確定させてランクを判定
                         gameclearmenumodel.setFinalResult(playermodel.getScore());
-        
+
                         // クリア背景画像のみ
-                        gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.BACKGROUND_ONLY);
+                        gameclearmenumodel
+                                .setCurrentPhase(GameClearMenuModel.Phase.BACKGROUND_ONLY);
 
                         // 2秒後に暗転・スコア表示へ
                         scoreTimer = new Timer(2000, e -> {
-                            gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.SCORE_DISPLAY);
+                            gameclearmenumodel
+                                    .setCurrentPhase(GameClearMenuModel.Phase.SCORE_DISPLAY);
                             gameview.repaint();
                         });
                         scoreTimer.setRepeats(false);
@@ -375,14 +384,16 @@ public class Metalgear extends JFrame {
 
                         // 4秒後にメニュー出現へ
                         menuTimer = new Timer(4000, e -> {
-                            gameclearmenumodel.setCurrentPhase(GameClearMenuModel.Phase.MENU_DISPLAY);
+                            gameclearmenumodel
+                                    .setCurrentPhase(GameClearMenuModel.Phase.MENU_DISPLAY);
                             gameview.repaint();
                         });
                         menuTimer.setRepeats(false);
                         menuTimer.start();
                     }
 
-                    if (gameclearmenumodel.getCurrentPhase() == GameClearMenuModel.Phase.MENU_DISPLAY) {
+                    if (gameclearmenumodel
+                            .getCurrentPhase() == GameClearMenuModel.Phase.MENU_DISPLAY) {
                         int currentClearMenuIndex = gameclearmenumodel.getSelectedIndex();
                         if (currentClearMenuIndex != previousClearMenuIndex) {
                             SoundEffectManager.playOverlap(ConstSet.SE_ITEM_SELECTED, 0.8f);

@@ -13,6 +13,7 @@ public class GameModel {
     private GameClearMenuModel gameClearMenuModel;
     private GuardsmenModel guardsmenmodel;
     private ItemsModel itemsModel;
+    private GuideModel guidemodel;
 
     public GameModel() {
         playerModel = new PlayerModel();
@@ -25,6 +26,7 @@ public class GameModel {
         guardsmenmodel = new GuardsmenModel();
         itemsModel = new ItemsModel();
         mapModel = new MapModel(playerModel, enemiesModel, guardsmenmodel, itemsModel);
+        guidemodel = new GuideModel();
     }
 
     public GameClearMenuModel getGameClearMenuModel() {
@@ -65,5 +67,9 @@ public class GameModel {
 
     public ItemsModel getItemsModel() {
         return itemsModel;
+    }
+
+    public GuideModel getGuideModel() {
+        return guidemodel;
     }
 }
