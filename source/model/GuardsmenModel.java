@@ -38,6 +38,8 @@ public class GuardsmenModel {
                               ConstSet.TILE_SIZE * 16 + HS));
                   guardsmen.add(new GuardsmanModel(ConstSet.TILE_SIZE * 11 + HS,
                               ConstSet.TILE_SIZE * 5 + HS));
+                  guardsmen.add(new GuardsmanModel(ConstSet.TILE_SIZE * 11 + HS,
+                              ConstSet.TILE_SIZE * 20 + HS));         
             }
       }
 }

@@ -102,14 +102,14 @@ public class EnemiesModel {
 
         // 現在のマップに応じて階段の座標を決定
         if (currentMap == MapData.MAPA1) {
-            spawnX = 2 * TS; 
+            spawnX = 1 * TS; 
             spawnY = 15 * TS; 
         } else if (currentMap == MapData.MAPB0) {
-            spawnX = 4 * TS;
-            spawnY = 23 * TS;
+            spawnX = 30 * TS;
+            spawnY = 0 * TS;
         } else if (currentMap == MapData.MAPC0) {
-            spawnX = 58 * TS;
-            spawnY = 31 * TS;
+            spawnX = 2 * TS;
+            spawnY = 0;
         }
 
         if (spawnX != -100) {
@@ -119,7 +119,7 @@ public class EnemiesModel {
             newEnemy.changePlayerTrack(1);
             
             enemies.add(newEnemy);
-            System.out.println("増援部隊が階段から出現！ (2秒間隔モード)"); // 後で消去する
+            // System.out.println("増援部隊が階段から出現！ (2秒間隔モード)"); // 後で消去する
         }
     }
 
@@ -141,6 +141,8 @@ public class EnemiesModel {
         } else if (map == MapData.MAPB0) {
             enemies.add(new EnemyModel(MapData.MAPB0_E0X[0], MapData.MAPB0_E0Y[0], MapData.MAPB0_E0X, MapData.MAPB0_E0Y));
             enemies.add(new EnemyModel(MapData.MAPB0_E1X[0], MapData.MAPB0_E1Y[0], MapData.MAPB0_E1X, MapData.MAPB0_E1Y));
+            enemies.add(new EnemyModel(MapData.MAPB0_E2X[0], MapData.MAPB0_E2Y[0], MapData.MAPB0_E2X, MapData.MAPB0_E2Y));
+            enemies.add(new EnemyModel(MapData.MAPB0_E3X[0], MapData.MAPB0_E3Y[0], MapData.MAPB0_E3X, MapData.MAPB0_E3Y));
         } else if (map == MapData.MAPC0) {
             enemies.add(new EnemyModel(MapData.MAPC0_E0X[0], MapData.MAPC0_E0Y[0], MapData.MAPC0_E0X, MapData.MAPC0_E0Y));
             enemies.add(new EnemyModel(MapData.MAPC0_E1X[0], MapData.MAPC0_E1Y[0], MapData.MAPC0_E1X, MapData.MAPC0_E1Y));

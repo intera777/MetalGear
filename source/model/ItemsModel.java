@@ -38,7 +38,12 @@ public boolean updateItems(PlayerModel pm) {
             // type 0 (弾薬) として追加
             items.add(new ItemModel(TS * 4 + HS, TS * 3 + HS, 0));
         } else if (map == MapData.MAPA1) {
-            items.add(new ItemModel(ConstSet.TILE_SIZE * 4 + HS, ConstSet.TILE_SIZE * 4 + HS, 0));
+            items.add(new ItemModel(TS * 4 + HS, TS * 4 + HS, 0));
+        } else if (map == MapData.MAPB0) {
+            items.add(new ItemModel(TS * 2 + HS, TS * 3, 0));
+            items.add(new ItemModel(TS * 21 + HS, TS * 15, 0));
+        } else if (map == MapData.MAPC0) {
+            items.add(new ItemModel(TS * 41 + HS, TS * 25 + HS, 0));
         }
     }
 

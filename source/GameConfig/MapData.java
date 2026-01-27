@@ -150,16 +150,26 @@ public class MapData {
     public static final int[] MAPA1_E2Y =
             {TS * 11 + TS / 2, TS * 11 + TS / 2, TS * 14 + TS / 2, TS * 14 + TS / 2};
 
-    public static final int MAPB0_ENEMY_NUM = 2;
+    // B2Fの敵の数
+    public static final int MAPB0_ENEMY_NUM = 4;
 
     // B2F敵0のデータ.
     public static final int MAPB0_E0_PNUM = 4;
     public static int[] MAPB0_E0X = {TS * 2, TS * 6, TS * 6, TS * 2};
     public static final int[] MAPB0_E0Y = {TS * 4, TS * 4, TS * 8, TS * 8};
 
+    // B2F敵1のデータ.
     public static final int MAPB0_E1_PNUM = 2;
     public static final int[] MAPB0_E1X = {TS * 17, TS * 28};
     public static final int[] MAPB0_E1Y = {TS * 6, TS * 6};
+
+    // B2F敵2のデータ.
+    public static int[] MAPB0_E2X = {TS * 9, TS * 18};
+    public static final int[] MAPB0_E2Y = {TS * 14, TS * 14};
+
+    // B2F敵3のデータ.
+    public static int[] MAPB0_E3X = {TS * 22, TS * 29};
+    public static final int[] MAPB0_E3Y = {TS * 14, TS * 14};
 
     // B1Fの敵の数.
     public static final int MAPC0_ENEMY_NUM = 2;
