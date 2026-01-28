@@ -60,7 +60,7 @@ public final class DialogueSet {
     public final static Dialogue[] DIALOGUE_SET_2 = {
         new Dialogue("プレイヤー", "一刻も早く...  ここから脱出しないと... "),
         new Dialogue("プレイヤー", "地上へ行って... 絶対に生きて帰るんだ"),
-        new Dialogue("プレイヤー", "もし教授たちに見つかったらどうしよう..."),
+        new Dialogue("プレイヤー", "でも,もし教授たちに見つかったらどうしよう..."),
         new Dialogue("プレイヤー", " この銃で気絶させればその場しのぎにはなるけど... 限界があるし"),
         new Dialogue("プレイヤー", "弾は足りるかな... 途中で補給できればいいんだけど")
     };
