@@ -58,7 +58,7 @@ public class MapModel {
         } else if (getPlayerTile() == MapData.TO_B0_FROM_A2) {
             setCurrentMap(MapData.MAPB0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 23);
-            if (DialogueSet.isReachedYetB2F) {
+            if (!DialogueSet.isReachedYetB2F) {
                 DialogueSet.dialogueState = DialogueSet.DialogueState.REACHED_B2F;
             }
         } else if (getPlayerTile() == MapData.TO_A2_FROM_B0) {
