@@ -58,18 +58,21 @@ public class MapModel {
         } else if (getPlayerTile() == MapData.TO_B0_FROM_A2) {
             setCurrentMap(MapData.MAPB0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 23);
+            DialogueSet.dialogueState = DialogueSet.DialogueState.REACHED_B2F;
         } else if (getPlayerTile() == MapData.TO_A2_FROM_B0) {
             setCurrentMap(MapData.MAPA2);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 3);
         } else if (getPlayerTile() == MapData.TO_C0_FROM_B0) {
             setCurrentMap(MapData.MAPC0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 58, ConstSet.TILE_SIZE * 29);
+            // B1Fに到達した際の会話を表示したいときはここを変更.
         } else if (getPlayerTile() == MapData.TO_B0_FROM_C0) {
             setCurrentMap(MapData.MAPB0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 31, ConstSet.TILE_SIZE * 3);
         } else if (getPlayerTile() == MapData.TO_D0_FROM_C0) {
             setCurrentMap(MapData.MAPD0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 29, ConstSet.TILE_SIZE * 24);
+            DialogueSet.dialogueState = DialogueSet.DialogueState.REACHED_1F;
         } else if (getPlayerTile() == MapData.TO_C0_FROM_D0) {
             setCurrentMap(MapData.MAPC0);
             playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 4);

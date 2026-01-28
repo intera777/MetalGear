@@ -16,13 +16,29 @@ public final class DialogueSet {
      * <li>{@code MAIN_GAMEPLAY}: メインゲームプレイ開始 (旧 dialogue_count = 4)</li>
      * </ul>
      */
+    //@formatter:off
     public enum DialogueState {
-        PROLOGUE, MOVING_PERSPECTIVE_TO_WORKING, AFTER_PROLOGUE_DIALOGUE, AWAITING_SCRIPTED_MOVE_COMPLETION, AFTER_SCRIPTED_MOVE, MAIN_GAMEPLAY, GUARDSMAN, GAME_OVER
+        PROLOGUE,
+        MOVING_PERSPECTIVE_TO_WORKING,
+        AFTER_PROLOGUE_DIALOGUE,
+        AWAITING_SCRIPTED_MOVE_COMPLETION,
+        AFTER_SCRIPTED_MOVE,
+        MAIN_GAMEPLAY,
+        REACHED_B2F,
+        REACHED_B1F,
+        REACHED_1F,
+        GUARDSMAN,
+        GAME_OVER
     }
+
+    //各階に既に到達したかどうかのフラグ.既に到達していたらtrue. Dialogueを一回のみ表示するため.
+    public static boolean isReachedYetB2F=false;
+    public static boolean isReachedYetB1F=false;
+    public static boolean isReachedYet1F=false;
 
     public static DialogueState dialogueState = DialogueState.PROLOGUE;
 
-    //@formatter:off
+   
 
     public final static Dialogue[] DIALOGUE_SET_0 = {
         new Dialogue("", "ここは名門大学,D大学"),
@@ -51,6 +67,12 @@ public final class DialogueSet {
 
     public final static Dialogue[] DIALOGUE_SET_B2F={
         new Dialogue("プレイヤー","とりあえず収容所からは抜けられたけど,問題はここからだ"),
+    };
+
+    public final static Dialogue[] DIALOGUE_SET_1F={
+        new Dialogue("プレイヤー","あと少しで外だ... でも警備員に見つかったら終わりだ..."),
+        new Dialogue("プレイヤー", "不審な動きをしなければ大丈夫なはず"),
+        new Dialogue("プレイヤー", "慎重に,慎重にいこう")
     };
 
     public final static Dialogue[] DIALOGUE_GUARDSMAN={

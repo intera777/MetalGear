@@ -52,6 +52,18 @@ public class DialogueBoxesModel {
                 case AFTER_SCRIPTED_MOVE:
                     DialogueSet.dialogueState = DialogueSet.DialogueState.MAIN_GAMEPLAY;
                     break;
+                case REACHED_B2F:
+                    DialogueSet.dialogueState = DialogueSet.DialogueState.MAIN_GAMEPLAY;
+                    DialogueSet.isReachedYetB2F = true;
+                    break;
+                case REACHED_B1F:
+                    DialogueSet.dialogueState = DialogueSet.DialogueState.MAIN_GAMEPLAY;
+                    DialogueSet.isReachedYetB1F = true;
+                    break;
+                case REACHED_1F:
+                    DialogueSet.dialogueState = DialogueSet.DialogueState.MAIN_GAMEPLAY;
+                    DialogueSet.isReachedYet1F = true;
+                    break;
                 case GUARDSMAN:
                     GameState.setCurrentState(GameState.State.GAME_OVER);
                     DialogueSet.dialogueState = DialogueSet.DialogueState.GAME_OVER;

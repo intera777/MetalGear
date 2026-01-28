@@ -78,9 +78,9 @@ public class Metalgear extends JFrame {
 
         // 画面を描画するクラスの生成.
         GameView gameview = new GameView(playermodel, mainmenumodel, gameovermenumodel,
-                gameclearmenumodel, guidemodel, mapview, enemyview, guardsmanview, playerview, bulletview,
-                mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, guideview, itemView,
-                playercontrol, bulletcontrol, mainmenucontrol, gameovermenucontrol,
+                gameclearmenumodel, guidemodel, mapview, enemyview, guardsmanview, playerview,
+                bulletview, mainmenuview, gameovermenuview, gameclearmenuview, hpBarView, guideview,
+                itemView, playercontrol, bulletcontrol, mainmenucontrol, gameovermenucontrol,
                 gameclearmenucontrol, guidecontrol, dialogueBoxView, dialogueBoxControl);
         frame.add(gameview);
 
@@ -243,6 +243,21 @@ public class Metalgear extends JFrame {
                     if (DialogueSet.dialogueState == DialogueSet.DialogueState.AFTER_SCRIPTED_MOVE
                             && !gamemodel.getDialogueBoxesModel().isVisible()) {
                         gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.DIALOGUE_SET_2);
+                    }
+
+                    // B2Fに初めて到達したときの会話.
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.REACHED_B2F
+                            && !gamemodel.getDialogueBoxesModel().isVisible()
+                            && !DialogueSet.isReachedYetB2F) {
+                        gamemodel.getDialogueBoxesModel()
+                                .setDialogues(DialogueSet.DIALOGUE_SET_B2F);
+                    }
+
+                    // 1Fに初めて到達したときの会話.
+                    if (DialogueSet.dialogueState == DialogueSet.DialogueState.REACHED_1F
+                            && !gamemodel.getDialogueBoxesModel().isVisible()
+                            && !DialogueSet.isReachedYet1F) {
+                        gamemodel.getDialogueBoxesModel().setDialogues(DialogueSet.DIALOGUE_SET_1F);
                     }
 
                     // 警備員に捕まった時の会話.
