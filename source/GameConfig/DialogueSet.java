@@ -36,6 +36,12 @@ public final class DialogueSet {
     public static boolean isReachedYetB1F=false;
     public static boolean isReachedYet1F=false;
 
+    public static void initdialogueflag(){
+        isReachedYetB2F=false;
+        isReachedYetB1F=false;
+        isReachedYet1F=false;
+    }
+
     public static DialogueState dialogueState = DialogueState.PROLOGUE;
 
    

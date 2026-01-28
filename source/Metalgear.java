@@ -164,6 +164,7 @@ public class Metalgear extends JFrame {
                 isClearSequenceStarted = false;
                 EnemiesModel.isPermanentAlert = false;
                 DialogueSet.dialogueState = DialogueState.MAIN_GAMEPLAY;
+                DialogueSet.initdialogueflag();
             }
 
             // BGM用（絶望モード）とSE用（単純な発見）の判定を分ける
@@ -369,6 +370,8 @@ public class Metalgear extends JFrame {
                         SoundEffectManager.playOverlap(ConstSet.SE_ITEM_SELECTED, 0.8f);
                         previousGameOverIndex = currentGameOverIndex;
                     }
+
+
 
                     break;
                 case GAME_CLEAR:
