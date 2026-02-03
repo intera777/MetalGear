@@ -1,67 +1,67 @@
 package GameConfig;
 
 public class MapData {
-    // 基本タイル (0~19の定数)
-    public static final int STONEFLOOR = 0; // 床, 1×1マス
-    public static final int WALL_UNIT = 1; // 32×32の壁正面
-    public static final int WALL_UP = 2; // 32×32の壁上部
-    public static final int FLOOR_1F = 3; // 1Fの床, 1×1マス
-    public static final int WALL_UNIT_1F = 4; // 1Fの壁正面, 1×1
-    public static final int WALL_UP_1F = 5; // 1Fの天井, 1×1
+        // 基本タイル (0~19の定数)
+        public static final int STONEFLOOR = 0; // 床, 1×1マス
+        public static final int WALL_UNIT = 1; // 32×32の壁正面
+        public static final int WALL_UP = 2; // 32×32の壁上部
+        public static final int FLOOR_1F = 3; // 1Fの床, 1×1マス
+        public static final int WALL_UNIT_1F = 4; // 1Fの壁正面, 1×1
+        public static final int WALL_UP_1F = 5; // 1Fの天井, 1×1
 
 
 
-    // public static final int PORTAR_POINT = 19; // 遷移点.
-    // 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
+        // public static final int PORTAR_POINT = 19; // 遷移点.
+        // 今のところ描画無し.将来的にドアを実装するゆとりがあれば, 変わるかも
 
-    // 特殊タイル・オブジェクト (負の定数)
-    public static final int CLEAR_OBSTACLE = -1; // 見えない壁
-    public static final int HALF_CLEAR_OBSTACLE = -2; // 下半ブロックだけ通過できる壁.
-    public static final int DUMMY_TILE = -3; // 何も描画されないし, 素通りできるタイル. 1×1マス以上のオブジェクトの描画に利用する
+        // 特殊タイル・オブジェクト (負の定数)
+        public static final int CLEAR_OBSTACLE = -1; // 見えない壁
+        public static final int HALF_CLEAR_OBSTACLE = -2; // 下半ブロックだけ通過できる壁.
+        public static final int DUMMY_TILE = -3; // 何も描画されないし, 素通りできるタイル. 1×1マス以上のオブジェクトの描画に利用する
 
-    public static final int SPIN_MOB = -4; // 棒回しぐるぐる, 4×4マス
+        public static final int SPIN_MOB = -4; // 棒回しぐるぐる, 4×4マス
 
-    // オブジェクト(20以上の定数) サイズは横×縦.
-    public static final int BED = 20; // ベッド, 1×2マス
-    public static final int VERTICAL_STAIR = 21; // 階段(縦向き), 3×6マス
-    public static final int CONTAINER_1T2 = 22; // コンテナ, 1×2マス
-    public static final int CONTAINER_2T2 = 23; // コンテナ, 2×2マス
-    public static final int TABLE_LEFT = 24; // テーブルの左端.
-    public static final int TABLE_MIDDLE = 25; // テーブルの中央.
-    public static final int TABLE_RIGHT = 26; // テーブルの右端.
-    public static final int LARGE_DOOR = 27; // ゴール地点にある大きいドア 5×2マス.
-    public static final int HORIZONTAL_CABINET = 28; // 横長の棚 2×1マス.
-    public static final int TALL_CABINET = 29; // 縦長の棚 1×2マス.
-    public static final int FRONT = 30; // 受付 2×1マス.
-    public static final int STAIRS_GODOWN = 31; // 小さい下行き階段 3×2マス.
-    public static final int PRISONDOOR_OPENED = 32; // 収容所ドア(開き) 2×2.
-    public static final int PRISONDOOR_CLOSED = 33; // 収容所ドア(閉じ) 2×2.
-    public static final int ALARM = 34; // アラーム, 1×1
-    public static final int SHELF = 35; // 棚, 2×2
-    public static final int BIGSHELF = 36; // 大きな棚, 3×2
-    public static final int COUNTER = 37; // 受付, 3×2
-    public static final int ELAVATOR = 38; // エレベーター, 3×2
-    public static final int PLANT = 39; // 植物, 1×2
-    public static final int BOX = 40; // 段ボール箱, 1×1
-    public static final int PICTURE = 41; // 絵, 2×1
-    public static final int BOOKS = 42; // 本棚縦長, 3×4
+        // オブジェクト(20以上の定数) サイズは横×縦.
+        public static final int BED = 20; // ベッド, 1×2マス
+        public static final int VERTICAL_STAIR = 21; // 階段(縦向き), 3×6マス
+        public static final int CONTAINER_1T2 = 22; // コンテナ, 1×2マス
+        public static final int CONTAINER_2T2 = 23; // コンテナ, 2×2マス
+        public static final int TABLE_LEFT = 24; // テーブルの左端.
+        public static final int TABLE_MIDDLE = 25; // テーブルの中央.
+        public static final int TABLE_RIGHT = 26; // テーブルの右端.
+        public static final int LARGE_DOOR = 27; // ゴール地点にある大きいドア 5×2マス.
+        public static final int HORIZONTAL_CABINET = 28; // 横長の棚 2×1マス.
+        public static final int TALL_CABINET = 29; // 縦長の棚 1×2マス.
+        public static final int FRONT = 30; // 受付 2×1マス.
+        public static final int STAIRS_GODOWN = 31; // 小さい下行き階段 3×2マス.
+        public static final int PRISONDOOR_OPENED = 32; // 収容所ドア(開き) 2×2.
+        public static final int PRISONDOOR_CLOSED = 33; // 収容所ドア(閉じ) 2×2.
+        public static final int ALARM = 34; // アラーム, 1×1
+        public static final int SHELF = 35; // 棚, 2×2
+        public static final int BIGSHELF = 36; // 大きな棚, 3×2
+        public static final int COUNTER = 37; // 受付, 3×2
+        public static final int ELAVATOR = 38; // エレベーター, 3×2
+        public static final int PLANT = 39; // 植物, 1×2
+        public static final int BOX = 40; // 段ボール箱, 1×1
+        public static final int PICTURE = 41; // 絵, 2×1
+        public static final int BOOKS = 42; // 本棚縦長, 3×4
 
 
-    // 遷移点
-    public static final int TO_A1_FROM_A0 = 101; // マップA0からA1への遷移ポイント.以下同様.a
-    public static final int TO_A0_FROM_A1 = 102;
-    public static final int TO_A2_FROM_A1 = 103;
-    public static final int TO_A1_FROM_A2 = 104;
-    public static final int TO_B0_FROM_A2 = 105;
-    public static final int TO_A2_FROM_B0 = 106;
-    public static final int TO_C0_FROM_B0 = 107;
-    public static final int TO_B0_FROM_C0 = 108;
-    public static final int TO_D0_FROM_C0 = 109;
-    public static final int TO_C0_FROM_D0 = 110;
+        // 遷移点
+        public static final int TO_A1_FROM_A0 = 101; // マップA0からA1への遷移ポイント.以下同様.a
+        public static final int TO_A0_FROM_A1 = 102;
+        public static final int TO_A2_FROM_A1 = 103;
+        public static final int TO_A1_FROM_A2 = 104;
+        public static final int TO_B0_FROM_A2 = 105;
+        public static final int TO_A2_FROM_B0 = 106;
+        public static final int TO_C0_FROM_B0 = 107;
+        public static final int TO_B0_FROM_C0 = 108;
+        public static final int TO_D0_FROM_C0 = 109;
+        public static final int TO_C0_FROM_D0 = 110;
 
-    public static final int GAME_CLEAR = 1000; // ゲームクリア地点.
+        public static final int GAME_CLEAR = 1000; // ゲームクリア地点.
 
-    private static final int TS = ConstSet.TILE_SIZE;
+        private static final int TS = ConstSet.TILE_SIZE;
 
     // @formatter:off
     // プレイヤーが通過できない障害物のリスト.
@@ -94,12 +94,12 @@ public class MapData {
             {2, 2, 2, 2, 2, 2, 2, 2},
             {2, 1, 1, 1, 1, 1, 1, 2},
             {2, 1, 1, 1, 1, 1, 1, 2},
-            {2, TO_C0_FROM_B0, 0, 0, 0, 0, TO_D0_FROM_C0, 2}, // 左上にB1F行きのワープ
+            {2, 0, 0, 0, 0, 0, 0, 2}, // 左上にB1F行きのワープ
             {2, 0, 0, 0, 0, 0, 0, 2}, // 右上に1F行きのワープ
             {2, 0, 0, 0, 20, 0, 0, 2},
             {2, 0, 0, 0, -1, 0, 0, 2},
             {2, 0, 0, 0, 0, 0, 0, 2},
-            {2, 0, 0, 0, 0, 0, TO_B0_FROM_A2, 2}, // 右下にB2F行きのワープ
+            {2, 0, 0, 0, 0, 0, 0, 2}, // 右下にB2F行きのワープ
             {2, 2, 101, 101, 2, 2, 2, 2}
     };
 
@@ -126,78 +126,78 @@ public class MapData {
 };
     // @formatter:on
 
-    // 以下敵のデータ(敵が向かうポイントの数,ポイントのX座標の配列,ポイントのY座標の配列).
+        // 以下敵のデータ(敵が向かうポイントの数,ポイントのX座標の配列,ポイントのY座標の配列).
 
-    public static final int MAPA1_ENEMY_NUM = 3;
-    // 敵0のデータ.
-    public static int MAPA1_E0_PNUM = 4; // 敵が移動するポイントの数
-    public static int[] MAPA1_E0X =
-            {TS * 13 + TS / 2, TS * 16 + TS / 2, TS * 16 + TS / 2, TS * 13 + TS / 2};
-    public static final int[] MAPA1_E0Y =
-            {TS * 3 + TS / 2, TS * 3 + TS / 2, TS * 6 + TS / 2, TS * 6 + TS / 2};
+        public static final int MAPA1_ENEMY_NUM = 3;
+        // 敵0のデータ.
+        public static int MAPA1_E0_PNUM = 4; // 敵が移動するポイントの数
+        public static int[] MAPA1_E0X =
+                        {TS * 13 + TS / 2, TS * 16 + TS / 2, TS * 16 + TS / 2, TS * 13 + TS / 2};
+        public static final int[] MAPA1_E0Y =
+                        {TS * 3 + TS / 2, TS * 3 + TS / 2, TS * 6 + TS / 2, TS * 6 + TS / 2};
 
-    // 敵1のデータ.
-    public static final int MAPA1_E1_PNUM = 4;
-    public static int[] MAPA1_E1X =
-            {TS * 6 + TS / 2, TS * 11 + TS / 2, TS * 11 + TS / 2, TS * 6 + TS / 2,};
-    public static final int[] MAPA1_E1Y =
-            {TS * 6 + TS / 2, TS * 6 + TS / 2, TS * 11 + TS / 2, TS * 11 + TS / 2};
+        // 敵1のデータ.
+        public static final int MAPA1_E1_PNUM = 4;
+        public static int[] MAPA1_E1X =
+                        {TS * 6 + TS / 2, TS * 11 + TS / 2, TS * 11 + TS / 2, TS * 6 + TS / 2,};
+        public static final int[] MAPA1_E1Y =
+                        {TS * 6 + TS / 2, TS * 6 + TS / 2, TS * 11 + TS / 2, TS * 11 + TS / 2};
 
-    // 敵2のデータ.
-    public static final int MAPA1_E2_PNUM = 4;
-    public static int[] MAPA1_E2X =
-            {TS * 2 + TS / 2, TS * 5 + TS / 2, TS * 5 + TS / 2, TS * 2 + TS / 2,};
-    public static final int[] MAPA1_E2Y =
-            {TS * 11 + TS / 2, TS * 11 + TS / 2, TS * 14 + TS / 2, TS * 14 + TS / 2};
+        // 敵2のデータ.
+        public static final int MAPA1_E2_PNUM = 4;
+        public static int[] MAPA1_E2X =
+                        {TS * 2 + TS / 2, TS * 5 + TS / 2, TS * 5 + TS / 2, TS * 2 + TS / 2,};
+        public static final int[] MAPA1_E2Y =
+                        {TS * 11 + TS / 2, TS * 11 + TS / 2, TS * 14 + TS / 2, TS * 14 + TS / 2};
 
-    // B2Fの敵の数
-    public static final int MAPB0_ENEMY_NUM = 4;
+        // B2Fの敵の数
+        public static final int MAPB0_ENEMY_NUM = 4;
 
-    // B2F敵0のデータ.
-    public static final int MAPB0_E0_PNUM = 4;
-    public static int[] MAPB0_E0X = {TS * 2, TS * 6, TS * 6, TS * 2};
-    public static final int[] MAPB0_E0Y = {TS * 4, TS * 4, TS * 8, TS * 8};
+        // B2F敵0のデータ.
+        public static final int MAPB0_E0_PNUM = 4;
+        public static int[] MAPB0_E0X = {TS * 2, TS * 6, TS * 6, TS * 2};
+        public static final int[] MAPB0_E0Y = {TS * 4, TS * 4, TS * 8, TS * 8};
 
-    // B2F敵1のデータ.
-    public static final int MAPB0_E1_PNUM = 2;
-    public static final int[] MAPB0_E1X = {TS * 17, TS * 28};
-    public static final int[] MAPB0_E1Y = {TS * 6, TS * 6};
+        // B2F敵1のデータ.
+        public static final int MAPB0_E1_PNUM = 2;
+        public static final int[] MAPB0_E1X = {TS * 17, TS * 28};
+        public static final int[] MAPB0_E1Y = {TS * 6, TS * 6};
 
-    // B2F敵2のデータ.
-    public static int[] MAPB0_E2X = {TS * 9, TS * 18};
-    public static final int[] MAPB0_E2Y = {TS * 14, TS * 14};
+        // B2F敵2のデータ.
+        public static int[] MAPB0_E2X = {TS * 9, TS * 18};
+        public static final int[] MAPB0_E2Y = {TS * 14, TS * 14};
 
-    // B2F敵3のデータ.
-    public static int[] MAPB0_E3X = {TS * 22, TS * 29};
-    public static final int[] MAPB0_E3Y = {TS * 14, TS * 14};
+        // B2F敵3のデータ.
+        public static int[] MAPB0_E3X = {TS * 22, TS * 29};
+        public static final int[] MAPB0_E3Y = {TS * 14, TS * 14};
 
-    // B1Fの敵の数.
-    public static final int MAPC0_ENEMY_NUM = 2;
+        // B1Fの敵の数.
+        public static final int MAPC0_ENEMY_NUM = 2;
 
-    // B1F敵0のデータ.
-    public static final int MAPC0_E0_PNUM = 2;
-    public static final int[] MAPC0_E0X = {TS * 2, TS * 8};
-    public static final int[] MAPC0_E0Y = {TS * 13, TS * 13};
+        // B1F敵0のデータ.
+        public static final int MAPC0_E0_PNUM = 2;
+        public static final int[] MAPC0_E0X = {TS * 2, TS * 8};
+        public static final int[] MAPC0_E0Y = {TS * 13, TS * 13};
 
-    // B1F敵1のデータ.
-    public static final int MAPC0_E1_PNUM = 2;
-    public static final int[] MAPC0_E1X = {TS * 24, TS * 35};
-    public static final int[] MAPC0_E1Y = {TS * 6, TS * 6};
+        // B1F敵1のデータ.
+        public static final int MAPC0_E1_PNUM = 2;
+        public static final int[] MAPC0_E1X = {TS * 24, TS * 35};
+        public static final int[] MAPC0_E1Y = {TS * 6, TS * 6};
 
-    // B1F敵2のデータ.
-    public static final int MAPC0_E2_PNUM = 2;
-    public static final int[] MAPC0_E2X = {TS * 30, TS * 30};
-    public static final int[] MAPC0_E2Y = {TS * 11, TS * 19};
+        // B1F敵2のデータ.
+        public static final int MAPC0_E2_PNUM = 2;
+        public static final int[] MAPC0_E2X = {TS * 30, TS * 30};
+        public static final int[] MAPC0_E2Y = {TS * 11, TS * 19};
 
-    // B1F敵3のデータ.
-    public static final int MAPC0_E3_PNUM = 2;
-    public static final int[] MAPC0_E3X = {TS * 25, TS * 35};
-    public static final int[] MAPC0_E3Y = {TS * 22, TS * 22};
+        // B1F敵3のデータ.
+        public static final int MAPC0_E3_PNUM = 2;
+        public static final int[] MAPC0_E3X = {TS * 25, TS * 35};
+        public static final int[] MAPC0_E3Y = {TS * 22, TS * 22};
 
-    // B1F敵4のデータ.
-    public static final int MAPC0_E4_PNUM = 2;
-    public static final int[] MAPC0_E4X = {TS * 43, TS * 43};
-    public static final int[] MAPC0_E4Y = {TS * 11, TS * 19};
+        // B1F敵4のデータ.
+        public static final int MAPC0_E4_PNUM = 2;
+        public static final int[] MAPC0_E4X = {TS * 43, TS * 43};
+        public static final int[] MAPC0_E4Y = {TS * 11, TS * 19};
 
     // @formatter:off
 
