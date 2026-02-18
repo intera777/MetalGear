@@ -1,0 +1,98 @@
+package model;
+
+import GameConfig.*;
+
+public class MapModel {
+    private PlayerModel playermodel;
+    private EnemiesModel enemiesModel;
+    private GuardsmenModel guardsmenmodel;
+    private ItemsModel itemsModel;
+
+    private int currentMap[][];
+
+    public MapModel(PlayerModel pm, EnemiesModel em, GuardsmenModel gm, ItemsModel im) {
+        playermodel = pm;
+        enemiesModel = em;
+        guardsmenmodel = gm;
+        itemsModel = im;
+    }
+
+    // プレイヤーが現在いる位置のマップタイルを取得するメソッド.
+    public int getPlayerTile() {
+        int tileX = playermodel.getPlayerX() / ConstSet.TILE_SIZE;
+        int tileY = playermodel.getPlayerY() / ConstSet.TILE_SIZE;
+        return currentMap[tileY][tileX];
+    }
+
+    // 指定された座標のタイルを取得するメソッド.
+    public int getTile(int x, int y) {
+        return currentMap[y / ConstSet.TILE_SIZE][x / ConstSet.TILE_SIZE];
+    }
+
+    // 現在プレイヤーがいるマップを取得するメソッド.
+    public int[][] getMap() {
+        return currentMap;
+    }
+
+    // プレイヤーが遷移ポイントに達したかを確認し、達していたらマップを変更するメソッド.
+    public void updateMap() {
+        if (getPlayerTile() > 100) {
+            changeMap();
+        }
+    }
+
+    // 遷移ポイントに達したときにマップを変更するメソッド.
+    public void changeMap() {
+        if (getPlayerTile() == MapData.TO_A1_FROM_A0) {
+            setCurrentMap(MapData.MAPA1);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 19, ConstSet.TILE_SIZE * 3);
+        } else if (getPlayerTile() == MapData.TO_A0_FROM_A1) {
+            setCurrentMap(MapData.MAPA0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 8);
+        } else if (getPlayerTile() == MapData.TO_A2_FROM_A1) {
+            setCurrentMap(MapData.MAPA2);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 8, ConstSet.TILE_SIZE * 5);
+        } else if (getPlayerTile() == MapData.TO_A1_FROM_A2) {
+            setCurrentMap(MapData.MAPA1);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 15);
+        } else if (getPlayerTile() == MapData.TO_B0_FROM_A2) {
+            setCurrentMap(MapData.MAPB0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 23);
+            if (!DialogueSet.isReachedYetB2F) {
+                DialogueSet.dialogueState = DialogueSet.DialogueState.REACHED_B2F;
+            }
+        } else if (getPlayerTile() == MapData.TO_A2_FROM_B0) {
+            setCurrentMap(MapData.MAPA2);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 2, ConstSet.TILE_SIZE * 3);
+        } else if (getPlayerTile() == MapData.TO_C0_FROM_B0) {
+            setCurrentMap(MapData.MAPC0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 58, ConstSet.TILE_SIZE * 29);
+            // B1Fに到達した際の会話を表示したいときはここを変更.
+        } else if (getPlayerTile() == MapData.TO_B0_FROM_C0) {
+            setCurrentMap(MapData.MAPB0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 31, ConstSet.TILE_SIZE * 3);
+        } else if (getPlayerTile() == MapData.TO_D0_FROM_C0) {
+            setCurrentMap(MapData.MAPD0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 29, ConstSet.TILE_SIZE * 24);
+            if (!DialogueSet.isReachedYet1F) {
+                DialogueSet.dialogueState = DialogueSet.DialogueState.REACHED_1F;
+            }
+        } else if (getPlayerTile() == MapData.TO_C0_FROM_D0) {
+            setCurrentMap(MapData.MAPC0);
+            playermodel.playerPositionSet(ConstSet.TILE_SIZE * 3, ConstSet.TILE_SIZE * 4);
+        } else if (getPlayerTile() == MapData.GAME_CLEAR) {
+            GameState.setCurrentState(GameState.State.GAME_CLEAR);
+        }
+    }
+
+    // 現在のマップを直接指定するメソッド.
+    public void setCurrentMap(int map[][]) {
+        currentMap = map;
+        if (enemiesModel != null) {
+            enemiesModel.setEnemiesForMap(map);
+            guardsmenmodel.setGuardsmenForMap(map);
+            itemsModel.setItemsForMap(map);
+        }
+    }
+
+}
